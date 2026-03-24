@@ -1,0 +1,185 @@
+---
+interface Props {
+  lang?: 'nl' | 'en';
+  currentPath?: string;
+}
+
+const { lang = 'nl', currentPath = '' } = Astro.props;
+
+const navNL = [
+  { href: '/nl/werk/', label: 'Werk' },
+  { href: '/nl/fancy-boogers/', label: 'Fancy Boogers' },
+  { href: '/nl/borduurwerk/', label: 'Borduurwerk' },
+  { href: '/nl/workshops/', label: 'Workshops' },
+  { href: '/nl/winkel/', label: 'Winkel' },
+  { href: '/nl/over-wievien/', label: 'Over' },
+  { href: '/nl/contact/', label: 'Contact' },
+];
+
+const navEN = [
+  { href: '/en/work/', label: 'Work' },
+  { href: '/en/fancy-boogers/', label: 'Fancy Boogers' },
+  { href: '/en/embroidery/', label: 'Embroidery' },
+  { href: '/en/workshops/', label: 'Workshops' },
+  { href: '/en/shop/', label: 'Shop' },
+  { href: '/en/about/', label: 'About' },
+  { href: '/en/contact/', label: 'Contact' },
+];
+
+const nav = lang === 'nl' ? navNL : navEN;
+const langSwitchHref = lang === 'nl' ? '/en/work/' : '/nl/werk/';
+const langSwitchLabel = lang === 'nl' ? 'EN' : 'NL';
+---
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href={lang === 'nl' ? '/' : '/en/work/'} class="logo">
+      Studio Wievien
+    </a>
+
+    <nav class="main-nav" aria-label={lang === 'nl' ? 'Hoofdnavigatie' : 'Main navigation'}>
+      <ul>
+        {nav.map(({ href, label }) => (
+          <li>
+            <a
+              href={href}
+              class:list={[{ active: currentPath.startsWith(href) }]}
+            >
+              {label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <a href={langSwitchHref} class="lang-switch" aria-label={lang === 'nl' ? 'Switch to English' : 'Schakel naar Nederlands'}>
+      {langSwitchLabel}
+    </a>
+
+    <button class="menu-toggle" aria-label={lang === 'nl' ? 'Menu openen' : 'Open menu'} aria-expanded="false">
+      <span class="menu-icon"></span>
+    </button>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .logo {
+    font-family: var(--font-heading);
+    font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+    font-weight: 600;
+    color: var(--text);
+    text-decoration: none;
+    white-space: nowrap;
+    letter-spacing: -0.01em;
+  }
+
+  .logo:hover {
+    color: var(--accent);
+  }
+
+  .main-nav ul {
+    display: flex;
+    list-style: none;
+    gap: 0.25rem;
+  }
+
+  .main-nav a {
+    display: block;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.9375rem;
+    color: var(--text-mid);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: color 0.2s var(--ease-snappy), background-color 0.2s var(--ease-snappy);
+  }
+
+  .main-nav a:hover {
+    color: var(--text);
+    background-color: var(--bg-card);
+  }
+
+  .main-nav a.active {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .lang-switch {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    padding: 0.3rem 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.2s var(--ease-snappy);
+  }
+
+  .lang-switch:hover {
+    color: var(--text);
+    border-color: var(--text-mid);
+  }
+
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+  }
+
+  .menu-icon {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background-color: var(--text);
+    position: relative;
+  }
+
+  .menu-icon::before,
+  .menu-icon::after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 2px;
+    background-color: var(--text);
+    left: 0;
+  }
+
+  .menu-icon::before { top: -7px; }
+  .menu-icon::after { top: 7px; }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .main-nav {
+      display: none;
+    }
+
+    .menu-toggle {
+      display: block;
+    }
+
+    .header-inner {
+      padding: 0.75rem 1rem;
+    }
+  }
+</style>

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Studio Wievien — Preview</title>
+  <style>
+    /* ============================================
+       Studio Wievien — Global Styles (inline for preview)
+       ============================================ */
+    :root {
+      --bg:         #f5f0ea;
+      --bg-card:    #ece6dc;
+      --text:       #2c2418;
+      --text-mid:   #6b5d4f;
+      --text-light: #9a8c7c;
+      --accent:     #c45a3c;
+      --accent-bg:  #f2e4df;
+      --border:     #d9cfc3;
+      --font-heading: Georgia, 'Times New Roman', serif;
+      --font-body:    system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --ease-snappy:   cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      font-family: var(--font-body);
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--text);
+      background-color: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    main { flex: 1; }
+
+    h1, h2, h3 {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      line-height: 1.2;
+      color: var(--text);
+    }
+
+    h1 { font-size: clamp(1.75rem, 4vw, 2.5rem); }
+    h2 { font-size: clamp(1.375rem, 3vw, 1.875rem); line-height: 1.25; }
+    h3 { font-size: clamp(1.125rem, 2.2vw, 1.375rem); line-height: 1.3; }
+
+    a { color: var(--accent); text-decoration: none; transition: color 0.2s var(--ease-snappy); }
+    a:hover { color: color-mix(in oklch, var(--accent) 80%, black); }
+
+    img { max-width: 100%; height: auto; display: block; }
+
+    .prose { max-width: 640px; }
+    .prose p + p { margin-top: 1.25rem; }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 180px;
+    }
+
+    /* ============ HEADER ============ */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background-color: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    .logo {
+      font-family: var(--font-heading);
+      font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+      white-space: nowrap;
+      letter-spacing: -0.01em;
+    }
+
+    .logo:hover { color: var(--accent); }
+
+    .main-nav ul {
+      display: flex;
+      list-style: none;
+      gap: 0.25rem;
+    }
+
+    .main-nav a {
+      display: block;
+      padding: 0.4rem 0.75rem;
+      font-size: 0.9375rem;
+      color: var(--text-mid);
+      text-decoration: none;
+      border-radius: 6px;
+      transition: color 0.2s var(--ease-snappy), background-color 0.2s var(--ease-snappy);
+    }
+
+    .main-nav a:hover {
+      color: var(--text);
+      background-color: var(--bg-card);
+    }
+
+    .main-nav a.active {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .lang-switch {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      padding: 0.3rem 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      text-decoration: none;
+      transition: all 0.2s var(--ease-snappy);
+    }
+
+    .lang-switch:hover {
+      color: var(--text);
+      border-color: var(--text-mid);
+    }
+
+    /* ============ HERO ============ */
+    .hero {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--text-mid);
+      margin-bottom: 2rem;
+      max-width: 480px;
+    }
+
+    .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.75rem;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: all 0.2s var(--ease-snappy);
+    }
+
+    .btn-primary {
+      background-color: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: color-mix(in oklch, var(--accent) 85%, black);
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--text-mid);
+      background-color: var(--bg-card);
+    }
+
+    /* ============ SECTIONS ============ */
+    .section { padding: 4rem 1.5rem; }
+    .section:nth-child(even) { background-color: var(--bg-card); }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+    .section h2 { margin-bottom: 1.5rem; }
+    .section-link { display: inline-block; margin-top: 2rem; }
+
+    .link-arrow {
+      font-weight: 600;
+      font-size: 0.9375rem;
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .link-arrow:hover { color: color-mix(in oklch, var(--accent) 80%, black); }
+
+    /* ============ WORK GRID ============ */
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .work-card {
+      cursor: pointer;
+      transition: opacity 0.35s, filter 0.35s, transform 0.3s var(--ease-snappy);
+    }
+
+    .work-card:hover { transform: translateY(-4px); }
+
+    .work-grid:has(.work-card:hover) .work-card:not(:hover) {
+      opacity: 0.5;
+      filter: saturate(0.4);
+    }
+
+    .work-card h3 { margin-top: 0.75rem; font-size: 1rem; }
+    .work-card-cat { font-size: 0.8125rem; color: var(--text-light); margin-top: 0.25rem; }
+
+    /* ============ FANCY BOOGERS ============ */
+    .fancy-boogers .section-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .fb-content .btn { margin-top: 1.5rem; }
+
+    /* ============ PLACEHOLDERS ============ */
+    .hero-placeholder,
+    .placeholder-img {
+      background-color: var(--bg-card);
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-light);
+      font-size: 0.875rem;
+      font-style: italic;
+    }
+
+    .hero-placeholder { aspect-ratio: 4/3; width: 100%; }
+    .work-card-image .placeholder-img { aspect-ratio: 1; }
+    .placeholder-img.wide { aspect-ratio: 16/9; width: 100%; }
+    .workshop-teaser .placeholder-img { aspect-ratio: 21/9; width: 100%; margin-top: 1.5rem; }
+
+    /* ============ FOOTER ============ */
+    .site-footer {
+      margin-top: auto;
+      background-color: var(--bg-card);
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 1.5rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .footer-brand {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-tagline { font-size: 0.9375rem; color: var(--text-mid); }
+
+    .footer-heading {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-light);
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-col ul { list-style: none; }
+    .footer-col li + li { margin-top: 0.4rem; }
+
+    .footer-col a {
+      font-size: 0.9375rem;
+      color: var(--text-mid);
+      text-decoration: none;
+      transition: color 0.2s var(--ease-snappy);
+    }
+
+    .footer-col a:hover { color: var(--accent); }
+
+    .footer-bottom {
+      margin-top: 2.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-bottom p { font-size: 0.8125rem; color: var(--text-light); }
+
+    /* ============ RESPONSIVE ============ */
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; padding: 2rem 1rem 3rem; gap: 2rem; }
+      .hero-image { order: -1; }
+      .work-grid { grid-template-columns: repeat(2, 1fr); }
+      .fancy-boogers .section-inner { grid-template-columns: 1fr; }
+      .section { padding: 3rem 1rem; }
+      .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .main-nav { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .work-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="logo">Studio Wievien</a>
+      <nav class="main-nav" aria-label="Hoofdnavigatie">
+        <ul>
+          <li><a href="/nl/werk/" class="active">Werk</a></li>
+          <li><a href="/nl/fancy-boogers/">Fancy Boogers</a></li>
+          <li><a href="/nl/borduurwerk/">Borduurwerk</a></li>
+          <li><a href="/nl/workshops/">Workshops</a></li>
+          <li><a href="/nl/winkel/">Winkel</a></li>
+          <li><a href="/nl/over-wievien/">Over</a></li>
+          <li><a href="/nl/contact/">Contact</a></li>
+        </ul>
+      </nav>
+      <a href="/en/work/" class="lang-switch" aria-label="Switch to English">EN</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Studio Wievien</h1>
+        <p class="hero-sub">Borduurwerk, kleding &amp; workshops — alles met de hand gemaakt.</p>
+        <div class="hero-cta">
+          <a href="/nl/werk/" class="btn btn-primary">Bekijk het werk</a>
+          <a href="/nl/winkel/" class="btn btn-secondary">Naar de winkel</a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="hero-placeholder" aria-hidden="true">
+          <span>Hero foto</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTRO -->
+    <section class="section intro">
+      <div class="section-inner prose">
+        <h2>Over Wievien</h2>
+        <p>
+          Wievien is maker, borduurster en ontwerper. Vanuit haar studio werkt ze aan handgeborduurde stukken,
+          de kledinglijn Fancy Boogers, en geeft ze workshops voor iedereen die zelf wil leren borduren.
+        </p>
+        <a href="/nl/over-wievien/" class="link-arrow">Meer over Wievien →</a>
+      </div>
+    </section>
+
+    <!-- FEATURED WORK -->
+    <section class="section featured">
+      <div class="section-inner">
+        <h2>Uitgelicht werk</h2>
+        <div class="work-grid">
+          <article class="work-card">
+            <div class="work-card-image"><div class="placeholder-img">1</div></div>
+            <h3>Bloemmotief denim</h3>
+            <p class="work-card-cat">Borduurwerk</p>
+          </article>
+          <article class="work-card">
+            <div class="work-card-image"><div class="placeholder-img">2</div></div>
+            <h3>Oversized hoodie</h3>
+            <p class="work-card-cat">Fancy Boogers</p>
+          </article>
+          <article class="work-card">
+            <div class="work-card-image"><div class="placeholder-img">3</div></div>
+            <h3>Portret op katoen</h3>
+            <p class="work-card-cat">Borduurwerk</p>
+          </article>
+          <article class="work-card">
+            <div class="work-card-image"><div class="placeholder-img">4</div></div>
+            <h3>Workshop resultaat</h3>
+            <p class="work-card-cat">Workshop</p>
+          </article>
+          <article class="work-card">
+            <div class="work-card-image"><div class="placeholder-img">5</div></div>
+            <h3>Mixed-media series</h3>
+            <p class="work-card-cat">Borduurwerk</p>
+          </article>
+          <article class="work-card">
+            <div class="work-card-image"><div class="placeholder-img">6</div></div>
+            <h3>Vintage denim jas</h3>
+            <p class="work-card-cat">Fancy Boogers</p>
+          </article>
+        </div>
+        <a href="/nl/werk/" class="link-arrow section-link">Bekijk al het werk →</a>
+      </div>
+    </section>
+
+    <!-- FANCY BOOGERS -->
+    <section class="section fancy-boogers">
+      <div class="section-inner">
+        <div class="fb-content">
+          <h2>Fancy Boogers</h2>
+          <p class="prose">
+            De kledinglijn waar borduurwerk en streetwear samenkomen.
+            Elk stuk is uniek — handgemaakt en gelimiteerd.
+          </p>
+          <a href="/nl/fancy-boogers/" class="btn btn-primary">Bekijk de collectie</a>
+        </div>
+        <div class="fb-image">
+          <div class="placeholder-img wide" aria-hidden="true">Fancy Boogers foto</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORKSHOPS -->
+    <section class="section workshops">
+      <div class="section-inner">
+        <h2>Workshops</h2>
+        <p class="prose">
+          Leer borduren van Wievien zelf. Kleine groepen, persoonlijke begeleiding,
+          alle materialen inbegrepen.
+        </p>
+        <div class="workshop-teaser">
+          <div class="placeholder-img" aria-hidden="true">Volgende workshop</div>
+        </div>
+        <a href="/nl/workshops/" class="link-arrow section-link">Bekijk workshops →</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <p class="footer-brand">Studio Wievien</p>
+          <p class="footer-tagline">Borduurwerk, kleding &amp; workshops</p>
+        </div>
+        <div class="footer-col">
+          <p class="footer-heading">Navigatie</p>
+          <nav aria-label="Footer navigatie">
+            <ul>
+              <li><a href="/nl/werk/">Werk</a></li>
+              <li><a href="/nl/fancy-boogers/">Fancy Boogers</a></li>
+              <li><a href="/nl/borduurwerk/">Borduurwerk</a></li>
+              <li><a href="/nl/workshops/">Workshops</a></li>
+              <li><a href="/nl/winkel/">Winkel</a></li>
+            </ul>
+          </nav>
+        </div>
+        <div class="footer-col">
+          <p class="footer-heading">Contact</p>
+          <ul>
+            <li><a href="/nl/contact/">Neem contact op</a></li>
+            <li><a href="#">Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Studio Wievien</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

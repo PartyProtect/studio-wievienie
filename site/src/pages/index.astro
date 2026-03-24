@@ -1,0 +1,306 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Studio Wievien"
+  description="Studio Wievien — borduurwerk, Fancy Boogers kledinglijn, workshops en meer. Handgemaakt met liefde."
+  lang="nl"
+  currentPath="/"
+>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Studio Wievien</h1>
+      <p class="hero-sub">Borduurwerk, kleding & workshops — alles met de hand gemaakt.</p>
+      <div class="hero-cta">
+        <a href="/nl/werk/" class="btn btn-primary">Bekijk het werk</a>
+        <a href="/nl/winkel/" class="btn btn-secondary">Naar de winkel</a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <!-- Placeholder — will be replaced with actual hero photography -->
+      <div class="hero-placeholder" aria-hidden="true">
+        <span>Hier komt de hero foto</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Intro -->
+  <section class="section intro">
+    <div class="section-inner prose">
+      <h2>Over Wievien</h2>
+      <p>
+        Wievien is maker, borduurster en ontwerper. Vanuit haar studio werkt ze aan handgeborduurde stukken,
+        de kledinglijn Fancy Boogers, en geeft ze workshops voor iedereen die zelf wil leren borduren.
+      </p>
+      <a href="/nl/over-wievien/" class="link-arrow">Meer over Wievien →</a>
+    </div>
+  </section>
+
+  <!-- Featured Work -->
+  <section class="section featured">
+    <div class="section-inner">
+      <h2>Uitgelicht werk</h2>
+      <div class="work-grid">
+        {[1, 2, 3, 4, 5, 6].map((i) => (
+          <article class="work-card">
+            <div class="work-card-image">
+              <div class="placeholder-img" aria-hidden="true">{i}</div>
+            </div>
+            <h3>Werk titel {i}</h3>
+            <p class="work-card-cat">Borduurwerk</p>
+          </article>
+        ))}
+      </div>
+      <a href="/nl/werk/" class="link-arrow section-link">Bekijk al het werk →</a>
+    </div>
+  </section>
+
+  <!-- Fancy Boogers teaser -->
+  <section class="section fancy-boogers">
+    <div class="section-inner">
+      <div class="fb-content">
+        <h2>Fancy Boogers</h2>
+        <p class="prose">
+          De kledinglijn waar borduurwerk en streetwear samenkomen.
+          Elk stuk is uniek — handgemaakt en gelimiteerd.
+        </p>
+        <a href="/nl/fancy-boogers/" class="btn btn-primary">Bekijk de collectie</a>
+      </div>
+      <div class="fb-image">
+        <div class="placeholder-img wide" aria-hidden="true">Fancy Boogers foto</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Workshop teaser -->
+  <section class="section workshops">
+    <div class="section-inner">
+      <h2>Workshops</h2>
+      <p class="prose">
+        Leer borduren van Wievien zelf. Kleine groepen, persoonlijke begeleiding,
+        alle materialen inbegrepen.
+      </p>
+      <div class="workshop-teaser">
+        <div class="placeholder-img" aria-hidden="true">Volgende workshop</div>
+      </div>
+      <a href="/nl/workshops/" class="link-arrow section-link">Bekijk workshops →</a>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  /* --- Hero --- */
+  .hero {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-sub {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: var(--text-mid);
+    margin-bottom: 2rem;
+    max-width: 480px;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-block;
+    padding: 0.75rem 1.75rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s var(--ease-snappy);
+  }
+
+  .btn-primary {
+    background-color: var(--accent);
+    color: #fff;
+  }
+
+  .btn-primary:hover {
+    background: color-mix(in oklch, var(--accent) 85%, black);
+    color: #fff;
+  }
+
+  .btn-secondary {
+    background-color: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--text-mid);
+    background-color: var(--bg-card);
+  }
+
+  /* --- Sections --- */
+  .section {
+    padding: 4rem 1.5rem;
+  }
+
+  .section:nth-child(even) {
+    background-color: var(--bg-card);
+  }
+
+  .section-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section h2 {
+    margin-bottom: 1.5rem;
+  }
+
+  .section-link {
+    display: inline-block;
+    margin-top: 2rem;
+  }
+
+  .link-arrow {
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .link-arrow:hover {
+    color: color-mix(in oklch, var(--accent) 80%, black);
+  }
+
+  /* --- Work Grid --- */
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .work-card {
+    cursor: pointer;
+    transition: transform 0.3s var(--ease-snappy);
+  }
+
+  .work-card:hover {
+    transform: translateY(-4px);
+  }
+
+  /* "All-But-Me" spotlight */
+  .work-grid:has(.work-card:hover) .work-card:not(:hover) {
+    opacity: 0.5;
+    filter: saturate(0.4);
+  }
+
+  .work-card {
+    transition: opacity 0.35s, filter 0.35s, transform 0.3s var(--ease-snappy);
+  }
+
+  .work-card h3 {
+    margin-top: 0.75rem;
+    font-size: 1rem;
+  }
+
+  .work-card-cat {
+    font-size: 0.8125rem;
+    color: var(--text-light);
+    margin-top: 0.25rem;
+  }
+
+  /* --- Fancy Boogers --- */
+  .fancy-boogers .section-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .fb-content .btn {
+    margin-top: 1.5rem;
+  }
+
+  /* --- Placeholders (to be replaced with real images) --- */
+  .hero-placeholder,
+  .placeholder-img {
+    background-color: var(--bg-card);
+    border: 2px dashed var(--border);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-light);
+    font-size: 0.875rem;
+    font-style: italic;
+  }
+
+  .hero-placeholder {
+    aspect-ratio: 4/3;
+    width: 100%;
+  }
+
+  .work-card-image .placeholder-img {
+    aspect-ratio: 1;
+  }
+
+  .placeholder-img.wide {
+    aspect-ratio: 16/9;
+    width: 100%;
+  }
+
+  .workshop-teaser .placeholder-img {
+    aspect-ratio: 21/9;
+    width: 100%;
+    margin-top: 1.5rem;
+  }
+
+  /* --- Mobile --- */
+  @media (max-width: 768px) {
+    .hero {
+      grid-template-columns: 1fr;
+      padding: 2rem 1rem 3rem;
+      gap: 2rem;
+    }
+
+    .hero-image {
+      order: -1;
+    }
+
+    .work-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .fancy-boogers .section-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .section {
+      padding: 3rem 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .work-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

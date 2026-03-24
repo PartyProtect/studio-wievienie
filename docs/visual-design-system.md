@@ -349,17 +349,36 @@ Images drift upward slightly slower than scroll, creating subtle depth.
 
 #### Scroll-Snap Page Turns — LIVE
 
-Magazine-style vertical snapping with `proximity` (not mandatory) so it doesn't fight the user.
+Magazine-style vertical snapping. One flick = one section, no skipping.
+
+**Desktop:** `mandatory` — every scroll action lands on a section. Combined with `scroll-snap-stop: always` to prevent overshooting multiple sections on fast scrolls. The browser's own snap animation provides a natural ~200ms cooldown between section transitions.
+
+**Mobile (≤768px):** Falls back to `proximity` because sections can exceed viewport height. With `mandatory` on tall content, users could get trapped in a section they can't scroll past.
+
+**Header offset:** `scroll-padding-top: 85px` ensures snap targets account for the sticky header — sections snap so their content starts below the header, not behind it.
 
 ```css
-html { scroll-snap-type: y proximity; }
+html {
+  scroll-snap-type: y mandatory;
+  scroll-padding-top: 85px;       /* Sticky header height */
+}
+
 .snap-section {
   scroll-snap-align: start;
+  scroll-snap-stop: always;       /* Stop at every section, no skip */
   min-height: 100dvh;
+}
+
+/* Mobile: relax to proximity — sections may exceed viewport */
+@media (max-width: 768px) {
+  html { scroll-snap-type: y proximity; }
+  .snap-section { scroll-snap-stop: normal; }
 }
 ```
 
-**Where:** `global.css`. Each major homepage section is a `.snap-section`.
+**Where:** `global.css` for `html` and `.snap-section` rules, mobile override at end of file. Each major homepage section gets `.snap-section` in `index.astro`.
+
+**Design rationale:** `proximity` felt blokkerig — you had to keep scrolling through a dead zone between sections where nothing snapped. `mandatory` + `always` creates the feeling of clicking through slides in a presentation, which matches the editorial magazine metaphor.
 
 #### Timing Function Personality — LIVE
 

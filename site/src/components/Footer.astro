@@ -1,0 +1,146 @@
+---
+interface Props {
+  lang?: 'nl' | 'en';
+}
+
+const { lang = 'nl' } = Astro.props;
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+
+      <div class="footer-col">
+        <p class="footer-brand">Studio Wievien</p>
+        <p class="footer-tagline">
+          {lang === 'nl'
+            ? 'Borduurwerk, kleding & workshops'
+            : 'Embroidery, clothing & workshops'}
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <p class="footer-heading">
+          {lang === 'nl' ? 'Navigatie' : 'Navigation'}
+        </p>
+        <nav aria-label={lang === 'nl' ? 'Footer navigatie' : 'Footer navigation'}>
+          <ul>
+            {lang === 'nl' ? (
+              <>
+                <li><a href="/nl/werk/">Werk</a></li>
+                <li><a href="/nl/fancy-boogers/">Fancy Boogers</a></li>
+                <li><a href="/nl/borduurwerk/">Borduurwerk</a></li>
+                <li><a href="/nl/workshops/">Workshops</a></li>
+                <li><a href="/nl/winkel/">Winkel</a></li>
+              </>
+            ) : (
+              <>
+                <li><a href="/en/work/">Work</a></li>
+                <li><a href="/en/fancy-boogers/">Fancy Boogers</a></li>
+                <li><a href="/en/embroidery/">Embroidery</a></li>
+                <li><a href="/en/workshops/">Workshops</a></li>
+                <li><a href="/en/shop/">Shop</a></li>
+              </>
+            )}
+          </ul>
+        </nav>
+      </div>
+
+      <div class="footer-col">
+        <p class="footer-heading">Contact</p>
+        <ul>
+          <li><a href={lang === 'nl' ? '/nl/contact/' : '/en/contact/'}>
+            {lang === 'nl' ? 'Neem contact op' : 'Get in touch'}
+          </a></li>
+          <li><a href="https://instagram.com/studiowievien" rel="noopener noreferrer" target="_blank">Instagram</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; {currentYear} Studio Wievien</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: auto;
+    background-color: var(--bg-card);
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 1.5rem;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .footer-brand {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-tagline {
+    font-size: 0.9375rem;
+    color: var(--text-mid);
+  }
+
+  .footer-heading {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-light);
+    margin-bottom: 0.75rem;
+  }
+
+  .footer-col ul {
+    list-style: none;
+  }
+
+  .footer-col li + li {
+    margin-top: 0.4rem;
+  }
+
+  .footer-col a {
+    font-size: 0.9375rem;
+    color: var(--text-mid);
+    text-decoration: none;
+    transition: color 0.2s var(--ease-snappy);
+  }
+
+  .footer-col a:hover {
+    color: var(--accent);
+  }
+
+  .footer-bottom {
+    margin-top: 2.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-bottom p {
+    font-size: 0.8125rem;
+    color: var(--text-light);
+  }
+
+  @media (max-width: 768px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+</style>

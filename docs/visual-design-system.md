@@ -18,39 +18,13 @@ A single reference for every visual and CSS decision on Studio Wievien. Combines
 
 ## Aesthetic Philosophy
 
-### The Core Question
+For the full creative decision-making framework, see `.claude/rules/principles.md`.
 
-Every visual element must answer: **does this let Wievien's work shine — or does it compete with it?**
+**The core question for every visual element:** does this let Wievien's work shine — or does it compete with it?
 
-The site is a space for handmade craft. The design should feel like walking into a well-lit studio — not a corporate website, not a generic template, not a cluttered marketplace.
+**Our position:** Between over-designed (website as art, competing with the work) and under-designed (generic template). We want a distinctive creative space that serves the work, not itself.
 
-### Our Position
-
-Creative portfolio sites typically fall into two traps:
-- **Over-designed** — the website itself tries to be the art, competing with the work it's supposed to showcase
-- **Under-designed** — minimal template with no personality, interchangeable with any other portfolio
-
-We occupy the space between: **a distinctive creative space that serves the work, not itself.**
-
-### Five Principles
-
-1. **The work is the hero.** If removing a design element loses no connection to the work, remove it. The embroidery, the clothing, the process — that's the content. Everything else supports.
-
-2. **Craft is felt in the details.** Consistent spacing, thoughtful type, considered color. The same care that goes into stitching should be felt in the digital experience. No sloppy defaults.
-
-3. **Performance is a feature.** Image-heavy doesn't mean slow. AVIF/WebP, responsive srcset, lazy loading, blur-up placeholders. FCP under 0.8s. Every image earns its bytes.
-
-4. **Show texture, not polish.** This isn't a corporate brand. It's a studio. The palette should feel like materials — thread, fabric, wood, paper — not like a SaaS color scheme.
-
-5. **Consistent visual vocabulary.** Once a pattern is established — card style, image treatment, spacing rhythm — it stays consistent everywhere. Consistency builds trust; inconsistency creates noise.
-
-### What We Avoid
-
-- Stock photography (everything is Wievien's actual work)
-- Corporate minimalism (this is a creative studio, not a tech company)
-- Cluttered marketplace aesthetic (no competing CTAs, no banner ads feeling)
-- Over-animated interfaces (let the images breathe)
-- Dark mode for its own sake (unless it serves the photography)
+**What we avoid:** Stock photography, corporate minimalism, cluttered marketplace aesthetic, over-animated interfaces, dark mode for its own sake.
 
 ---
 

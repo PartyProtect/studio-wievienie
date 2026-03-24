@@ -1,0 +1,58 @@
+---
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import '@/styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  lang?: 'nl' | 'en';
+  currentPath?: string;
+  ogImage?: string;
+}
+
+const {
+  title,
+  description,
+  lang = 'nl',
+  currentPath = '',
+  ogImage,
+} = Astro.props;
+
+const fullTitle = title === 'Studio Wievien' ? title : `${title} — Studio Wievien`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://studiowievien.nl');
+---
+
+<!DOCTYPE html>
+<html lang={lang}>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+
+  <!-- Canonical + hreflang -->
+  <link rel="canonical" href={canonicalURL.href} />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content={lang === 'nl' ? 'nl_NL' : 'en_US'} />
+  {ogImage && <meta property="og:image" content={ogImage} />}
+
+  <!-- Preload critical fonts (when we have them) -->
+  <!-- <link rel="preload" href="/fonts/heading.woff2" as="font" type="font/woff2" crossorigin /> -->
+
+  <slot name="head" />
+</head>
+<body>
+  <Header lang={lang} currentPath={currentPath} />
+
+  <main>
+    <slot />
+  </main>
+
+  <Footer lang={lang} />
+</body>
+</html>

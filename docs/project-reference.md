@@ -1,6 +1,6 @@
 # Project Reference — Studio Wievien
 
-Reference material for project structure, content pipeline, workflows, and TODOs. Read on-demand when needed — not loaded into every session.
+Reference material for project structure, page content specifications, decisions, and TODOs.
 
 *Last verified: 24 maart 2026.*
 
@@ -10,12 +10,11 @@ Reference material for project structure, content pipeline, workflows, and TODOs
 
 ```
 studio-wievien/
-├── CLAUDE.md                          ← Project brief + entry point
+├── CLAUDE.md                          ← Project brief + content collection schemas
 ├── .claude/rules/
 │   └── principles.md                  ← Creative decision-making framework
 │
 ├── docs/
-│   ├── website-ontwerp-plan.md        ← Design decisions + sitemap + open questions
 │   ├── visual-design-system.md        ← Design system (colors, typography, imagery, CSS)
 │   ├── seo-strategy.md                ← SEO strategy for portfolio + e-commerce
 │   ├── google-search-central-reference.md ← Google docs extraction
@@ -77,55 +76,50 @@ studio-wievien/
 
 ---
 
-## Content Collections
+## Decisions Already Made
 
-### Werk (Portfolio)
-
-Each portfolio piece is a `.md` file in `src/content/werk/`. Schema defined in `content.config.ts`.
-
-**Fields:** `titel`, `titelEN`, `slug`, `categorie` (borduurwerk|fancy-boogers|workshop|curatie), `datum`, `afbeeldingen[]` (src, alt, altEN, isPrimary), `beschrijving`, `beschrijvingEN`, `technieken[]`, `materialen[]`, `beschikbaar`, `prijs` (optional).
-
-### Producten (Shop)
-
-Each product is a `.md` file in `src/content/producten/`.
-
-**Fields:** `naam`, `naamEN`, `slug`, `lijn` (fancy-boogers|borduurwerk|accessoires), `prijs`, `afbeeldingen[]`, `maten[]` (if applicable), `materiaal`, `beschrijving`, `beschrijvingEN`, `beschikbaar`, `voorraad`.
-
-### Workshops
-
-Each workshop is a `.md` file in `src/content/workshops/`.
-
-**Fields:** `titel`, `titelEN`, `slug`, `datum`, `locatie`, `plaatsen`, `prijsPerPersoon`, `beschrijving`, `beschrijvingEN`, `afbeelding`, `vol`.
+| Decision | Choice | Notes |
+|----------|--------|-------|
+| **Site type** | Exhibition + shop | Visually show all work, with ability to buy |
+| **Language** | Bilingual NL/EN | Separate URL paths per language |
+| **Visual direction** | Creative, not minimalist | Not standard fashion-minimal. Lots of images. |
+| **Images** | Central to the design | Photography is the core. Technical optimization essential. |
+| **Tech stack** | Astro + Tailwind CSS | Static with React islands where needed |
+| **Curation/exhibitions** | Part of About page | CV material, not a separate portfolio section |
+| **Hosting** | Netlify (preliminary) | Same as MeisterEnergie |
 
 ---
 
-## Build & Development
+## URL Architecture
 
-```bash
-# Development
-cd studio-wievien/site && npm run dev    # localhost:4321
-
-# Production build
-cd studio-wievien/site && npm run build  # outputs to dist/
-
-# Preview production build
-cd studio-wievien/site && npm run preview
+### Nederlands
+```
+/                          ← Homepage (uitgelicht werk + laatste toevoegingen)
+/nl/werk/                  ← Portfolio overzicht (alle disciplines)
+/nl/werk/{slug}/           ← Individueel werk (foto's + verhaal)
+/nl/fancy-boogers/         ← Kledinglijn overzicht
+/nl/fancy-boogers/{slug}/  ← Individueel product
+/nl/borduurwerk/           ← Borduurwerk diensten (wat kan, hoe werkt het, tarieven)
+/nl/workshops/             ← Overzicht aankomende workshops
+/nl/workshops/{slug}/      ← Individuele workshop
+/nl/winkel/                ← Shop (alle producten)
+/nl/over-wievien/          ← Over + CV + tentoonstellingen + achtergrond
+/nl/contact/               ← Contact
 ```
 
----
-
-## Image Pipeline
-
-Source images → optimized outputs. Critical for a photography-heavy site.
-
-1. **Source:** High-resolution photography (minimum 2400px on longest edge)
-2. **Process:** Generate AVIF + WebP + fallback JPEG via build script or sharp-cli
-3. **Sizes:** Responsive variants at 400w, 800w, 1200w, 1600w
-4. **Metadata:** Every image needs `alt` text in both NL and EN
-5. **Loading:** Above-fold images eager-loaded, everything else lazy with blur-up placeholder
-6. **Budget:** Hero ≤150KB, portfolio/product ≤200KB, thumbnails ≤30KB, placeholders ≤1KB
-
-See `docs/tested-workflows.md` for commands.
+### English
+```
+/en/work/                  ← Portfolio overview
+/en/work/{slug}/           ← Individual piece
+/en/fancy-boogers/         ← Clothing line
+/en/fancy-boogers/{slug}/  ← Individual product
+/en/embroidery/            ← Embroidery services
+/en/workshops/             ← Workshops overview
+/en/workshops/{slug}/      ← Individual workshop
+/en/shop/                  ← Shop
+/en/about/                 ← About
+/en/contact/               ← Contact
+```
 
 ---
 
@@ -139,20 +133,78 @@ See `docs/tested-workflows.md` for commands.
 
 ---
 
-## Schema Markup Plan
+## Content Per Page
 
-| Page type | Schema | Purpose |
-|-----------|--------|---------|
-| Homepage | `Organization` + `WebSite` | Brand identity |
-| Portfolio pieces | `CreativeWork` or `VisualArtwork` | Individual works |
-| Products | `Product` + `Offer` | E-commerce rich results |
-| Workshops | `Event` + `Offer` | Event discovery |
-| About | `Person` + `Organization` | Creator identity |
-| All pages | `BreadcrumbList` | Navigation structure |
+### Homepage
+- Hero: groot beeld van recent/sterkste werk
+- Korte intro: wie is Wievien, wat doet ze (2-3 zinnen max)
+- Uitgelicht werk: 3-6 stuks uit alle disciplines
+- Laatste toevoegingen
+- Link naar Fancy Boogers
+- Link naar borduurwerk/opdrachten
+- Aankomende workshop (als die er is)
+
+### Werk / Portfolio
+- Grid/masonry van al het werk, gefilterd op categorie
+- Categorieen: borduurwerk, Fancy Boogers, workshops, overig
+- Elk item: hoofdfoto + titel + categorie
+- Click → individuele pagina met meerdere foto's + verhaal
+
+### Individueel Werk
+- Fotogalerij (meerdere beelden, detail + totaal)
+- Titel + beschrijving (kort)
+- Technieken + materialen
+- Beschikbaarheid / koopoptie als van toepassing
+- Gerelateerd werk
+
+### Fancy Boogers (kledinglijn)
+- Lookbook-achtige presentatie
+- Elk kledingstuk als product met meerdere foto's
+- Maten, materiaal, prijs
+- Koop-optie
+
+### Borduurwerk (diensten)
+- Wat kan er geborduurd worden (types kleding/items)
+- Hoe werkt het proces (van ontwerp tot aflevering)
+- Voorbeelden van eerder werk
+- Tarieven / prijsindicatie (nog te bepalen)
+- CTA: neem contact op voor een opdracht
+
+### Workshops
+- Overzicht met aankomende data
+- Per workshop: wat leer je, voor wie, prijs, locatie, aantal plaatsen
+- Inschrijfmogelijkheid of contact-link
+
+### Winkel / Shop
+- Alle producten (Fancy Boogers + losse borduurwerken te koop)
+- Filter op categorie
+- Product → detail pagina met foto's, beschrijving, prijs, maten, koop-knop
+- **Betaalmethode: nog te bepalen** (Mollie, Stripe, extern, of handmatig)
+
+### Over Wievien
+- Wie is Wievien (persoonlijk verhaal)
+- Achtergrond en opleiding
+- Gecureerde tentoonstelling(en) — als CV-items
+- Freelance ervaring
+- Eventueel press/media mentions
+
+### Contact
+- Contactformulier of directe links (email, Instagram, etc.)
+- Voor opdrachten, workshops, samenwerkingen, pers
 
 ---
 
-## Open Questions (from website-ontwerp-plan.md)
+## Build & Development
+
+```bash
+cd studio-wievien/site && npm run dev      # localhost:4321
+cd studio-wievien/site && npm run build    # outputs to dist/
+cd studio-wievien/site && npm run preview  # preview production build
+```
+
+---
+
+## Open Questions
 
 | Topic | Status |
 |-------|--------|
@@ -173,15 +225,14 @@ See `docs/tested-workflows.md` for commands.
 
 ## TODOs
 
-### Phase 1: Documentation (current)
+### Phase 1: Documentation
 - [x] CLAUDE.md
-- [x] website-ontwerp-plan.md
-- [x] google-search-central-reference.md
 - [x] principles.md
+- [x] visual-design-system.md
+- [x] seo-strategy.md
+- [x] google-search-central-reference.md
 - [x] tested-workflows.md
-- [x] project-reference.md (this file)
-- [ ] seo-strategy.md
-- [ ] visual-design-system.md
+- [x] project-reference.md
 
 ### Phase 2: Design Decisions
 - [ ] Select color palette

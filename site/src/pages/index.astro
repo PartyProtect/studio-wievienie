@@ -9,6 +9,9 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   currentPath="/"
 >
 
+  <!-- Scroll progress bar -->
+  <div class="scroll-progress" aria-hidden="true"></div>
+
   <!-- Hero — editorial, asymmetric, the work leads -->
   <section class="hero">
     <div class="hero-content">
@@ -21,13 +24,13 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
       </div>
     </div>
     <div class="hero-visual">
-      <div class="hero-placeholder" aria-hidden="true">
+      <div class="hero-placeholder parallax-img" aria-hidden="true">
         <span>Hero foto</span>
       </div>
     </div>
   </section>
 
-  <!-- Intro — centered, quiet -->
+  <!-- Intro — taupe band, editorial contrast against hero cream -->
   <section class="section intro">
     <div class="intro-inner reveal">
       <hr class="divider" />
@@ -40,14 +43,14 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     </div>
   </section>
 
-  <!-- Featured Work — editorial grid -->
+  <!-- Featured Work — warm cream, editorial grid with stagger -->
   <section class="section featured">
     <div class="section-inner">
       <div class="featured-header reveal">
         <p class="section-label">Geselecteerd werk</p>
         <h2>Uitgelicht</h2>
       </div>
-      <div class="work-grid">
+      <div class="work-grid reveal-stagger">
         {[1, 2, 3, 4, 5, 6].map((i) => (
           <article class="work-card reveal">
             <div class="work-card-image">
@@ -66,25 +69,25 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     </div>
   </section>
 
-  <!-- Fancy Boogers — editorial two-column -->
+  <!-- Fancy Boogers — DARK editorial contrast section -->
   <section class="section fancy-boogers">
     <div class="section-inner fb-grid reveal">
       <div class="fb-image">
         <div class="placeholder-img wide" aria-hidden="true">Fancy Boogers foto</div>
       </div>
       <div class="fb-content">
-        <p class="section-label">Kledinglijn</p>
+        <p class="section-label fb-label">Kledinglijn</p>
         <h2>Fancy<br/>Boogers</h2>
-        <p class="prose">
+        <p class="fb-description">
           Waar borduurwerk en streetwear samenkomen.
           Elk stuk is uniek — handgemaakt en gelimiteerd.
         </p>
-        <a href="/nl/fancy-boogers/" class="btn btn-primary">Bekijk de collectie</a>
+        <a href="/nl/fancy-boogers/" class="btn btn-light">Bekijk de collectie</a>
       </div>
     </div>
   </section>
 
-  <!-- Workshops — clean card -->
+  <!-- Workshops — warm taupe, clean card -->
   <section class="section workshops">
     <div class="section-inner reveal">
       <div class="ws-header">
@@ -116,7 +119,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 
 <style>
   /* ===========================
-     HERO — asymmetric editorial
+     HERO — cream bg, editorial asymmetry
      =========================== */
   .hero {
     max-width: 1200px;
@@ -157,6 +160,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 
   .hero-visual {
     position: relative;
+    overflow: hidden;
   }
 
   .hero-placeholder {
@@ -178,7 +182,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     letter-spacing: 0.04em;
     text-transform: uppercase;
     text-decoration: none;
-    transition: all 0.3s var(--ease-out);
+    transition: all 0.35s var(--ease-out);
     cursor: pointer;
   }
 
@@ -205,8 +209,21 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     color: var(--text);
   }
 
+  /* Light button for dark sections */
+  .btn-light {
+    background: var(--text-on-dark);
+    color: var(--bg-contrast);
+    border: 1px solid var(--text-on-dark);
+  }
+
+  .btn-light:hover {
+    background: var(--accent-light);
+    border-color: var(--accent-light);
+    color: var(--bg-contrast);
+  }
+
   /* ===========================
-     LINK — subtle editorial arrow
+     LINK — subtle editorial
      =========================== */
   .link-subtle {
     font-size: 0.8125rem;
@@ -215,18 +232,35 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     text-transform: uppercase;
     color: var(--text-mid);
     text-decoration: none;
+    position: relative;
     transition: color 0.3s var(--ease-out);
+  }
+
+  .link-subtle::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--text);
+    transition: width 0.4s var(--ease-out);
   }
 
   .link-subtle:hover {
     color: var(--text);
   }
 
+  .link-subtle:hover::after {
+    width: 100%;
+  }
+
   /* ===========================
-     SECTIONS — generous breathing room
+     SECTIONS — each with its own temperature
      =========================== */
   .section {
     padding: var(--space-xl) 1.5rem;
+    position: relative;
   }
 
   .section-inner {
@@ -245,11 +279,13 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   }
 
   /* ===========================
-     INTRO — centered, quiet
+     INTRO — elegant taupe band
+     Pops against the cream hero above
      =========================== */
   .intro {
-    border-top: 1px solid var(--border);
+    background-color: var(--bg-taupe);
     text-align: center;
+    padding: var(--space-2xl) 1.5rem;
   }
 
   .intro-inner {
@@ -261,6 +297,10 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     gap: 1.25rem;
   }
 
+  .intro .divider {
+    background-color: var(--border-dark);
+  }
+
   .intro-text {
     color: var(--text-mid);
     font-size: 1.0625rem;
@@ -268,12 +308,13 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   }
 
   /* ===========================
-     FEATURED WORK — editorial grid
+     FEATURED WORK — back to warm cream
+     Contrasts with taupe intro above
      =========================== */
   .featured {
-    background-color: var(--bg-card);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
+    background-color: var(--bg-warm);
+    padding-top: var(--space-2xl);
+    padding-bottom: var(--space-2xl);
   }
 
   .featured-header {
@@ -295,6 +336,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     overflow: hidden;
     border-radius: 2px;
     margin-bottom: 0.75rem;
+    position: relative;
   }
 
   .work-card-image .placeholder-img {
@@ -303,12 +345,14 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   }
 
   .work-card:hover .work-card-image .placeholder-img {
-    transform: scale(1.03);
+    transform: scale(1.04);
   }
 
-  /* All-but-me spotlight — subtle */
+  /* :has() — All-but-me spotlight with color-mix desaturation */
   .work-grid:has(.work-card:hover) .work-card:not(:hover) {
-    opacity: 0.4;
+    opacity: 0.35;
+    filter: saturate(0.6);
+    transition: opacity 0.5s var(--ease-out), filter 0.5s var(--ease-out);
   }
 
   .work-card h3 {
@@ -318,18 +362,24 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   }
 
   .work-card-cat {
-    font-size: 0.75rem;
+    font-size: 0.6875rem;
     color: var(--text-light);
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
     margin-top: 0.2rem;
   }
 
   /* ===========================
-     FANCY BOOGERS — editorial two-col
+     FANCY BOOGERS — DARK editorial contrast
+     The dramatic moment. Everything else is light;
+     this section inverts to near-black.
+     Like a dark spread in a fashion magazine.
      =========================== */
   .fancy-boogers {
+    background-color: var(--bg-contrast);
+    color: var(--text-on-dark);
     overflow: hidden;
+    padding: var(--space-2xl) 1.5rem;
   }
 
   .fb-grid {
@@ -339,9 +389,16 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     align-items: center;
   }
 
+  .fb-image {
+    position: relative;
+    overflow: hidden;
+  }
+
   .fb-image .placeholder-img {
     aspect-ratio: 4/5;
     border-radius: 2px;
+    background-color: var(--bg-contrast-mid);
+    color: var(--text-on-dark-muted);
   }
 
   .fb-content {
@@ -350,10 +407,21 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     gap: 0.5rem;
   }
 
+  .fb-label {
+    color: var(--accent-light);
+  }
+
   .fb-content h2 {
     font-size: clamp(2.5rem, 5vw, 4rem);
     line-height: 0.95;
     margin-bottom: 0.75rem;
+    color: var(--text-on-dark);
+  }
+
+  .fb-description {
+    color: var(--text-on-dark-mid);
+    line-height: 1.7;
+    max-width: 400px;
   }
 
   .fb-content .btn {
@@ -362,10 +430,12 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   }
 
   /* ===========================
-     WORKSHOPS — clean card
+     WORKSHOPS — taupe section
+     Warm after the dark FB section
      =========================== */
   .workshops {
-    border-top: 1px solid var(--border);
+    background-color: var(--bg-taupe);
+    padding: var(--space-2xl) 1.5rem;
   }
 
   .ws-header {
@@ -387,13 +457,14 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     gap: 0;
     overflow: hidden;
     border-radius: 2px;
-    border: 1px solid var(--border);
     background: var(--bg);
-    transition: box-shadow 0.4s var(--ease-out);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
   }
 
   .ws-card:hover {
-    box-shadow: var(--shadow-md);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
   }
 
   .ws-card-image .placeholder-img {
@@ -403,7 +474,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   }
 
   .ws-card-info {
-    padding: 2rem;
+    padding: 2.25rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -479,6 +550,14 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 
     .section {
       padding: 3.5rem 1rem;
+    }
+
+    .intro,
+    .fancy-boogers,
+    .featured,
+    .workshops {
+      padding-left: 1rem;
+      padding-right: 1rem;
     }
 
     .ws-card {

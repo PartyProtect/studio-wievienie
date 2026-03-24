@@ -9,25 +9,35 @@
 
 /* --- Custom Properties --- */
 :root {
-  /* Quiet Editorial palette — warm, light, restrained */
+  /* Quiet Editorial palette — warm cream + elegant taupe + dark contrast */
   --bg:           #FAF7F2;          /* Warm cream — paper-like */
   --bg-card:      #F3EEE7;          /* Slightly warmer surface */
   --bg-elevated:  #EDE7DE;          /* Elevated card / hover */
-  --bg-contrast:  #1A1714;          /* Dark sections (rare, editorial contrast) */
+  --bg-taupe:     #E8E0D6;          /* Elegant taupe — section contrast */
+  --bg-warm:      #F6F0E8;          /* Warm interstitial */
+  --bg-contrast:  #1E1B18;          /* Dark sections — editorial drama */
+  --bg-contrast-mid: #2A2622;       /* Elevated surface on dark */
 
   /* Text — dark on light */
   --text:         #1A1714;          /* Near-black, warm */
   --text-mid:     #6B635A;          /* Secondary — warm gray */
   --text-light:   #9B938A;          /* Tertiary — muted */
 
+  /* Text — light on dark (for contrast sections) */
+  --text-on-dark:      #F5F0EA;     /* Primary on dark bg */
+  --text-on-dark-mid:  #B8AFA5;     /* Secondary on dark bg */
+  --text-on-dark-muted: #7D756C;    /* Tertiary on dark bg */
+
   /* Accent — muted, sophisticated, not loud */
   --accent:       #8B6D5C;          /* Warm terracotta — quiet confidence */
   --accent-hover: #6E5648;          /* Deeper on hover */
+  --accent-light: #C4A999;          /* Light accent for dark sections */
   --accent-bg:    #F0E8E0;          /* Subtle tint behind accent areas */
 
   /* Borders & dividers */
   --border:       #E4DDD5;          /* Warm, barely there */
   --border-dark:  #CFC6BB;          /* Stronger divider */
+  --border-on-dark: #3D3833;        /* Border on dark backgrounds */
 
   /* Typography — editorial serif + clean sans */
   --font-heading: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
@@ -52,6 +62,10 @@
   --shadow-md:
     0 2px 4px hsl(30 20% 20% / 0.05),
     0 4px 12px hsl(30 20% 20% / 0.06);
+  --shadow-lg:
+    0 4px 6px hsl(30 20% 20% / 0.04),
+    0 10px 24px hsl(30 20% 20% / 0.08),
+    0 20px 48px hsl(30 20% 20% / 0.06);
 }
 
 /* --- Reset & Base --- */
@@ -151,6 +165,25 @@ body::before {
   color: var(--text-light);
 }
 
+/* --- Scroll progress bar — editorial thin line --- */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  z-index: 200;
+  background: var(--accent);
+  transform-origin: left;
+  animation: growProgress linear;
+  animation-timeline: scroll();
+}
+
+@keyframes growProgress {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
 /* --- View-triggered reveal animation --- */
 @supports (animation-timeline: view()) {
   .reveal {
@@ -158,11 +191,42 @@ body::before {
     animation-timeline: view();
     animation-range: entry 0% entry 30%;
   }
+
+  .reveal-stagger > *:nth-child(1) { animation-delay: 0ms; }
+  .reveal-stagger > *:nth-child(2) { animation-delay: 60ms; }
+  .reveal-stagger > *:nth-child(3) { animation-delay: 120ms; }
+  .reveal-stagger > *:nth-child(4) { animation-delay: 180ms; }
+  .reveal-stagger > *:nth-child(5) { animation-delay: 240ms; }
+  .reveal-stagger > *:nth-child(6) { animation-delay: 300ms; }
+
+  /* Parallax-lite: images drift up slightly slower */
+  .parallax-img {
+    animation: parallaxDrift linear both;
+    animation-timeline: view();
+    animation-range: entry 0% exit 100%;
+  }
 }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes parallaxDrift {
+  from { transform: translateY(30px); }
+  to   { transform: translateY(-30px); }
+}
+
+/* --- Image hover: gentle lift with color-mix shadow --- */
+.img-hover {
+  transition: transform 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out);
+}
+
+.img-hover:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 8px 24px color-mix(in srgb, var(--accent) 15%, transparent),
+    0 2px 8px hsl(30 20% 20% / 0.08);
 }
 
 /* --- Reduced motion (non-negotiable) --- */

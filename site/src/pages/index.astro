@@ -9,6 +9,9 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   currentPath="/"
 >
 
+  <!-- Scroll progress bar -->
+  <div class="scroll-progress" aria-hidden="true"></div>
+
   <!-- Hero -->
   <section class="hero">
     <div class="hero-aurora" aria-hidden="true"></div>
@@ -37,14 +40,14 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     </div>
   </section>
 
-  <!-- Divider -->
-  <div class="section-divider" aria-hidden="true">
-    <div class="divider-line"></div>
+  <!-- Diagonal clip transition hero → intro -->
+  <div class="clip-transition clip-diagonal" aria-hidden="true">
+    <div class="clip-glow-stripe"></div>
   </div>
 
   <!-- Intro -->
   <section class="section intro">
-    <div class="section-inner intro-inner">
+    <div class="section-inner intro-inner reveal">
       <h2>Over <span class="gradient-text">Wievien</span></h2>
       <p class="intro-text">
         Wievien is maker, borduurster en ontwerper. Vanuit haar studio werkt ze aan handgeborduurde stukken,
@@ -54,13 +57,17 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     </div>
   </section>
 
+  <!-- Wave clip transition intro → werk -->
+  <div class="clip-transition clip-wave" aria-hidden="true"></div>
+
   <!-- Featured Work -->
   <section class="section featured">
+    <div class="featured-mesh" aria-hidden="true"></div>
     <div class="section-inner">
-      <h2>Uitgelicht <span class="gradient-text">werk</span></h2>
+      <h2 class="reveal">Uitgelicht <span class="gradient-text">werk</span></h2>
       <div class="work-grid">
         {[1, 2, 3, 4, 5, 6].map((i) => (
-          <article class="work-card">
+          <article class="work-card" style={`--i: ${i}`}>
             <div class="work-card-image">
               <div class="placeholder-img" aria-hidden="true">{i}</div>
             </div>
@@ -73,11 +80,17 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     </div>
   </section>
 
+  <!-- Angled clip transition werk → FB -->
+  <div class="clip-transition clip-angle-reverse" aria-hidden="true">
+    <div class="clip-glow-stripe stripe-teal"></div>
+  </div>
+
   <!-- Fancy Boogers teaser -->
   <section class="section fancy-boogers">
     <div class="section-deco fb-deco" aria-hidden="true"></div>
+    <div class="section-deco fb-deco-2" aria-hidden="true"></div>
     <div class="section-inner fb-grid">
-      <div class="fb-content">
+      <div class="fb-content reveal">
         <p class="section-label">Kledinglijn</p>
         <h2>Fancy<br/><span class="gradient-text">Boogers</span></h2>
         <p class="prose">
@@ -89,16 +102,22 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
           <span class="btn-arrow" aria-hidden="true">→</span>
         </a>
       </div>
-      <div class="fb-image">
-        <div class="placeholder-img wide gradient-border" aria-hidden="true">Fancy Boogers foto</div>
+      <div class="fb-image reveal">
+        <div class="fb-img-frame">
+          <div class="placeholder-img wide" aria-hidden="true">Fancy Boogers foto</div>
+          <div class="fb-img-border" aria-hidden="true"></div>
+        </div>
       </div>
     </div>
   </section>
 
+  <!-- Curved clip transition FB → workshops -->
+  <div class="clip-transition clip-curve" aria-hidden="true"></div>
+
   <!-- Workshop teaser -->
   <section class="section workshops">
     <div class="ws-glow" aria-hidden="true"></div>
-    <div class="section-inner">
+    <div class="section-inner reveal">
       <div class="ws-header">
         <div>
           <p class="section-label">Leer het zelf</p>
@@ -127,12 +146,184 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 </BaseLayout>
 
 <style>
-  /* --- Hero --- */
+  /* ===========================
+     SCROLL PROGRESS BAR
+     scroll-driven animation
+     =========================== */
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    z-index: 200;
+    background: linear-gradient(90deg, var(--accent), var(--gold), var(--teal));
+    transform-origin: left;
+    animation: growProgress linear;
+    animation-timeline: scroll();
+  }
+
+  @keyframes growProgress {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+
+  /* ===========================
+     SCROLL-TRIGGERED REVEALS
+     view() timeline animations
+     =========================== */
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: fadeSlideUp linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+
+    /* Staggered work cards — each card reveals based on its own view position */
+    .work-card {
+      animation: cardReveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 30%;
+    }
+  }
+
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(40px) scale(0.96); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes cardReveal {
+    from {
+      opacity: 0;
+      transform: translateY(50px) scale(0.92) rotate(1deg);
+      filter: blur(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1) rotate(0deg);
+      filter: blur(0);
+    }
+  }
+
+  /* ===========================
+     CLIP-PATH SECTION TRANSITIONS
+     Diagonal cuts, waves, curves
+     =========================== */
+  .clip-transition {
+    position: relative;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  /* --- Diagonal cut (hero → intro) --- */
+  .clip-diagonal {
+    height: 120px;
+    margin-top: -120px;
+    background: var(--bg-card);
+    clip-path: polygon(0 100%, 100% 15%, 100% 100%);
+    position: relative;
+  }
+
+  .clip-glow-stripe {
+    position: absolute;
+    top: 12%;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent 2%, var(--accent) 20%, var(--gold) 50%, var(--teal) 80%, transparent 98%);
+    transform: rotate(-4.5deg);
+    transform-origin: right top;
+    opacity: 0.9;
+    filter: blur(0.5px);
+    box-shadow: 0 0 12px var(--accent-glow), 0 0 30px oklch(72% 0.25 330 / 0.2);
+  }
+
+  /* --- Wave (intro → werk) — big sculptural wave --- */
+  .clip-wave {
+    height: 140px;
+    margin-top: -50px;
+    margin-bottom: -90px;
+    background:
+      linear-gradient(180deg, var(--bg-card) 0%, oklch(14% 0.025 280) 100%);
+    clip-path: polygon(
+      0% 45%,
+      3% 42%, 6% 38%, 10% 32%, 14% 28%, 18% 26%,
+      22% 28%, 26% 35%, 30% 43%, 34% 50%, 38% 52%,
+      42% 50%, 46% 44%, 50% 36%, 54% 30%, 58% 28%,
+      62% 30%, 66% 38%, 70% 48%, 74% 55%, 78% 56%,
+      82% 52%, 86% 44%, 90% 36%, 94% 32%, 98% 34%, 100% 38%,
+      100% 100%, 0% 100%
+    );
+    position: relative;
+  }
+
+  .clip-wave::after {
+    content: '';
+    position: absolute;
+    top: 24%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--teal-glow), var(--accent-glow), var(--gold-glow), var(--teal-glow));
+    clip-path: inherit;
+    opacity: 0.5;
+    filter: blur(4px);
+  }
+
+  /* --- Angled reverse (werk → FB) — sharp carnival slash --- */
+  .clip-angle-reverse {
+    height: 130px;
+    margin-top: -130px;
+    background: var(--bg-glow);
+    clip-path: polygon(0 30%, 100% 100%, 0 100%);
+    position: relative;
+  }
+
+  .stripe-teal {
+    position: absolute;
+    top: 25%;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent 2%, var(--teal) 15%, var(--gold) 50%, var(--energy) 85%, transparent 98%);
+    transform: rotate(3.8deg);
+    transform-origin: left top;
+    opacity: 0.85;
+    filter: blur(0.5px);
+    box-shadow: 0 0 15px var(--teal-glow), 0 0 30px oklch(75% 0.15 175 / 0.2);
+  }
+
+  /* --- Curve (FB → workshops) — elliptical scoop --- */
+  .clip-curve {
+    height: 100px;
+    margin-top: -50px;
+    margin-bottom: -50px;
+    background: var(--bg-card);
+    clip-path: ellipse(55% 100% at 50% 100%);
+    position: relative;
+  }
+
+  .clip-curve::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold-glow), var(--accent-glow), var(--gold-glow), transparent);
+    filter: blur(3px);
+    opacity: 0.6;
+  }
+
+  /* ===========================
+     HERO
+     =========================== */
   .hero {
     position: relative;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 5rem 1.5rem 6rem;
+    padding: 5rem 1.5rem 8rem;
     display: grid;
     grid-template-columns: 1.1fr 0.9fr;
     gap: 4rem;
@@ -211,8 +402,8 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 
   .hero-img-glow {
     position: absolute;
-    inset: -20px;
-    border-radius: 24px;
+    inset: -25px;
+    border-radius: 28px;
     background: conic-gradient(from 0deg, var(--accent), var(--gold), var(--teal), var(--energy), var(--accent));
     opacity: 0.35;
     filter: blur(30px);
@@ -232,7 +423,9 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     border-radius: 16px;
   }
 
-  /* --- Buttons --- */
+  /* ===========================
+     BUTTONS
+     =========================== */
   .btn {
     display: inline-flex;
     align-items: center;
@@ -278,7 +471,14 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     background: oklch(78% 0.18 55 / 0.05);
   }
 
-  /* --- Intro --- */
+  /* ===========================
+     INTRO
+     =========================== */
+  .intro {
+    background-color: var(--bg-card);
+    padding-top: 5rem;
+  }
+
   .intro-inner {
     text-align: center;
     max-width: 600px;
@@ -292,33 +492,20 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     margin-bottom: 1.5rem;
   }
 
-  /* --- Dividers --- */
-  .section-divider {
-    display: flex;
-    justify-content: center;
-    padding: 0;
-  }
-
-  .divider-line {
-    width: 120px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), var(--gold), var(--teal), transparent);
-    border-radius: 2px;
-  }
-
-  /* --- Sections --- */
+  /* ===========================
+     SECTIONS — base
+     =========================== */
   .section {
     padding: 5rem 1.5rem;
     position: relative;
-  }
-
-  .section:nth-child(even) {
-    background-color: var(--bg-card);
+    overflow: hidden;
   }
 
   .section-inner {
     max-width: 1200px;
     margin: 0 auto;
+    position: relative;
+    z-index: 1;
   }
 
   .section h2 {
@@ -355,7 +542,26 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     gap: 0.6rem;
   }
 
-  /* --- Work Grid --- */
+  /* ===========================
+     FEATURED WORK
+     Mesh bg + staggered card grid
+     =========================== */
+  .featured {
+    background-color: var(--bg);
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+
+  .featured-mesh {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 10% 80%, oklch(50% 0.15 330 / 0.1) 0%, transparent 40%),
+      radial-gradient(ellipse at 90% 20%, oklch(55% 0.12 55 / 0.08) 0%, transparent 40%),
+      radial-gradient(ellipse at 50% 50%, oklch(50% 0.1 175 / 0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
   .work-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -377,7 +583,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     inset: 0;
     border-radius: 12px;
     border: 1px solid transparent;
-    transition: border-color 0.35s var(--ease-snappy);
+    transition: border-color 0.35s var(--ease-snappy), box-shadow 0.35s var(--ease-snappy);
     pointer-events: none;
   }
 
@@ -387,13 +593,13 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 
   .work-card:hover::after {
     border-color: var(--accent);
-    box-shadow: 0 0 20px var(--accent-glow), inset 0 0 20px oklch(72% 0.25 330 / 0.05);
+    box-shadow: 0 0 25px var(--accent-glow), inset 0 0 25px oklch(72% 0.25 330 / 0.06);
   }
 
   /* "All-But-Me" spotlight */
   .work-grid:has(.work-card:hover) .work-card:not(:hover) {
-    opacity: 0.35;
-    filter: saturate(0.2) brightness(0.6);
+    opacity: 0.3;
+    filter: saturate(0.15) brightness(0.55);
   }
 
   .work-card h3 {
@@ -409,24 +615,42 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     padding: 0 0.25rem;
   }
 
-  /* --- Decorative section elements --- */
+  /* ===========================
+     FANCY BOOGERS
+     Diagonal energy, double glow
+     =========================== */
+  .fancy-boogers {
+    background-color: var(--bg-glow);
+    padding: 7rem 1.5rem;
+  }
+
   .section-deco {
     position: absolute;
     pointer-events: none;
   }
 
   .fb-deco {
-    top: -80px;
-    right: -60px;
-    width: 350px;
-    height: 350px;
+    top: -100px;
+    right: -80px;
+    width: 400px;
+    height: 400px;
     border-radius: 50%;
-    background: radial-gradient(circle, var(--teal-glow) 0%, transparent 70%);
-    opacity: 0.5;
+    background: radial-gradient(circle, var(--teal-glow) 0%, transparent 65%);
+    opacity: 0.6;
+    filter: blur(50px);
+  }
+
+  .fb-deco-2 {
+    bottom: -60px;
+    left: -40px;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--energy-glow) 0%, transparent 65%);
+    opacity: 0.4;
     filter: blur(40px);
   }
 
-  /* --- Fancy Boogers --- */
   .fb-grid {
     display: grid;
     grid-template-columns: 1fr 1.2fr;
@@ -435,8 +659,8 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   }
 
   .fb-content h2 {
-    font-size: clamp(2rem, 4.5vw, 3.5rem);
-    line-height: 1.05;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 1;
     margin-bottom: 1.25rem;
   }
 
@@ -444,54 +668,43 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     margin-top: 1.5rem;
   }
 
-  /* --- Placeholders (will be replaced with real photos) --- */
-  .hero-placeholder,
-  .placeholder-img {
+  /* Fancy Boogers image — rotating gradient border */
+  .fb-img-frame {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .fb-img-border {
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    border: 2px solid transparent;
     background:
-      radial-gradient(ellipse at 30% 30%, oklch(25% 0.06 330 / 0.5) 0%, transparent 60%),
-      radial-gradient(ellipse at 70% 70%, oklch(25% 0.05 55 / 0.4) 0%, transparent 60%),
-      var(--bg-elevated);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-light);
-    font-size: 0.875rem;
-    font-style: italic;
-    border-radius: 12px;
+      linear-gradient(var(--bg-glow), var(--bg-glow)) padding-box,
+      linear-gradient(135deg, var(--accent), var(--gold), var(--teal)) border-box;
+    pointer-events: none;
   }
 
-  .hero-placeholder {
-    aspect-ratio: 4/3;
-    width: 100%;
+  /* ===========================
+     WORKSHOPS
+     Glass card, gold glow
+     =========================== */
+  .workshops {
+    background-color: var(--bg-card);
+    padding: 6rem 1.5rem;
   }
 
-  .work-card-image .placeholder-img {
-    aspect-ratio: 1;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    transition: border-color 0.35s var(--ease-snappy);
-  }
-
-  .work-card:hover .work-card-image .placeholder-img {
-    border-color: oklch(72% 0.25 330 / 0.4);
-  }
-
-  .placeholder-img.wide {
-    aspect-ratio: 16/9;
-    width: 100%;
-  }
-
-  /* --- Workshop section --- */
   .ws-glow {
     position: absolute;
-    bottom: -60px;
+    bottom: -80px;
     left: 50%;
     transform: translateX(-50%);
-    width: 500px;
-    height: 250px;
-    background: radial-gradient(ellipse, var(--gold-glow) 0%, transparent 70%);
+    width: 600px;
+    height: 300px;
+    background: radial-gradient(ellipse, var(--gold-glow) 0%, transparent 65%);
     pointer-events: none;
-    opacity: 0.3;
+    opacity: 0.35;
   }
 
   .ws-header {
@@ -513,6 +726,12 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     gap: 0;
     overflow: hidden;
     padding: 0;
+    transition: transform 0.4s var(--ease-snappy), box-shadow 0.4s var(--ease-snappy);
+  }
+
+  .ws-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px oklch(78% 0.18 55 / 0.15);
   }
 
   .ws-card-image .placeholder-img {
@@ -554,27 +773,53 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     font-weight: 600;
   }
 
-  @media (max-width: 768px) {
-    .ws-card {
-      grid-template-columns: 1fr;
-    }
-
-    .ws-card-image .placeholder-img {
-      border-radius: 16px 16px 0 0;
-      aspect-ratio: 16/9;
-    }
-
-    .ws-header {
-      flex-direction: column;
-      align-items: flex-start;
-    }
+  /* ===========================
+     PLACEHOLDERS
+     (replaced with real photos later)
+     =========================== */
+  .hero-placeholder,
+  .placeholder-img {
+    background:
+      radial-gradient(ellipse at 30% 30%, oklch(25% 0.06 330 / 0.5) 0%, transparent 60%),
+      radial-gradient(ellipse at 70% 70%, oklch(25% 0.05 55 / 0.4) 0%, transparent 60%),
+      var(--bg-elevated);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-light);
+    font-size: 0.875rem;
+    font-style: italic;
+    border-radius: 12px;
   }
 
-  /* --- Mobile --- */
+  .hero-placeholder {
+    aspect-ratio: 4/3;
+    width: 100%;
+  }
+
+  .work-card-image .placeholder-img {
+    aspect-ratio: 1;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    transition: border-color 0.35s var(--ease-snappy);
+  }
+
+  .work-card:hover .work-card-image .placeholder-img {
+    border-color: oklch(72% 0.25 330 / 0.4);
+  }
+
+  .placeholder-img.wide {
+    aspect-ratio: 16/9;
+    width: 100%;
+  }
+
+  /* ===========================
+     MOBILE
+     =========================== */
   @media (max-width: 768px) {
     .hero {
       grid-template-columns: 1fr;
-      padding: 3rem 1rem 4rem;
+      padding: 3rem 1rem 5rem;
       gap: 2.5rem;
     }
 
@@ -597,6 +842,27 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 
     .section {
       padding: 3.5rem 1rem;
+    }
+
+    .clip-transition {
+      height: 50px;
+    }
+
+    .clip-diagonal { margin-top: -50px; }
+    .clip-angle-reverse { margin-top: -50px; }
+
+    .ws-card {
+      grid-template-columns: 1fr;
+    }
+
+    .ws-card-image .placeholder-img {
+      border-radius: 16px 16px 0 0;
+      aspect-ratio: 16/9;
+    }
+
+    .ws-header {
+      flex-direction: column;
+      align-items: flex-start;
     }
   }
 

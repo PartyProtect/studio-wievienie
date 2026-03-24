@@ -67,10 +67,37 @@ const langSwitchLabel = lang === 'nl' ? 'EN' : 'NL';
     position: sticky;
     top: 0;
     z-index: 100;
-    background: oklch(12% 0.02 280 / 0.85);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border);
+    background: oklch(12% 0.02 280 / 0.7);
+    backdrop-filter: blur(20px) saturate(1.3);
+    -webkit-backdrop-filter: blur(20px) saturate(1.3);
+    border-bottom: 1px solid oklch(30% 0.04 280 / 0.3);
+    transition: background 0.4s var(--ease-snappy),
+                border-color 0.4s var(--ease-snappy),
+                box-shadow 0.4s var(--ease-snappy);
+  }
+
+  /* Enhance header when page is scrolled — JS-free detection via animation-timeline */
+  @supports (animation-timeline: scroll()) {
+    .site-header {
+      animation: headerSolid linear both;
+      animation-timeline: scroll();
+      animation-range: 0px 150px;
+    }
+  }
+
+  @keyframes headerSolid {
+    from {
+      background: oklch(12% 0.02 280 / 0.4);
+      border-bottom-color: transparent;
+      box-shadow: none;
+    }
+    to {
+      background: oklch(12% 0.02 280 / 0.92);
+      border-bottom-color: oklch(40% 0.06 330 / 0.2);
+      box-shadow:
+        0 4px 20px oklch(12% 0.02 280 / 0.5),
+        0 1px 0 oklch(72% 0.25 330 / 0.08);
+    }
   }
 
   .header-inner {

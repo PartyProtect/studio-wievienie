@@ -189,19 +189,44 @@ Clean editorial grid showing portfolio pieces.
 
 ## CSS Techniques Catalog
 
-Copy-paste-ready patterns relevant to this project's stack (Astro, Tailwind, CSS custom properties, self-hosted WOFF2 fonts).
+All CSS techniques used or planned for Studio Wievien. Each technique is marked with its implementation status:
+
+- **LIVE** — implemented and active in production code
+- **READY** — CSS exists as a utility class, not yet applied to a component
+- **PLANNED** — documented pattern, not yet implemented
+
+Source files: `site/src/styles/global.css` (global utilities), `site/src/pages/index.astro` (homepage-scoped styles).
+
+---
 
 ### Typography Techniques
 
-#### Fluid Typography with clamp()
+#### Fluid Typography with clamp() — LIVE
+
+Used on all headings and hero subtitle. Scales smoothly from mobile to desktop without breakpoints.
 
 ```css
 h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); }
 h2 { font-size: clamp(1.75rem, 3.5vw, 2.75rem); }
-p  { font-size: clamp(0.95rem, 1.5vw, 1.0625rem); }
+h3 { font-size: clamp(1.25rem, 2.2vw, 1.625rem); }
 ```
 
-#### Text Box Trim (Optical Centering)
+**Where:** `global.css` lines 206-208, hero h1 override in `index.astro`.
+
+#### Font Pairing (Cormorant Garamond + DM Sans) — LIVE
+
+Editorial serif for headings, clean sans for body. The serif's high contrast provides visual weight without needing bold weights.
+
+```css
+--font-heading: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+--font-body:    'DM Sans', 'Inter', system-ui, sans-serif;
+```
+
+**Where:** `global.css` :root, applied to `h1-h6` and `html`.
+
+**Status:** Currently using system fallback fonts. WOFF2 files need to be downloaded and self-hosted.
+
+#### Text Box Trim (Optical Centering) — PLANNED
 
 ```css
 .badge, .price-tag {
@@ -209,38 +234,66 @@ p  { font-size: clamp(0.95rem, 1.5vw, 1.0625rem); }
 }
 ```
 
+For badges, price tags, and other small elements where vertical centering needs to be optically perfect.
+
+---
+
 ### Color Techniques
 
-#### color-mix() for Hover/Pressed States
+#### color-mix() for Tinting — LIVE
+
+Used in multiple places for dynamic color calculations without hard-coded hex values.
 
 ```css
-.btn-hover {
-  background: color-mix(in srgb, var(--accent) 85%, white);
-}
-.btn-pressed {
-  background: color-mix(in srgb, var(--accent) 80%, black);
-}
+/* Hover shadow with accent tint */
+box-shadow: 0 8px 24px color-mix(in srgb, var(--accent) 15%, transparent);
+
+/* Section fade with partial transparency */
+background: color-mix(in srgb, var(--section-fade-to) 30%, transparent);
+
+/* Duotone gradient stops */
+background: color-mix(in srgb, var(--accent) 80%, #1A1714);
 ```
 
-#### Tinted Shadows
+**Where:** `.img-hover:hover`, `.section-fade-bottom::after`, `.duotone-wrap::after` in `global.css`.
 
-Warm, subtle shadows — never cold or harsh:
+#### Tinted Warm Shadows — LIVE
+
+All shadows use warm hue (hsl 30°) — never cold gray or pure black. Three tiers.
 
 ```css
---shadow-sm:
-  0 1px 2px hsl(30 20% 20% / 0.06),
-  0 1px 3px hsl(30 20% 20% / 0.04);
-
---shadow-md:
-  0 2px 4px hsl(30 20% 20% / 0.05),
-  0 4px 12px hsl(30 20% 20% / 0.06);
+--shadow-sm:  0 1px 2px hsl(30 20% 20% / 0.06), 0 1px 3px hsl(30 20% 20% / 0.04);
+--shadow-md:  0 2px 4px hsl(30 20% 20% / 0.05), 0 4px 12px hsl(30 20% 20% / 0.06);
+--shadow-lg:  0 4px 6px hsl(30 20% 20% / 0.04), 0 10px 24px hsl(30 20% 20% / 0.08), 0 20px 48px hsl(30 20% 20% / 0.06);
 ```
+
+**Where:** `global.css` :root custom properties. Applied to `.ws-card`, `.img-hover`.
+
+---
 
 ### Motion Techniques
 
-#### View-Triggered Fade (CSS-Only)
+#### Scroll-Driven Progress Bar — LIVE
 
-The only animation pattern we use. Simple, unhurried.
+Thin accent-colored line at the top of the viewport that grows as you scroll. Pure CSS, no JS.
+
+```css
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px; width: 100%;
+  background: var(--accent);
+  transform-origin: left;
+  animation: growProgress linear;
+  animation-timeline: scroll();
+}
+```
+
+**Where:** `global.css`, applied via `<div class="scroll-progress">` in `index.astro`.
+
+#### View-Triggered Reveals with Stagger — LIVE
+
+Elements fade in and rise as they enter the viewport. CSS-only via `animation-timeline: view()`. Children stagger with incremental delays.
 
 ```css
 @supports (animation-timeline: view()) {
@@ -249,24 +302,77 @@ The only animation pattern we use. Simple, unhurried.
     animation-timeline: view();
     animation-range: entry 0% entry 30%;
   }
-}
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+  .reveal-stagger > *:nth-child(1) { animation-delay: 0ms; }
+  .reveal-stagger > *:nth-child(2) { animation-delay: 60ms; }
+  /* ... up to :nth-child(6) at 300ms */
 }
 ```
 
-#### Timing Functions
+**Where:** `global.css`. Applied to `.work-card.reveal` within `.work-grid.reveal-stagger` in `index.astro`.
+
+#### Per-Section Scroll-Driven Transitions — LIVE
+
+Each section type has a distinct entry animation tied to scroll position:
+
+| Class | Animation | Used on |
+|-------|-----------|---------|
+| `.transition-fade-scale` | Fade in + scale from 0.96 | Intro section |
+| `.transition-rise` | Rise 60px + clip-path reveal | Featured work |
+| `.transition-wipe` | Clip-path wipe from left | Fancy Boogers (dark) |
+| `.transition-float` | Rise 30px + scale + blur clear | Workshops |
+
+```css
+.transition-wipe {
+  animation: enterWipe linear both;
+  animation-timeline: view();
+  animation-range: entry 0% entry 50%;
+}
+```
+
+**Where:** `global.css` keyframes, applied as classes on `<section>` elements in `index.astro`.
+
+#### Parallax-Lite Drift — LIVE
+
+Images drift upward slightly slower than scroll, creating subtle depth.
+
+```css
+.parallax-img {
+  animation: parallaxDrift linear both;
+  animation-timeline: view();
+  animation-range: entry 0% exit 100%;
+}
+/* from translateY(30px) → to translateY(-30px) */
+```
+
+**Where:** `global.css`, applied to hero image placeholder in `index.astro`.
+
+#### Scroll-Snap Page Turns — LIVE
+
+Magazine-style vertical snapping with `proximity` (not mandatory) so it doesn't fight the user.
+
+```css
+html { scroll-snap-type: y proximity; }
+.snap-section {
+  scroll-snap-align: start;
+  min-height: 100dvh;
+}
+```
+
+**Where:** `global.css`. Each major homepage section is a `.snap-section`.
+
+#### Timing Function Personality — LIVE
+
+Two custom easings that feel unhurried and confident:
 
 ```css
 --ease-out:     cubic-bezier(0.22, 1, 0.36, 1);    /* Most interactions */
---ease-in-out:  cubic-bezier(0.4, 0, 0.2, 1);       /* Longer transitions */
+--ease-in-out:  cubic-bezier(0.4, 0, 0.2, 1);       /* Scroll hint pulse */
 ```
 
 We do NOT use bouncy easings, dramatic easings, or spring-like timing.
 
-#### Reduced Motion (Non-Negotiable)
+#### Reduced Motion (Non-Negotiable) — LIVE
 
 ```css
 @media (prefers-reduced-motion: reduce) {
@@ -279,11 +385,15 @@ We do NOT use bouncy easings, dramatic easings, or spring-like timing.
 }
 ```
 
-### Surface Techniques
+**Where:** `global.css`, final rule. Kills all animation and transition for users who prefer reduced motion.
 
-#### Subtle Grain Overlay
+---
 
-Enhances tactile, paper-like feeling. Keep opacity very low (0.018) on light backgrounds.
+### Surface & Texture Techniques
+
+#### Subtle Grain Overlay — LIVE
+
+SVG noise texture fixed over the entire page. Adds tactile, paper-like quality.
 
 ```css
 body::before {
@@ -293,13 +403,164 @@ body::before {
   z-index: 9999;
   pointer-events: none;
   opacity: 0.018;
-  background-image: url("data:image/svg+xml,...");
-  background-repeat: repeat;
+  background-image: url("data:image/svg+xml,...feTurbulence...");
   background-size: 180px;
 }
 ```
 
-#### Thin Editorial Divider
+**Where:** `global.css`. Opacity is deliberately very low — barely perceptible but adds warmth.
+
+#### Mask Fade-Out Between Sections — LIVE
+
+Sections dissolve into the next via a gradient pseudo-element. Each section targets the next section's background color through a CSS custom property.
+
+```css
+.section-fade-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 180px;
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    color-mix(in srgb, var(--section-fade-to, var(--bg)) 30%, transparent) 40%,
+    var(--section-fade-to, var(--bg)) 100%
+  );
+}
+```
+
+**How to use:** Add `.section-fade-bottom` to a section and set `style="--section-fade-to: var(--bg-taupe);"` (or whatever the *next* section's background is).
+
+**Where active:**
+- Hero → Intro (cream → taupe)
+- Intro → Featured (taupe → warm cream)
+- Featured → Fancy Boogers (warm cream → dark)
+
+**Design note:** The cream→dark fade is the strongest visual moment — it feels like the page dissolving into shadow.
+
+#### Duotone Blend-Mode Hover — LIVE
+
+Work card images get a warm terracotta tint on hover via a `::after` pseudo-element with `mix-blend-mode: multiply`.
+
+```css
+.duotone-wrap {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.duotone-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--accent) 80%, #1A1714),
+    color-mix(in srgb, var(--accent-light) 70%, #FAF7F2)
+  );
+  mix-blend-mode: multiply;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-out);
+  z-index: 1;
+}
+.duotone-wrap:hover::after { opacity: 0.35; }
+```
+
+**Where:** `global.css` utility. Applied to `.work-card-image` in `index.astro`.
+
+**Note:** Effect is subtle on placeholder backgrounds. With real photography, the multiply blend creates a dramatic warm duotone look.
+
+#### Gradient Border (padding-box / border-box) — LIVE
+
+Creates a gradient border without extra wrapper elements. Uses the background-clip trick.
+
+```css
+.gradient-border {
+  border: 2px solid transparent;
+  border-radius: 3px;
+  background:
+    linear-gradient(var(--bg), var(--bg)) padding-box,
+    linear-gradient(135deg, var(--accent), var(--border-dark), var(--accent-light)) border-box;
+}
+```
+
+**Where:** `global.css` utility. Applied to `.ws-card` (workshop card) in `index.astro`.
+
+**Design note:** The gradient runs from accent (terracotta) through taupe to light accent — matches the warm earth-tone palette. More refined than a solid border.
+
+#### Decorative Accent Line — LIVE
+
+Thin terracotta gradient line used as a section transition marker.
+
+```css
+.accent-line {
+  height: 2px;
+  border: none;
+  background: linear-gradient(90deg,
+    transparent 5%, var(--accent) 30%,
+    var(--accent-light) 50%, var(--accent) 70%,
+    transparent 95%
+  );
+  opacity: 0.6;
+}
+```
+
+**Where:** `global.css` utility. Positioned at top of workshops section in `index.astro` as `<hr class="accent-line ws-accent">`.
+
+---
+
+### Interaction Techniques
+
+#### :has() All-But-Me Spotlight — LIVE
+
+When hovering one work card, all siblings fade and desaturate. Creates a spotlight effect using `:has()`.
+
+```css
+.work-grid:has(.work-card:hover) .work-card:not(:hover) {
+  opacity: 0.35;
+  filter: saturate(0.6);
+  transition: opacity 0.5s var(--ease-out), filter 0.5s var(--ease-out);
+}
+```
+
+**Where:** `index.astro` scoped styles. Applied to the featured work grid.
+
+#### Image Hover Lift with Tinted Shadow — LIVE
+
+```css
+.img-hover:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 8px 24px color-mix(in srgb, var(--accent) 15%, transparent),
+    0 2px 8px hsl(30 20% 20% / 0.08);
+}
+```
+
+**Where:** `global.css` utility class.
+
+#### Underline Reveal on Link Hover — LIVE
+
+Editorial-style links where an underline grows from left to right on hover.
+
+```css
+.link-subtle::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0;
+  width: 0; height: 1px;
+  background: var(--text);
+  transition: width 0.4s var(--ease-out);
+}
+.link-subtle:hover::after { width: 100%; }
+```
+
+**Where:** `index.astro` scoped styles. Used on "Meer over Wievien", "Bekijk al het werk", "Alle workshops" links.
+
+---
+
+### Layout Techniques
+
+#### Thin Editorial Divider — LIVE
 
 ```css
 .divider {
@@ -310,45 +571,56 @@ body::before {
 }
 ```
 
-Use between sections for rhythm. Not every section needs one — alternate between dividers and simple border-top on sections.
+**Where:** `global.css`. Used in intro section as a subtle rhythm marker.
 
-### Layout Techniques
+#### Container Queries — PLANNED
 
-#### Container Queries
-
-Components that reshape based on their container. Useful for portfolio cards in different contexts.
+Components that reshape based on their container width. Useful for portfolio cards used in different contexts (sidebar vs. main grid).
 
 ```css
-.card-wrapper {
-  container-type: inline-size;
-  container-name: card;
-}
-
+.card-wrapper { container-type: inline-size; }
 @container card (min-width: 400px) {
-  .card {
-    flex-direction: row;
-    align-items: center;
-    gap: 1.5rem;
-  }
+  .card { flex-direction: row; }
 }
 ```
 
-#### :has() Parent Styling
+#### :has() Parent Styling — READY
 
-Style a container based on what it contains.
+Pattern documented for cards with/without images.
 
 ```css
-/* Cards with images get grid layout */
-.card:has(img) {
-  display: grid;
-  grid-template-columns: 200px 1fr;
-}
+.card:has(img)       { display: grid; grid-template-columns: 200px 1fr; }
+.card:not(:has(img)) { text-align: center; }
+```
 
-/* Cards without images center text */
-.card:not(:has(img)) {
-  text-align: center;
+#### Shape-Outside for Text Wrapping — PLANNED
+
+For the "Over" (about) page — text wrapping around Wievien's portrait.
+
+```css
+.about-portrait {
+  float: left;
+  shape-outside: circle(50%);
+  clip-path: circle(50%);
+  margin-right: 2rem;
 }
 ```
+
+---
+
+### Techniques Available for Future Use
+
+These are CSS features that fit the project's aesthetic but haven't been needed yet:
+
+| Technique | Potential use case |
+|-----------|--------------------|
+| `@starting-style` | Entry animations for dialog/modal lightbox |
+| Anchor positioning | Tooltip positioning on product details |
+| `scroll-state()` queries | Header style changes based on scroll position |
+| `text-box-trim` | Optical centering on price badges |
+| `border-image` with gradients | Alternative to padding-box/border-box gradient borders |
+| CSS `@scope` | Component-scoped styles without Astro scoping |
+| Squircle corners (`paint()`) | Softer card corners (Houdini worklet, limited support) |
 
 ---
 

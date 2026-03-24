@@ -11,38 +11,53 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 
   <!-- Hero -->
   <section class="hero">
+    <div class="hero-aurora" aria-hidden="true"></div>
     <div class="hero-content">
-      <h1>Studio Wievien</h1>
-      <p class="hero-sub">Borduurwerk, kleding & workshops — alles met de hand gemaakt.</p>
+      <p class="hero-tagline">Borduurwerk · Kleding · Workshops</p>
+      <h1 class="hero-title">
+        <span class="gradient-text">Studio</span>
+        <span class="hero-title-line2">Wievien</span>
+      </h1>
+      <p class="hero-sub">Alles met de hand gemaakt — van draad tot streetwear.</p>
       <div class="hero-cta">
-        <a href="/nl/werk/" class="btn btn-primary">Bekijk het werk</a>
-        <a href="/nl/winkel/" class="btn btn-secondary">Naar de winkel</a>
+        <a href="/nl/werk/" class="btn btn-primary">
+          Bekijk het werk
+          <span class="btn-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="/nl/winkel/" class="btn btn-ghost">Naar de winkel</a>
       </div>
     </div>
-    <div class="hero-image">
-      <!-- Placeholder — will be replaced with actual hero photography -->
-      <div class="hero-placeholder" aria-hidden="true">
-        <span>Hier komt de hero foto</span>
+    <div class="hero-visual">
+      <div class="hero-img-frame">
+        <div class="hero-img-glow" aria-hidden="true"></div>
+        <div class="hero-placeholder" aria-hidden="true">
+          <span>Hero foto</span>
+        </div>
       </div>
     </div>
   </section>
 
+  <!-- Divider -->
+  <div class="section-divider" aria-hidden="true">
+    <div class="divider-line"></div>
+  </div>
+
   <!-- Intro -->
   <section class="section intro">
-    <div class="section-inner prose">
-      <h2>Over Wievien</h2>
-      <p>
+    <div class="section-inner intro-inner">
+      <h2>Over <span class="gradient-text">Wievien</span></h2>
+      <p class="intro-text">
         Wievien is maker, borduurster en ontwerper. Vanuit haar studio werkt ze aan handgeborduurde stukken,
         de kledinglijn Fancy Boogers, en geeft ze workshops voor iedereen die zelf wil leren borduren.
       </p>
-      <a href="/nl/over-wievien/" class="link-arrow">Meer over Wievien →</a>
+      <a href="/nl/over-wievien/" class="link-arrow">Meer over Wievien <span aria-hidden="true">→</span></a>
     </div>
   </section>
 
   <!-- Featured Work -->
   <section class="section featured">
     <div class="section-inner">
-      <h2>Uitgelicht werk</h2>
+      <h2>Uitgelicht <span class="gradient-text">werk</span></h2>
       <div class="work-grid">
         {[1, 2, 3, 4, 5, 6].map((i) => (
           <article class="work-card">
@@ -54,39 +69,58 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
           </article>
         ))}
       </div>
-      <a href="/nl/werk/" class="link-arrow section-link">Bekijk al het werk →</a>
+      <a href="/nl/werk/" class="link-arrow section-link">Bekijk al het werk <span aria-hidden="true">→</span></a>
     </div>
   </section>
 
   <!-- Fancy Boogers teaser -->
   <section class="section fancy-boogers">
-    <div class="section-inner">
+    <div class="section-deco fb-deco" aria-hidden="true"></div>
+    <div class="section-inner fb-grid">
       <div class="fb-content">
-        <h2>Fancy Boogers</h2>
+        <p class="section-label">Kledinglijn</p>
+        <h2>Fancy<br/><span class="gradient-text">Boogers</span></h2>
         <p class="prose">
-          De kledinglijn waar borduurwerk en streetwear samenkomen.
+          Waar borduurwerk en streetwear samenkomen.
           Elk stuk is uniek — handgemaakt en gelimiteerd.
         </p>
-        <a href="/nl/fancy-boogers/" class="btn btn-primary">Bekijk de collectie</a>
+        <a href="/nl/fancy-boogers/" class="btn btn-primary">
+          Bekijk de collectie
+          <span class="btn-arrow" aria-hidden="true">→</span>
+        </a>
       </div>
       <div class="fb-image">
-        <div class="placeholder-img wide" aria-hidden="true">Fancy Boogers foto</div>
+        <div class="placeholder-img wide gradient-border" aria-hidden="true">Fancy Boogers foto</div>
       </div>
     </div>
   </section>
 
   <!-- Workshop teaser -->
   <section class="section workshops">
+    <div class="ws-glow" aria-hidden="true"></div>
     <div class="section-inner">
-      <h2>Workshops</h2>
-      <p class="prose">
+      <div class="ws-header">
+        <div>
+          <p class="section-label">Leer het zelf</p>
+          <h2>Work<span class="gradient-text">shops</span></h2>
+        </div>
+        <a href="/nl/workshops/" class="btn btn-ghost">Alle workshops <span aria-hidden="true">→</span></a>
+      </div>
+      <p class="prose ws-desc">
         Leer borduren van Wievien zelf. Kleine groepen, persoonlijke begeleiding,
         alle materialen inbegrepen.
       </p>
-      <div class="workshop-teaser">
-        <div class="placeholder-img" aria-hidden="true">Volgende workshop</div>
+      <div class="ws-card glass">
+        <div class="ws-card-image">
+          <div class="placeholder-img" aria-hidden="true">Workshop foto</div>
+        </div>
+        <div class="ws-card-info">
+          <p class="ws-card-date">Zaterdag 15 april 2026</p>
+          <h3>Basisborduurwerk</h3>
+          <p class="ws-card-details">Amsterdam · 3 uur · €45 p.p.</p>
+          <p class="ws-card-spots">Nog 8 plaatsen beschikbaar</p>
+        </div>
       </div>
-      <a href="/nl/workshops/" class="link-arrow section-link">Bekijk workshops →</a>
     </div>
   </section>
 
@@ -95,26 +129,69 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 <style>
   /* --- Hero --- */
   .hero {
+    position: relative;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 3rem 1.5rem 4rem;
+    padding: 5rem 1.5rem 6rem;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 4rem;
     align-items: center;
+    overflow: hidden;
   }
 
-  .hero h1 {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    margin-bottom: 1rem;
-    letter-spacing: -0.02em;
+  .hero-aurora {
+    position: absolute;
+    inset: -80%;
+    background:
+      radial-gradient(ellipse at 15% 20%, oklch(55% 0.28 330 / 0.35) 0%, transparent 45%),
+      radial-gradient(ellipse at 85% 50%, oklch(60% 0.22 55 / 0.3) 0%, transparent 45%),
+      radial-gradient(ellipse at 40% 80%, oklch(55% 0.2 175 / 0.25) 0%, transparent 40%),
+      radial-gradient(ellipse at 70% 20%, oklch(60% 0.22 25 / 0.15) 0%, transparent 35%);
+    pointer-events: none;
+    animation: auroraShift 15s ease-in-out infinite alternate;
+  }
+
+  @keyframes auroraShift {
+    0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+    33% { transform: translate(4%, -3%) scale(1.08) rotate(1deg); }
+    66% { transform: translate(-3%, 2%) scale(1.04) rotate(-0.5deg); }
+    100% { transform: translate(2%, -1%) scale(1.06) rotate(0.5deg); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-tagline {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.25rem;
+  }
+
+  .hero-title {
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title-line2 {
+    display: block;
+    color: var(--text);
   }
 
   .hero-sub {
-    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
     color: var(--text-mid);
-    margin-bottom: 2rem;
-    max-width: 480px;
+    margin-bottom: 2.5rem;
+    max-width: 440px;
+    line-height: 1.6;
   }
 
   .hero-cta {
@@ -123,41 +200,116 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     flex-wrap: wrap;
   }
 
-  /* Buttons */
+  .hero-visual {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-img-frame {
+    position: relative;
+  }
+
+  .hero-img-glow {
+    position: absolute;
+    inset: -20px;
+    border-radius: 24px;
+    background: conic-gradient(from 0deg, var(--accent), var(--gold), var(--teal), var(--energy), var(--accent));
+    opacity: 0.35;
+    filter: blur(30px);
+    animation: heroGlowRotate 8s linear infinite;
+  }
+
+  @keyframes heroGlowRotate {
+    to { filter: blur(30px) hue-rotate(360deg); }
+  }
+
+  .hero-img-frame .hero-placeholder {
+    position: relative;
+    border: 2px solid transparent;
+    background:
+      linear-gradient(var(--bg-elevated), var(--bg-elevated)) padding-box,
+      conic-gradient(from 45deg, var(--accent), var(--gold), var(--teal), var(--accent)) border-box;
+    border-radius: 16px;
+  }
+
+  /* --- Buttons --- */
   .btn {
-    display: inline-block;
-    padding: 0.75rem 1.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.75rem;
     font-size: 0.9375rem;
     font-weight: 600;
-    border-radius: 6px;
+    border-radius: 10px;
     text-decoration: none;
-    transition: all 0.2s var(--ease-snappy);
+    transition: all 0.3s var(--ease-snappy);
+    cursor: pointer;
   }
 
   .btn-primary {
-    background-color: var(--accent);
+    background: linear-gradient(135deg, var(--accent), oklch(65% 0.22 350));
     color: #fff;
+    box-shadow: 0 4px 20px var(--accent-glow);
   }
 
   .btn-primary:hover {
-    background: color-mix(in oklch, var(--accent) 85%, black);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 30px oklch(72% 0.25 330 / 0.5);
     color: #fff;
   }
 
-  .btn-secondary {
-    background-color: transparent;
+  .btn-arrow {
+    transition: transform 0.3s var(--ease-bouncy);
+  }
+
+  .btn-primary:hover .btn-arrow {
+    transform: translateX(4px);
+  }
+
+  .btn-ghost {
+    background: transparent;
     color: var(--text);
     border: 1px solid var(--border);
   }
 
-  .btn-secondary:hover {
-    border-color: var(--text-mid);
-    background-color: var(--bg-card);
+  .btn-ghost:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: oklch(78% 0.18 55 / 0.05);
+  }
+
+  /* --- Intro --- */
+  .intro-inner {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .intro-text {
+    color: var(--text-mid);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  /* --- Dividers --- */
+  .section-divider {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .divider-line {
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), var(--gold), var(--teal), transparent);
+    border-radius: 2px;
   }
 
   /* --- Sections --- */
   .section {
-    padding: 4rem 1.5rem;
+    padding: 5rem 1.5rem;
+    position: relative;
   }
 
   .section:nth-child(even) {
@@ -173,6 +325,15 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     margin-bottom: 1.5rem;
   }
 
+  .section-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--teal);
+    margin-bottom: 0.75rem;
+  }
+
   .section-link {
     display: inline-block;
     margin-top: 2rem;
@@ -183,10 +344,15 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     font-size: 0.9375rem;
     color: var(--accent);
     text-decoration: none;
+    transition: color 0.25s var(--ease-snappy), gap 0.25s var(--ease-bouncy);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
   }
 
   .link-arrow:hover {
-    color: color-mix(in oklch, var(--accent) 80%, black);
+    color: var(--gold);
+    gap: 0.6rem;
   }
 
   /* --- Work Grid --- */
@@ -194,63 +360,104 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
-    margin-top: 1.5rem;
+    margin-top: 2rem;
   }
 
   .work-card {
     cursor: pointer;
-    transition: transform 0.3s var(--ease-snappy);
+    transition: opacity 0.35s, filter 0.35s, transform 0.35s var(--ease-snappy);
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .work-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    transition: border-color 0.35s var(--ease-snappy);
+    pointer-events: none;
   }
 
   .work-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-6px) scale(1.02);
+  }
+
+  .work-card:hover::after {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px var(--accent-glow), inset 0 0 20px oklch(72% 0.25 330 / 0.05);
   }
 
   /* "All-But-Me" spotlight */
   .work-grid:has(.work-card:hover) .work-card:not(:hover) {
-    opacity: 0.5;
-    filter: saturate(0.4);
-  }
-
-  .work-card {
-    transition: opacity 0.35s, filter 0.35s, transform 0.3s var(--ease-snappy);
+    opacity: 0.35;
+    filter: saturate(0.2) brightness(0.6);
   }
 
   .work-card h3 {
     margin-top: 0.75rem;
     font-size: 1rem;
+    padding: 0 0.25rem;
   }
 
   .work-card-cat {
     font-size: 0.8125rem;
     color: var(--text-light);
     margin-top: 0.25rem;
+    padding: 0 0.25rem;
+  }
+
+  /* --- Decorative section elements --- */
+  .section-deco {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .fb-deco {
+    top: -80px;
+    right: -60px;
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--teal-glow) 0%, transparent 70%);
+    opacity: 0.5;
+    filter: blur(40px);
   }
 
   /* --- Fancy Boogers --- */
-  .fancy-boogers .section-inner {
+  .fb-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 4rem;
     align-items: center;
+  }
+
+  .fb-content h2 {
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
+    line-height: 1.05;
+    margin-bottom: 1.25rem;
   }
 
   .fb-content .btn {
     margin-top: 1.5rem;
   }
 
-  /* --- Placeholders (to be replaced with real images) --- */
+  /* --- Placeholders (will be replaced with real photos) --- */
   .hero-placeholder,
   .placeholder-img {
-    background-color: var(--bg-card);
-    border: 2px dashed var(--border);
-    border-radius: 8px;
+    background:
+      radial-gradient(ellipse at 30% 30%, oklch(25% 0.06 330 / 0.5) 0%, transparent 60%),
+      radial-gradient(ellipse at 70% 70%, oklch(25% 0.05 55 / 0.4) 0%, transparent 60%),
+      var(--bg-elevated);
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--text-light);
     font-size: 0.875rem;
     font-style: italic;
+    border-radius: 12px;
   }
 
   .hero-placeholder {
@@ -260,6 +467,13 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 
   .work-card-image .placeholder-img {
     aspect-ratio: 1;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    transition: border-color 0.35s var(--ease-snappy);
+  }
+
+  .work-card:hover .work-card-image .placeholder-img {
+    border-color: oklch(72% 0.25 330 / 0.4);
   }
 
   .placeholder-img.wide {
@@ -267,34 +481,122 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     width: 100%;
   }
 
-  .workshop-teaser .placeholder-img {
-    aspect-ratio: 21/9;
-    width: 100%;
-    margin-top: 1.5rem;
+  /* --- Workshop section --- */
+  .ws-glow {
+    position: absolute;
+    bottom: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    height: 250px;
+    background: radial-gradient(ellipse, var(--gold-glow) 0%, transparent 70%);
+    pointer-events: none;
+    opacity: 0.3;
+  }
+
+  .ws-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    gap: 2rem;
+  }
+
+  .ws-desc {
+    color: var(--text-mid);
+    margin-bottom: 2rem;
+  }
+
+  .ws-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  .ws-card-image .placeholder-img {
+    aspect-ratio: 16/10;
+    border-radius: 16px 0 0 16px;
+    height: 100%;
+  }
+
+  .ws-card-info {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .ws-card-date {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+
+  .ws-card-info h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .ws-card-details {
+    font-size: 0.9375rem;
+    color: var(--text-mid);
+    margin-bottom: 0.75rem;
+  }
+
+  .ws-card-spots {
+    font-size: 0.8125rem;
+    color: var(--teal);
+    font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+    .ws-card {
+      grid-template-columns: 1fr;
+    }
+
+    .ws-card-image .placeholder-img {
+      border-radius: 16px 16px 0 0;
+      aspect-ratio: 16/9;
+    }
+
+    .ws-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
   }
 
   /* --- Mobile --- */
   @media (max-width: 768px) {
     .hero {
       grid-template-columns: 1fr;
-      padding: 2rem 1rem 3rem;
-      gap: 2rem;
+      padding: 3rem 1rem 4rem;
+      gap: 2.5rem;
     }
 
-    .hero-image {
+    .hero-visual {
       order: -1;
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 10vw, 4rem);
     }
 
     .work-grid {
       grid-template-columns: repeat(2, 1fr);
     }
 
-    .fancy-boogers .section-inner {
+    .fb-grid {
       grid-template-columns: 1fr;
+      gap: 2rem;
     }
 
     .section {
-      padding: 3rem 1rem;
+      padding: 3.5rem 1rem;
     }
   }
 

@@ -12,8 +12,8 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   <!-- Scroll progress bar -->
   <div class="scroll-progress" aria-hidden="true"></div>
 
-  <!-- Hero — first snap, no entry transition (already visible) -->
-  <section class="hero snap-section">
+  <!-- Hero — first snap, soft fade into taupe intro below -->
+  <section class="hero snap-section section-fade-bottom" style="--section-fade-to: var(--bg-taupe);">
     <div class="hero-inner">
       <div class="hero-content">
         <p class="section-label">Borduurwerk &middot; Kleding &middot; Workshops</p>
@@ -36,8 +36,8 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     </div>
   </section>
 
-  <!-- Intro — fade + scale entrance -->
-  <section class="section intro snap-section transition-fade-scale">
+  <!-- Intro — fade + scale entrance, fades into warm featured below -->
+  <section class="section intro snap-section transition-fade-scale section-fade-bottom" style="--section-fade-to: var(--bg-warm);">
     <div class="intro-inner">
       <hr class="divider" />
       <h2>Over Wievien</h2>
@@ -49,8 +49,8 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     </div>
   </section>
 
-  <!-- Featured Work — rises up with clip reveal -->
-  <section class="section featured snap-section transition-rise">
+  <!-- Featured Work — rises up with clip reveal, fades into dark FB -->
+  <section class="section featured snap-section transition-rise section-fade-bottom" style="--section-fade-to: var(--bg-contrast);">
     <div class="section-inner">
       <div class="featured-header">
         <p class="section-label">Geselecteerd werk</p>
@@ -59,7 +59,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
       <div class="work-grid reveal-stagger">
         {[1, 2, 3, 4, 5, 6].map((i) => (
           <article class="work-card reveal">
-            <div class="work-card-image">
+            <div class="work-card-image duotone-wrap">
               <div class="placeholder-img" aria-hidden="true">{i}</div>
             </div>
             <div class="work-card-info">
@@ -95,6 +95,8 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 
   <!-- Workshops — gentle float entrance -->
   <section class="section workshops snap-section transition-float">
+    <!-- Accent line — decorative top, marks dark→light transition -->
+    <hr class="accent-line ws-accent" aria-hidden="true" />
     <div class="section-inner">
       <div class="ws-header">
         <div>
@@ -107,7 +109,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
         Leer borduren van Wievien zelf. Kleine groepen, persoonlijke begeleiding,
         alle materialen inbegrepen.
       </p>
-      <div class="ws-card">
+      <div class="ws-card gradient-border">
         <div class="ws-card-image">
           <div class="placeholder-img" aria-hidden="true">Workshop foto</div>
         </div>
@@ -468,6 +470,15 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   .workshops {
     background-color: var(--bg-taupe);
     padding: var(--space-2xl) 1.5rem;
+    position: relative;
+  }
+
+  .ws-accent {
+    position: absolute;
+    top: 0;
+    left: 5%;
+    right: 5%;
+    z-index: 1;
   }
 
   .ws-header {
@@ -488,8 +499,6 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     grid-template-columns: 1fr 1fr;
     gap: 0;
     overflow: hidden;
-    border-radius: 2px;
-    background: var(--bg);
     box-shadow: var(--shadow-sm);
     transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
   }

@@ -327,6 +327,80 @@ body::before {
     0 2px 8px hsl(30 20% 20% / 0.08);
 }
 
+/* --- Mask fade-out: soft bleed between sections --- */
+.section-fade-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 180px;
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    color-mix(in srgb, var(--section-fade-to, var(--bg)) 30%, transparent) 40%,
+    var(--section-fade-to, var(--bg)) 100%
+  );
+}
+
+/* --- Duotone overlay — warm terracotta tint on hover --- */
+.duotone-wrap {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.duotone-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent) 80%, #1A1714),
+    color-mix(in srgb, var(--accent-light) 70%, #FAF7F2)
+  );
+  mix-blend-mode: multiply;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-out);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.duotone-wrap:hover::after {
+  opacity: 0.35;
+}
+
+/* --- Gradient border (padding-box / border-box trick) --- */
+.gradient-border {
+  border: 2px solid transparent;
+  border-radius: 3px;
+  background:
+    linear-gradient(var(--bg), var(--bg)) padding-box,
+    linear-gradient(
+      135deg,
+      var(--accent),
+      var(--border-dark),
+      var(--accent-light)
+    ) border-box;
+}
+
+/* --- Decorative accent line — section transition marker --- */
+.accent-line {
+  height: 2px;
+  border: none;
+  background: linear-gradient(
+    90deg,
+    transparent 5%,
+    var(--accent) 30%,
+    var(--accent-light) 50%,
+    var(--accent) 70%,
+    transparent 95%
+  );
+  opacity: 0.6;
+}
+
 /* --- Reduced motion (non-negotiable) --- */
 @media (prefers-reduced-motion: reduce) {
   *,

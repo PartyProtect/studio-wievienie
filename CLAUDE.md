@@ -10,13 +10,17 @@ Studio Wievien is the creative practice of Wievien — a multi-discipline maker 
 
 ---
 
-## Creative Philosophy
+## Creative & Visual Direction
+
+**This is not a standard website.** Studio Wievien is a creative studio — the site must feel like walking into that studio. Creative, tactile, handmade. Not corporate, not template-minimal, not generic fashion-brand clean. The photography and craft are the centerpiece; the design amplifies that energy without competing with the work.
 
 **Voice:** Creative, direct, warm. "je/jij" in Dutch, casual in English. The work speaks first — words support, never overshadow.
 
 **Framework:** Show (the work) → Tell (the story behind it) → Invite (to commission, buy, or attend).
 
-**Decision-making:** See `.claude/rules/principles.md` for the full creative framework.
+**When building any visual component or layout:** Read `docs/visual-design-system.md` first. It contains the aesthetic philosophy, design patterns (gallery, portfolio grid, cards), CSS techniques catalog (grain overlays, staggered animations, color-mix hover states, container queries), typography scale, spacing, and image specs. Don't guess — the design system is the source of truth.
+
+**When making hard creative decisions:** See `.claude/rules/principles.md` for the framework that navigates tensions (visual impact vs. performance, selling vs. showing, creative expression vs. usability).
 
 ---
 

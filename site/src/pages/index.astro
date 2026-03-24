@@ -12,33 +12,27 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   <!-- Scroll progress bar -->
   <div class="scroll-progress" aria-hidden="true"></div>
 
-  <!-- Hero — first snap, soft fade into taupe intro below -->
-  <section class="hero snap-section section-fade-bottom" style="--section-fade-to: var(--bg-taupe);">
-    <div class="hero-inner">
-      <div class="hero-content">
-        <p class="section-label">Borduurwerk &middot; Kleding &middot; Workshops</p>
-        <h1>Studio<br/>Wievien</h1>
-        <p class="hero-sub">Alles met de hand gemaakt &mdash;<br/>van draad tot streetwear.</p>
-        <div class="hero-cta">
-          <a href="/nl/werk/" class="btn btn-primary">Bekijk het werk</a>
-          <a href="/nl/winkel/" class="btn btn-ghost">Winkel</a>
-        </div>
-      </div>
-      <div class="hero-visual">
-        <div class="hero-placeholder parallax-img" aria-hidden="true">
-          <span>Hero foto</span>
-        </div>
+  <!-- Hero — editorial, asymmetric, the work leads -->
+  <section class="hero">
+    <div class="hero-content">
+      <p class="section-label">Borduurwerk &middot; Kleding &middot; Workshops</p>
+      <h1>Studio<br/>Wievien</h1>
+      <p class="hero-sub">Alles met de hand gemaakt &mdash;<br/>van draad tot streetwear.</p>
+      <div class="hero-cta">
+        <a href="/nl/werk/" class="btn btn-primary">Bekijk het werk</a>
+        <a href="/nl/winkel/" class="btn btn-ghost">Winkel</a>
       </div>
     </div>
-    <!-- Scroll hint -->
-    <div class="scroll-hint" aria-hidden="true">
-      <div class="scroll-hint-line"></div>
+    <div class="hero-visual">
+      <div class="hero-placeholder parallax-img" aria-hidden="true">
+        <span>Hero foto</span>
+      </div>
     </div>
   </section>
 
-  <!-- Intro — fade + scale entrance, fades into warm featured below -->
-  <section class="section intro snap-section transition-fade-scale section-fade-bottom" style="--section-fade-to: var(--bg-warm);">
-    <div class="intro-inner">
+  <!-- Intro — taupe band, editorial contrast against hero cream -->
+  <section class="section intro">
+    <div class="intro-inner reveal">
       <hr class="divider" />
       <h2>Over Wievien</h2>
       <p class="intro-text">
@@ -49,17 +43,17 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     </div>
   </section>
 
-  <!-- Featured Work — rises up with clip reveal, fades into dark FB -->
-  <section class="section featured snap-section transition-rise section-fade-bottom" style="--section-fade-to: var(--bg-contrast);">
+  <!-- Featured Work — warm cream, editorial grid with stagger -->
+  <section class="section featured">
     <div class="section-inner">
-      <div class="featured-header">
+      <div class="featured-header reveal">
         <p class="section-label">Geselecteerd werk</p>
         <h2>Uitgelicht</h2>
       </div>
       <div class="work-grid reveal-stagger">
         {[1, 2, 3, 4, 5, 6].map((i) => (
           <article class="work-card reveal">
-            <div class="work-card-image duotone-wrap">
+            <div class="work-card-image">
               <div class="placeholder-img" aria-hidden="true">{i}</div>
             </div>
             <div class="work-card-info">
@@ -75,9 +69,9 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     </div>
   </section>
 
-  <!-- Fancy Boogers — dramatic wipe entrance -->
-  <section class="section fancy-boogers snap-section transition-wipe">
-    <div class="section-inner fb-grid">
+  <!-- Fancy Boogers — DARK editorial contrast section -->
+  <section class="section fancy-boogers">
+    <div class="section-inner fb-grid reveal">
       <div class="fb-image">
         <div class="placeholder-img wide" aria-hidden="true">Fancy Boogers foto</div>
       </div>
@@ -93,11 +87,9 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     </div>
   </section>
 
-  <!-- Workshops — gentle float entrance -->
-  <section class="section workshops snap-section transition-float">
-    <!-- Accent line — decorative top, marks dark→light transition -->
-    <hr class="accent-line ws-accent" aria-hidden="true" />
-    <div class="section-inner">
+  <!-- Workshops — warm taupe, clean card -->
+  <section class="section workshops">
+    <div class="section-inner reveal">
       <div class="ws-header">
         <div>
           <p class="section-label">Leer het zelf</p>
@@ -109,7 +101,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
         Leer borduren van Wievien zelf. Kleine groepen, persoonlijke begeleiding,
         alle materialen inbegrepen.
       </p>
-      <div class="ws-card gradient-border">
+      <div class="ws-card">
         <div class="ws-card-image">
           <div class="placeholder-img" aria-hidden="true">Workshop foto</div>
         </div>
@@ -127,15 +119,12 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 
 <style>
   /* ===========================
-     HERO — first snap section, full viewport
+     HERO — cream bg, editorial asymmetry
      =========================== */
   .hero {
-    padding: 0 1.5rem;
-  }
-
-  .hero-inner {
     max-width: 1200px;
     margin: 0 auto;
+    padding: 4rem 1.5rem 6rem;
     display: grid;
     grid-template-columns: 1fr 1.15fr;
     gap: 4rem;
@@ -146,30 +135,6 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
-  }
-
-  /* Scroll hint — animated thin line */
-  .scroll-hint {
-    position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .scroll-hint-line {
-    width: 1px;
-    height: 40px;
-    background: linear-gradient(to bottom, transparent, var(--border-dark));
-    animation: scrollPulse 2s var(--ease-in-out) infinite;
-  }
-
-  @keyframes scrollPulse {
-    0%, 100% { opacity: 0.3; transform: scaleY(0.6); transform-origin: top; }
-    50% { opacity: 1; transform: scaleY(1); transform-origin: top; }
   }
 
   .hero h1 {
@@ -291,7 +256,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   }
 
   /* ===========================
-     SECTIONS — full-viewport snap targets
+     SECTIONS — each with its own temperature
      =========================== */
   .section {
     padding: var(--space-xl) 1.5rem;
@@ -315,7 +280,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 
   /* ===========================
      INTRO — elegant taupe band
-     Fades + scales in as you snap to it
+     Pops against the cream hero above
      =========================== */
   .intro {
     background-color: var(--bg-taupe);
@@ -343,7 +308,8 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   }
 
   /* ===========================
-     FEATURED WORK — rises into view with clip
+     FEATURED WORK — back to warm cream
+     Contrasts with taupe intro above
      =========================== */
   .featured {
     background-color: var(--bg-warm);
@@ -470,15 +436,6 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   .workshops {
     background-color: var(--bg-taupe);
     padding: var(--space-2xl) 1.5rem;
-    position: relative;
-  }
-
-  .ws-accent {
-    position: absolute;
-    top: 0;
-    left: 5%;
-    right: 5%;
-    z-index: 1;
   }
 
   .ws-header {
@@ -499,6 +456,8 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     grid-template-columns: 1fr 1fr;
     gap: 0;
     overflow: hidden;
+    border-radius: 2px;
+    background: var(--bg);
     box-shadow: var(--shadow-sm);
     transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
   }
@@ -567,11 +526,8 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
      =========================== */
   @media (max-width: 768px) {
     .hero {
-      padding: 0 1rem;
-    }
-
-    .hero-inner {
       grid-template-columns: 1fr;
+      padding: 2.5rem 1rem 4rem;
       gap: 2.5rem;
     }
 
@@ -604,11 +560,6 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
       padding-right: 1rem;
     }
 
-    /* On mobile, relax snap — content can be taller than viewport */
-    .snap-section {
-      min-height: auto;
-    }
-
     .ws-card {
       grid-template-columns: 1fr;
     }
@@ -620,10 +571,6 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     .ws-header {
       flex-direction: column;
       align-items: flex-start;
-    }
-
-    .scroll-hint {
-      display: none;
     }
   }
 

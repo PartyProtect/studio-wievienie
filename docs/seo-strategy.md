@@ -24,20 +24,7 @@ Studio Wievien targets a specific niche: handmade embroidery and custom clothing
 
 ### Content Architecture
 
-```
-/                              ← Homepage: featured work + latest additions
-/nl/werk/                      ← Portfolio hub: all work, filtered by category
-/nl/werk/{slug}/               ← Individual piece: photos + story + techniques
-/nl/fancy-boogers/             ← Clothing line overview
-/nl/fancy-boogers/{slug}/      ← Individual product
-/nl/borduurwerk/               ← Embroidery services landing page
-/nl/workshops/                 ← Workshop overview
-/nl/workshops/{slug}/          ← Individual workshop
-/nl/winkel/                    ← Shop: all purchasable items
-/nl/over-wievien/              ← About: maker story + CV + exhibitions
-/nl/contact/                   ← Contact
-/en/...                        ← English equivalents
-```
+See `docs/project-reference.md` for the full URL architecture and page content specifications.
 
 ### Internal Linking (Contextual Bridges)
 

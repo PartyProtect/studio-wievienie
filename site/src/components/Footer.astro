@@ -9,12 +9,11 @@ const currentYear = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
-  <div class="footer-glow" aria-hidden="true"></div>
   <div class="footer-inner">
     <div class="footer-grid">
 
       <div class="footer-col footer-brand-col">
-        <p class="footer-brand shimmer-text">Studio Wievien</p>
+        <p class="footer-brand">Studio Wievien</p>
         <p class="footer-tagline">
           {lang === 'nl'
             ? 'Borduurwerk, kleding & workshops'
@@ -70,29 +69,14 @@ const currentYear = new Date().getFullYear();
 <style>
   .site-footer {
     margin-top: auto;
-    position: relative;
-    overflow: hidden;
-    background-color: var(--bg-glow);
+    background-color: var(--bg-card);
     border-top: 1px solid var(--border);
   }
 
-  .footer-glow {
-    position: absolute;
-    top: -100px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 600px;
-    height: 200px;
-    background: radial-gradient(ellipse, var(--accent-glow) 0%, transparent 70%);
-    pointer-events: none;
-    opacity: 0.4;
-  }
-
   .footer-inner {
-    position: relative;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 3rem 1.5rem 1.5rem;
+    padding: 3.5rem 1.5rem 1.5rem;
   }
 
   .footer-grid {
@@ -104,7 +88,8 @@ const currentYear = new Date().getFullYear();
   .footer-brand {
     font-family: var(--font-heading);
     font-size: 1.5rem;
-    font-weight: 800;
+    font-weight: 500;
+    color: var(--text);
     margin-bottom: 0.5rem;
   }
 
@@ -114,10 +99,10 @@ const currentYear = new Date().getFullYear();
   }
 
   .footer-heading {
-    font-size: 0.75rem;
-    font-weight: 700;
+    font-size: 0.6875rem;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     color: var(--text-light);
     margin-bottom: 0.75rem;
   }
@@ -134,15 +119,15 @@ const currentYear = new Date().getFullYear();
     font-size: 0.9375rem;
     color: var(--text-mid);
     text-decoration: none;
-    transition: color 0.25s var(--ease-snappy);
+    transition: color 0.25s var(--ease-out);
   }
 
   .footer-col a:hover {
-    color: var(--accent);
+    color: var(--text);
   }
 
   .footer-bottom {
-    margin-top: 2.5rem;
+    margin-top: 3rem;
     padding-top: 1rem;
     border-top: 1px solid var(--border);
   }

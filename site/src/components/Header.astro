@@ -34,7 +34,7 @@ const langSwitchLabel = lang === 'nl' ? 'EN' : 'NL';
 <header class="site-header">
   <div class="header-inner">
     <a href={lang === 'nl' ? '/' : '/en/work/'} class="logo">
-      Studio Wievien
+      <span class="logo-text">Studio Wievien</span>
     </a>
 
     <nav class="main-nav" aria-label={lang === 'nl' ? 'Hoofdnavigatie' : 'Main navigation'}>
@@ -67,7 +67,9 @@ const langSwitchLabel = lang === 'nl' ? 'EN' : 'NL';
     position: sticky;
     top: 0;
     z-index: 100;
-    background-color: var(--bg);
+    background: oklch(12% 0.02 280 / 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
   }
 
@@ -82,61 +84,71 @@ const langSwitchLabel = lang === 'nl' ? 'EN' : 'NL';
   }
 
   .logo {
-    font-family: var(--font-heading);
-    font-size: clamp(1.25rem, 2.5vw, 1.5rem);
-    font-weight: 600;
-    color: var(--text);
     text-decoration: none;
     white-space: nowrap;
-    letter-spacing: -0.01em;
   }
 
-  .logo:hover {
-    color: var(--accent);
+  .logo-text {
+    font-family: var(--font-heading);
+    font-size: clamp(1.25rem, 2.5vw, 1.6rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--accent), var(--gold));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    transition: filter 0.3s var(--ease-snappy);
+  }
+
+  .logo:hover .logo-text {
+    filter: brightness(1.2);
   }
 
   .main-nav ul {
     display: flex;
     list-style: none;
-    gap: 0.25rem;
+    gap: 0.15rem;
   }
 
   .main-nav a {
     display: block;
-    padding: 0.4rem 0.75rem;
-    font-size: 0.9375rem;
+    padding: 0.4rem 0.7rem;
+    font-size: 0.875rem;
+    font-weight: 500;
     color: var(--text-mid);
     text-decoration: none;
-    border-radius: 6px;
-    transition: color 0.2s var(--ease-snappy), background-color 0.2s var(--ease-snappy);
+    border-radius: 8px;
+    transition: color 0.25s var(--ease-snappy), background-color 0.25s var(--ease-snappy);
+    letter-spacing: 0.01em;
   }
 
   .main-nav a:hover {
     color: var(--text);
-    background-color: var(--bg-card);
+    background-color: var(--bg-elevated);
   }
 
   .main-nav a.active {
     color: var(--accent);
     font-weight: 600;
+    background-color: oklch(72% 0.25 330 / 0.08);
   }
 
   .lang-switch {
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
     font-weight: 700;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--text-light);
-    padding: 0.3rem 0.6rem;
+    padding: 0.3rem 0.65rem;
     border: 1px solid var(--border);
-    border-radius: 4px;
+    border-radius: 6px;
     text-decoration: none;
-    transition: all 0.2s var(--ease-snappy);
+    transition: all 0.25s var(--ease-snappy);
   }
 
   .lang-switch:hover {
-    color: var(--text);
-    border-color: var(--text-mid);
+    color: var(--gold);
+    border-color: var(--gold);
   }
 
   .menu-toggle {
@@ -168,7 +180,6 @@ const langSwitchLabel = lang === 'nl' ? 'EN' : 'NL';
   .menu-icon::before { top: -7px; }
   .menu-icon::after { top: 7px; }
 
-  /* Mobile */
   @media (max-width: 768px) {
     .main-nav {
       display: none;

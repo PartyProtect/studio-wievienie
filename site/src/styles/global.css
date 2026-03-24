@@ -2,81 +2,56 @@
 
 /* ============================================
    Studio Wievien — Global Styles
-   Aesthetic: Futuristic Carnival
-   Deep darks + explosive neon carnival accents
+   Aesthetic: Quiet Editorial
+   Warm cream · high-contrast serif · generous space
+   Inspired by Prada, Acne Studios, fashion editorial
    ============================================ */
 
 /* --- Custom Properties --- */
 :root {
-  /* Carnival-Futuristic palette — OKLCH based */
-  --hue-primary: 330;    /* Hot pink / magenta */
-  --hue-secondary: 55;   /* Gold / warm yellow */
-  --hue-tertiary: 175;   /* Electric teal */
-  --hue-energy: 25;      /* Carnival orange */
+  /* Quiet Editorial palette — warm, light, restrained */
+  --bg:           #FAF7F2;          /* Warm cream — paper-like */
+  --bg-card:      #F3EEE7;          /* Slightly warmer surface */
+  --bg-elevated:  #EDE7DE;          /* Elevated card / hover */
+  --bg-contrast:  #1A1714;          /* Dark sections (rare, editorial contrast) */
 
-  /* Backgrounds — deep, rich, not flat black */
-  --bg:         oklch(12% 0.02 280);     /* Deep midnight with hint of purple */
-  --bg-card:    oklch(16% 0.025 280);    /* Elevated surface */
-  --bg-elevated: oklch(20% 0.03 280);    /* Higher elevation */
-  --bg-glow:    oklch(8% 0.015 280);     /* Deeper than bg, for contrast sections */
+  /* Text — dark on light */
+  --text:         #1A1714;          /* Near-black, warm */
+  --text-mid:     #6B635A;          /* Secondary — warm gray */
+  --text-light:   #9B938A;          /* Tertiary — muted */
 
-  /* Text — light on dark */
-  --text:       oklch(92% 0.01 55);      /* Warm white, slight gold tint */
-  --text-mid:   oklch(70% 0.02 55);      /* Secondary, warm */
-  --text-light: oklch(50% 0.03 55);      /* Tertiary, muted gold */
+  /* Accent — muted, sophisticated, not loud */
+  --accent:       #8B6D5C;          /* Warm terracotta — quiet confidence */
+  --accent-hover: #6E5648;          /* Deeper on hover */
+  --accent-bg:    #F0E8E0;          /* Subtle tint behind accent areas */
 
-  /* Carnival accents */
-  --accent:       oklch(72% 0.25 var(--hue-primary));   /* Hot pink */
-  --accent-glow:  oklch(72% 0.25 var(--hue-primary) / 0.4);
-  --gold:         oklch(78% 0.18 var(--hue-secondary));  /* Carnival gold */
-  --gold-glow:    oklch(78% 0.18 var(--hue-secondary) / 0.3);
-  --teal:         oklch(75% 0.15 var(--hue-tertiary));   /* Electric teal */
-  --teal-glow:    oklch(75% 0.15 var(--hue-tertiary) / 0.3);
-  --energy:       oklch(75% 0.2 var(--hue-energy));      /* Hot orange */
-  --energy-glow:  oklch(75% 0.2 var(--hue-energy) / 0.3);
+  /* Borders & dividers */
+  --border:       #E4DDD5;          /* Warm, barely there */
+  --border-dark:  #CFC6BB;          /* Stronger divider */
 
-  /* Borders — subtle glow borders */
-  --border:       oklch(25% 0.04 280);
-  --border-glow:  oklch(35% 0.08 var(--hue-primary));
-
-  /* Typography — expressive display + clean body */
-  --font-heading: 'Syne', 'Unbounded', system-ui, sans-serif;
-  --font-body:    'DM Sans', 'Nunito', system-ui, sans-serif;
+  /* Typography — editorial serif + clean sans */
+  --font-heading: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+  --font-body:    'DM Sans', 'Inter', system-ui, sans-serif;
 
   /* Spacing */
   --space-xs:  0.5rem;
   --space-sm:  1rem;
   --space-md:  1.5rem;
   --space-lg:  3rem;
-  --space-xl:  4rem;
-  --space-2xl: 6rem;
+  --space-xl:  5rem;
+  --space-2xl: 8rem;
 
-  /* Motion */
-  --ease-snappy:   cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-bouncy:   cubic-bezier(0.34, 1.56, 0.64, 1);
-  --ease-dramatic: cubic-bezier(0.7, 0, 0.3, 1);
+  /* Motion — subtle, unhurried */
+  --ease-out:     cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out:  cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* Shadows — hue-tinted */
-  --shadow-color: 280 40% 5%;
+  /* Shadows — warm, subtle */
   --shadow-sm:
-    0.5px 1px 1px hsl(var(--shadow-color) / 0.7);
+    0 1px 2px hsl(30 20% 20% / 0.06),
+    0 1px 3px hsl(30 20% 20% / 0.04);
   --shadow-md:
-    1px 2px 2px hsl(var(--shadow-color) / 0.4),
-    2px 4px 4px hsl(var(--shadow-color) / 0.3),
-    4px 8px 8px hsl(var(--shadow-color) / 0.2);
-  --shadow-lg:
-    1px 2px 2px hsl(var(--shadow-color) / 0.25),
-    2px 4px 4px hsl(var(--shadow-color) / 0.2),
-    4px 8px 8px hsl(var(--shadow-color) / 0.15),
-    8px 16px 16px hsl(var(--shadow-color) / 0.1),
-    16px 32px 32px hsl(var(--shadow-color) / 0.05);
-}
-
-/* --- Animated hue for aurora effects --- */
-@property --aurora-hue {
-  syntax: "<number>";
-  inherits: false;
-  initial-value: 330;
+    0 2px 4px hsl(30 20% 20% / 0.05),
+    0 4px 12px hsl(30 20% 20% / 0.06);
 }
 
 /* --- Reset & Base --- */
@@ -110,24 +85,24 @@ main {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.15;
   color: var(--text);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
-h1 { font-size: clamp(2.2rem, 5.5vw, 4rem); }
-h2 { font-size: clamp(1.5rem, 3.5vw, 2.5rem); line-height: 1.2; }
-h3 { font-size: clamp(1.125rem, 2.2vw, 1.5rem); line-height: 1.3; }
+h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.05; }
+h2 { font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.15; }
+h3 { font-size: clamp(1.25rem, 2.2vw, 1.625rem); line-height: 1.25; }
 
 a {
   color: var(--accent);
   text-decoration: none;
-  transition: color 0.25s var(--ease-snappy);
+  transition: color 0.3s var(--ease-out);
 }
 
 a:hover {
-  color: var(--gold);
+  color: var(--accent-hover);
 }
 
 img {
@@ -145,91 +120,49 @@ img {
   margin-top: 1.25rem;
 }
 
-/* --- Grain overlay — subtle texture over everything --- */
+/* --- Subtle grain overlay — tactile, paper-like --- */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   z-index: 9999;
   pointer-events: none;
-  opacity: 0.035;
-  mix-blend-mode: overlay;
+  opacity: 0.018;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 180px;
 }
 
-/* --- Utility: gradient text --- */
-.gradient-text {
-  background: linear-gradient(135deg, var(--accent), var(--gold), var(--teal));
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
+/* --- Thin editorial divider --- */
+.divider {
+  width: 60px;
+  height: 1px;
+  background-color: var(--border-dark);
+  border: none;
 }
 
-/* --- Utility: shimmer gradient text --- */
-.shimmer-text {
-  background: linear-gradient(135deg, var(--accent), var(--gold), var(--teal), var(--accent));
-  background-size: 300% 300%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  animation: shimmer 6s ease-in-out infinite;
-}
-
-@keyframes shimmer {
-  0%, 100% { background-position: 0% 50%; }
-  50%      { background-position: 100% 50%; }
-}
-
-/* --- Utility: neon glow on text --- */
-.neon-text {
-  text-shadow:
-    0 0 7px var(--accent-glow),
-    0 0 20px var(--accent-glow),
-    0 0 42px var(--accent-glow);
-}
-
-/* --- Utility: mesh/aurora background --- */
-.mesh-bg {
-  background:
-    radial-gradient(ellipse at 0% 0%, oklch(60% 0.2 330 / 0.25) 0%, transparent 50%),
-    radial-gradient(ellipse at 100% 0%, oklch(65% 0.18 55 / 0.2) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 100%, oklch(60% 0.15 175 / 0.2) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 50%, oklch(55% 0.2 25 / 0.15) 0%, transparent 40%);
-  background-color: var(--bg);
-}
-
-/* --- Utility: glass panel --- */
-.glass {
-  background: oklch(20% 0.02 280 / 0.6);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid oklch(40% 0.05 280 / 0.2);
-  border-radius: 16px;
-}
-
-/* --- Utility: gradient border --- */
-.gradient-border {
-  border: 2px solid transparent;
-  border-radius: 14px;
-  background:
-    linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
-    linear-gradient(135deg, var(--accent), var(--gold), var(--teal)) border-box;
+/* --- Section label (small caps, editorial) --- */
+.section-label {
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--text-light);
 }
 
 /* --- View-triggered reveal animation --- */
 @supports (animation-timeline: view()) {
   .reveal {
-    animation: fadeSlideIn linear both;
+    animation: fadeIn linear both;
     animation-timeline: view();
-    animation-range: entry 0% entry 40%;
+    animation-range: entry 0% entry 30%;
   }
 }
 
-@keyframes fadeSlideIn {
-  from { opacity: 0; transform: translateY(30px) scale(0.97); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* --- Reduced motion (non-negotiable) --- */

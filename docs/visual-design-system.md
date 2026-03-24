@@ -18,13 +18,32 @@ A single reference for every visual and CSS decision on Studio Wievien. Combines
 
 ## Aesthetic Philosophy
 
+**Direction: Quiet Editorial.**
+
+Inspired by how Prada, Acne Studios, and fashion editorial magazines present work — the photography leads, the design breathes, nothing screams. Warm, light, confident. Not dark. Not neon. Not carnival.
+
 For the full creative decision-making framework, see `.claude/rules/principles.md`.
 
 **The core question for every visual element:** does this let Wievien's work shine — or does it compete with it?
 
-**Our position:** Between over-designed (website as art, competing with the work) and under-designed (generic template). We want a distinctive creative space that serves the work, not itself.
+**Our position:** Between over-designed (website as art, competing with the work) and under-designed (generic template). We want a distinctive creative space that serves the work, not itself. The design should feel like opening a well-made fashion magazine — generous whitespace, considered typography, restrained color.
 
-**What we avoid:** Stock photography, corporate minimalism, cluttered marketplace aesthetic, over-animated interfaces, dark mode for its own sake.
+**What we avoid:**
+- Dark/neon aesthetics (no glows, no aurora effects)
+- Gradient text, shimmer text, neon text shadows
+- Heavy animations (clip-paths, blur reveals, bouncy easings)
+- Glass panels, backdrop-blur cards
+- Stock photography, corporate minimalism, cluttered marketplace aesthetic
+- Anything that feels like TV sales or startup landing pages
+
+**What we embrace:**
+- Warm cream backgrounds (paper-like)
+- High-contrast serif headings (editorial, fashion magazine)
+- Generous whitespace — let sections breathe
+- Thin, quiet dividers between sections
+- Photography as the hero — large, unhurried
+- Subtle grain overlay for tactile, handmade feel
+- Restrained motion (fade up only, no gimmicks)
 
 ---
 
@@ -32,52 +51,54 @@ For the full creative decision-making framework, see `.claude/rules/principles.m
 
 ### Colors
 
-**Status: TO BE DEFINED.** The palette should feel creative, tactile, handmade. Not corporate. Not generic fashion-brand minimal. Think: the warmth of thread on fabric, studio light, raw materials.
+**Palette: Quiet Editorial — warm cream, muted earth tones.**
 
-**Requirements for the palette:**
-- Warm background tone (not pure white, not cold gray)
-- Primary accent color for CTAs and interactive elements
-- Secondary accent for supporting UI
-- Text colors with clear hierarchy (primary, secondary, tertiary)
-- All text must meet WCAG 2.1 AA contrast (4.5:1 for normal text, 3:1 for large text ≥18px bold)
+| Token | Value | Role |
+|-------|-------|------|
+| `--bg` | `#FAF7F2` | Page background — warm cream, paper-like |
+| `--bg-card` | `#F3EEE7` | Card/section background — slightly warmer |
+| `--bg-elevated` | `#EDE7DE` | Elevated surfaces, hover states |
+| `--bg-contrast` | `#1A1714` | Dark sections (rare, for editorial contrast) |
+| `--text` | `#1A1714` | Primary text — near-black, warm |
+| `--text-mid` | `#6B635A` | Secondary text — descriptions, metadata |
+| `--text-light` | `#9B938A` | Tertiary text — captions, labels |
+| `--accent` | `#8B6D5C` | Primary accent — warm terracotta, quiet |
+| `--accent-hover` | `#6E5648` | Accent on hover — deeper |
+| `--accent-bg` | `#F0E8E0` | Subtle tint for accent areas |
+| `--border` | `#E4DDD5` | Dividers, card borders — barely there |
+| `--border-dark` | `#CFC6BB` | Stronger dividers when needed |
 
-**Placeholder tokens (to be replaced with actual values):**
-
-| Token | Role | Notes |
-|-------|------|-------|
-| `--bg` | Page background | Warm, paper-like |
-| `--bg-card` | Card/section background | Slightly darker than bg |
-| `--text` | Primary body text | High contrast, near-black |
-| `--text-mid` | Secondary text | Descriptions, metadata |
-| `--text-light` | Tertiary text | Captions, small labels |
-| `--accent` | Primary accent | CTAs, links, interactive |
-| `--accent-bg` | Accent background tint | Subtle background for accent areas |
-| `--border` | Divider lines, card borders | Subtle, warm |
+All text meets WCAG 2.1 AA contrast (4.5:1 for normal text, 3:1 for large text ≥18px bold).
 
 ### Typography
 
-**Status: TO BE DEFINED.** Two fonts needed:
-- **Heading font:** Expressive, with personality. Communicates craft without being kitchy. Serif or display — must have character.
-- **Body font:** Clean, readable. Sans-serif. Comfortable at 17px for long descriptions.
+**Heading font: Cormorant Garamond** — a high-contrast display serif with dramatic thick-thin transitions. Editorial, fashion-magazine quality. Free via Google Fonts, available in WOFF2 for self-hosting.
 
-**Requirements:**
-- Self-hosted WOFF2 (no external font dependencies)
-- Latin Extended subset (Dutch characters: ë, ö, ü, etc.)
-- Heading font needs weight 600+ for impact
-- Body font needs weights 400 (body) and 600 (emphasis)
-- Both must render well on screens at intended sizes
+**Body font: DM Sans** — clean, modern sans-serif. Comfortable at 17px for long descriptions. Good Latin Extended support.
 
-**Typography scale (sizes fixed, fonts TBD):**
+**Status:** Currently using system fallback fonts. WOFF2 files need to be downloaded and added to `/site/public/fonts/` with proper `@font-face` declarations. Both fonts are free and support Latin Extended (Dutch characters: ë, ö, ü, etc.).
+
+**Font stacks:**
+- `--font-heading: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif`
+- `--font-body: 'DM Sans', 'Inter', system-ui, sans-serif`
+
+**Typography scale:**
 
 | Element | Size | Weight | Line height |
 |---------|------|--------|-------------|
-| Page title | clamp(28px, 4vw, 40px) | 600 | 1.2 |
-| Section heading (H2) | clamp(22px, 3vw, 30px) | 600 | 1.25 |
-| Card title (H3) | clamp(18px, 2.2vw, 22px) | 600 | 1.3 |
+| Page title (H1) | clamp(2.5rem, 6vw, 4.5rem) | 400 | 1.05 |
+| Section heading (H2) | clamp(1.75rem, 3.5vw, 2.75rem) | 500 | 1.15 |
+| Card title (H3) | clamp(1.25rem, 2.2vw, 1.625rem) | 500 | 1.25 |
 | Body text | 17px | 400 | 1.7 |
 | Product details | 15px | 400 | 1.5 |
-| Labels, metadata | 13px | 600 | — |
+| Labels, metadata | 11px | 600 | — |
 | Small UI text | 11px | 700 | — |
+
+**Key typographic choices:**
+- Headings use lighter weights (400-500) — the serif's contrast provides visual impact without needing bold
+- Body text at 17px with 1.7 line-height for comfortable reading
+- Labels/metadata use uppercase + wide letter-spacing (0.12em+) for editorial feel
+- Minimal letter-spacing on headings (-0.01em to -0.02em)
 
 ### Readability Standards
 
@@ -96,9 +117,9 @@ Applies to: product descriptions, about page text, workshop descriptions, servic
 | Category | Minimum | Examples |
 |----------|---------|---------|
 | Small UI elements | 11px | Price badges, status indicators |
-| Labels, metadata | 13px | Material info, technique tags |
+| Labels, metadata | 11px | Material info, technique tags |
 | Readable content | 14px | Product details, dates |
-| Navigation | 15px | Header links, footer links |
+| Navigation | 13px | Header links, footer links |
 | Body prose | 17px | Descriptions, about text |
 
 #### Spacing
@@ -107,8 +128,8 @@ Applies to: product descriptions, about page text, workshop descriptions, servic
 |---------|---------|
 | Paragraph spacing | 20px |
 | List item spacing | 10px |
-| Card gap (grid) | 24px |
-| Section spacing | 48–64px |
+| Card gap (grid) | 20px |
+| Section spacing | 80px (var(--space-xl)) |
 | Image caption spacing | 8px above caption |
 
 ---
@@ -128,41 +149,41 @@ The centerpiece component. Must handle:
 
 ### Portfolio Grid (Overview Pages)
 
-Masonry or uniform grid showing portfolio pieces.
-- Primary image per piece
-- Title overlay or below
-- Category indicator
-- Hover state: subtle scale or opacity shift (NOT dramatic)
+Clean editorial grid showing portfolio pieces.
+- Primary image per piece (4:5 portrait aspect ratio — editorial standard)
+- Title below image
+- Category in small uppercase text
+- Hover state: subtle scale on image (1.03) + all-but-me fade
 - Filter by category (borduurwerk, Fancy Boogers, workshops)
 
 **The "All-But-Me" Spotlight (hover):**
 ```css
 .grid:has(.item:hover) .item:not(:hover) {
-  opacity: 0.5;
-  filter: saturate(0.4);
+  opacity: 0.4;
 }
 .item {
-  transition: opacity 0.35s, filter 0.35s;
+  transition: opacity 0.4s var(--ease-out);
 }
 ```
 
 ### Product Cards (Shop)
 
-- Product image (consistent aspect ratio across cards)
-- Product name
+- Product image (4:5 portrait, consistent across cards)
+- Product name (serif heading)
 - Price
 - Availability indicator
 - Size options (if applicable)
-- Hover: show "Bekijk" or subtle animation
+- Hover: subtle image scale
 
 ### Workshop Cards
 
 - Workshop image
 - Title
-- Date + location
+- Date + location (uppercase label style)
 - Price per person
-- Spots remaining / "Vol" indicator
+- Spots remaining
 - CTA: "Inschrijven" or "Meer info"
+- Card with thin border, slight shadow on hover
 
 ---
 
@@ -175,8 +196,8 @@ Copy-paste-ready patterns relevant to this project's stack (Astro, Tailwind, CSS
 #### Fluid Typography with clamp()
 
 ```css
-h1 { font-size: clamp(1.75rem, 4vw, 2.5rem); }
-h2 { font-size: clamp(1.375rem, 3vw, 1.875rem); }
+h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); }
+h2 { font-size: clamp(1.75rem, 3.5vw, 2.75rem); }
 p  { font-size: clamp(0.95rem, 1.5vw, 1.0625rem); }
 ```
 
@@ -194,76 +215,56 @@ p  { font-size: clamp(0.95rem, 1.5vw, 1.0625rem); }
 
 ```css
 .btn-hover {
-  background: color-mix(in oklch, var(--accent) 85%, white);
+  background: color-mix(in srgb, var(--accent) 85%, white);
 }
 .btn-pressed {
-  background: color-mix(in oklch, var(--accent) 80%, black);
+  background: color-mix(in srgb, var(--accent) 80%, black);
 }
 ```
 
 #### Tinted Shadows
 
-We generally avoid heavy shadows, but where needed (lightbox overlay, elevated cards):
+Warm, subtle shadows — never cold or harsh:
 
 ```css
 --shadow-sm:
-  0.5px 1px 1px hsl(35 40% 10% / 0.6);
+  0 1px 2px hsl(30 20% 20% / 0.06),
+  0 1px 3px hsl(30 20% 20% / 0.04);
 
 --shadow-md:
-  1px 2px 2px hsl(35 40% 10% / 0.35),
-  2px 4px 4px hsl(35 40% 10% / 0.25),
-  4px 8px 8px hsl(35 40% 10% / 0.15);
+  0 2px 4px hsl(30 20% 20% / 0.05),
+  0 4px 12px hsl(30 20% 20% / 0.06);
 ```
 
 ### Motion Techniques
 
-#### Staggered Entry (Portfolio Grid)
+#### View-Triggered Fade (CSS-Only)
 
-Cards appear in sequence when scrolling into view.
-
-```css
-.item {
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 0.4s, transform 0.4s;
-  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.item:nth-child(1) { transition-delay: 0ms; }
-.item:nth-child(2) { transition-delay: 80ms; }
-.item:nth-child(3) { transition-delay: 160ms; }
-.item:nth-child(4) { transition-delay: 240ms; }
-
-.visible .item {
-  opacity: 1;
-  transform: translateY(0);
-}
-```
-
-#### View-Triggered Reveal (CSS-Only)
+The only animation pattern we use. Simple, unhurried.
 
 ```css
 @supports (animation-timeline: view()) {
   .reveal {
-    animation: fadeSlideIn linear both;
+    animation: fadeIn linear both;
     animation-timeline: view();
-    animation-range: entry 0% entry 40%;
+    animation-range: entry 0% entry 30%;
   }
 }
 
-@keyframes fadeSlideIn {
-  from { opacity: 0; transform: translateY(30px) scale(0.97); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 ```
 
 #### Timing Functions
 
 ```css
---ease-snappy:   cubic-bezier(0.22, 1, 0.36, 1);    /* UI interactions */
---ease-bouncy:   cubic-bezier(0.34, 1.56, 0.64, 1);  /* Playful reveals */
---ease-dramatic: cubic-bezier(0.7, 0, 0.3, 1);        /* Hero transitions */
+--ease-out:     cubic-bezier(0.22, 1, 0.36, 1);    /* Most interactions */
+--ease-in-out:  cubic-bezier(0.4, 0, 0.2, 1);       /* Longer transitions */
 ```
+
+We do NOT use bouncy easings, dramatic easings, or spring-like timing.
 
 #### Reduced Motion (Non-Negotiable)
 
@@ -282,7 +283,7 @@ Cards appear in sequence when scrolling into view.
 
 #### Subtle Grain Overlay
 
-Enhances tactile, studio feeling. Keep opacity very low.
+Enhances tactile, paper-like feeling. Keep opacity very low (0.018) on light backgrounds.
 
 ```css
 body::before {
@@ -291,23 +292,25 @@ body::before {
   inset: 0;
   z-index: 9999;
   pointer-events: none;
-  opacity: 0.025;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.018;
+  background-image: url("data:image/svg+xml,...");
   background-repeat: repeat;
   background-size: 180px;
 }
 ```
 
-#### Mask Fade-Out
-
-Useful for image previews or content that fades into background.
+#### Thin Editorial Divider
 
 ```css
-.fade-bottom {
-  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+.divider {
+  width: 60px;
+  height: 1px;
+  background-color: var(--border-dark);
+  border: none;
 }
 ```
+
+Use between sections for rhythm. Not every section needs one — alternate between dividers and simple border-top on sections.
 
 ### Layout Techniques
 
@@ -360,6 +363,12 @@ Needs decisions on:
 - Detail shot requirements (minimum close-up distance, thread visibility)
 - Full piece shots (styling, context, background)
 - Process documentation (what stages to capture)
+
+**Aspect ratios for editorial consistency:**
+- Portfolio grid items: 4:5 (portrait, fashion editorial standard)
+- Hero images: 3:4 (portrait) or 16:9 (landscape)
+- Workshop cards: 16:10 (landscape)
+- Product images: 4:5 (portrait)
 
 ### Image Optimization
 
@@ -449,7 +458,7 @@ Target: **FCP under 0.8s** (portfolio sites are image-heavier than text sites, s
 
 ### Font Loading Strategy
 
-- Critical fonts (heading 600, body 400) use `font-display: swap` + `<link rel="preload">`
+- Critical fonts (heading 400/500, body 400) use `font-display: swap` + `<link rel="preload">`
 - Non-critical weights use `font-display: optional`
 - System font fallbacks defined to minimize layout shift
 

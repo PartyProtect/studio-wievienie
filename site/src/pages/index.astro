@@ -2,10 +2,10 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 
 const sections = [
-  { number: '01', title: 'Werk', note: 'Selectie & projecten', href: '#werk' },
-  { number: '02', title: 'Fancy Boogers', note: 'Kledinglijn', href: '#fancy-boogers' },
-  { number: '03', title: 'Borduurwerk', note: 'Textiel & detail', href: '#borduurwerk' },
-  { number: '04', title: 'Workshops', note: 'Borduren, textiel & upcycling', href: '#workshops' },
+  { title: 'Werk', note: 'Selectie & projecten', href: '#werk' },
+  { title: 'Fancy Boogers', note: 'Kledinglijn', href: '#fancy-boogers' },
+  { title: 'Borduurwerk', note: 'Textiel & opdrachten', href: '#borduurwerk' },
+  { title: 'Workshops', note: 'Borduren, textiel & upcycling', href: '#workshops' },
 ];
 
 const projects = [
@@ -27,34 +27,37 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
 >
   <section class="hero shell" aria-labelledby="hero-title">
     <div class="hero-copy">
-      <p class="eyebrow">Studio Wievien · Maastricht</p>
-      <h1 id="hero-title">Mode, textiel en objecten.</h1>
+      <p class="eyebrow">Wievien Alberts · Maastricht</p>
+      <h1 id="hero-title">Studio<br />Wievien</h1>
+      <p class="hero-fields">Mode · textiel · objecten · workshops</p>
       <p class="hero-lede">
-        Studio Wievien is het werk van ontwerper Wievien Alberts: kleding, maskers,
-        borduurwerk, projecten en workshops.
+        Eigen werk, Fancy Boogers, borduurwerk en projecten met anderen.
       </p>
-      <a class="hero-link" href="#werk">Werk bekijken <span aria-hidden="true">↓</span></a>
+      <a class="quiet-link" href="#werk">Werk bekijken <span aria-hidden="true">↓</span></a>
     </div>
 
     <figure class="hero-figure">
-      <img
-        src={heroImage}
-        alt="Lichtblauw en lila hoofdobject van Studio Wievien met kralen voor het gezicht"
-        loading="eager"
-        fetchpriority="high"
-        decoding="async"
-      />
-      <figcaption>Studio Wievien · via FASHIONCLASH</figcaption>
+      <div class="hero-image-frame">
+        <img
+          src={heroImage}
+          alt="Lichtblauw en lila hoofdobject van Studio Wievien met kralen voor het gezicht"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </div>
+      <figcaption>
+        <span>Studio Wievien</span>
+        <span>via FASHIONCLASH</span>
+      </figcaption>
     </figure>
   </section>
 
   <nav class="section-index shell" aria-label="Onderdelen van Studio Wievien">
-    {sections.map(({ number, title, note, href }) => (
+    {sections.map(({ title, note, href }) => (
       <a class="section-link" href={href}>
-        <span class="section-number">{number}</span>
         <span class="section-name">{title}</span>
         <span class="section-note">{note}</span>
-        <span class="section-arrow" aria-hidden="true">↓</span>
       </a>
     ))}
   </nav>
@@ -77,8 +80,10 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
             />
           </div>
           <figcaption>
-            <span>Presentatie</span>
-            <strong>Juunam · FASHIONCLASH Festival 2025</strong>
+            <div>
+              <span class="caption-type">Presentatie</span>
+              <strong>Juunam · FASHIONCLASH Festival 2025</strong>
+            </div>
             <small>Foto: Mitch van Schijndel</small>
           </figcaption>
         </figure>
@@ -93,8 +98,10 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
             />
           </div>
           <figcaption>
-            <span>Project</span>
-            <strong>Carnavalproject 2026 · FASHIONCLASH</strong>
+            <div>
+              <span class="caption-type">Project</span>
+              <strong>Carnavalproject 2026 · FASHIONCLASH</strong>
+            </div>
             <small>Foto: Jonathan Widdershoven</small>
           </figcaption>
         </figure>
@@ -106,7 +113,7 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
     <div class="shell fancy-grid">
       <div>
         <p class="eyebrow">Kledinglijn</p>
-        <h2 id="fancy-title">Fancy<br />Boogers</h2>
+        <h2 id="fancy-title">Fancy Boogers</h2>
       </div>
       <div class="fancy-copy">
         <p>De eigen kledinglijn van Studio Wievien.</p>
@@ -124,19 +131,13 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
     <article class="practice-block" id="borduurwerk">
       <p class="eyebrow">Textiel</p>
       <h2>Borduurwerk</h2>
-      <p class="practice-intro">Borduurwerk en textielbewerking op kleding en andere dragers.</p>
-      <p class="practice-copy">
-        Hier komen voorbeelden van werk, technieken en informatie over opdrachten samen.
-      </p>
+      <p>Borduurwerk en textielbewerking op kleding en andere dragers.</p>
     </article>
 
     <article class="practice-block" id="workshops">
       <p class="eyebrow">Workshops</p>
-      <h2>Samen maken</h2>
-      <p class="practice-intro">Workshops rond borduren, textiel en upcycling.</p>
-      <p class="practice-copy">
-        Nieuwe data, locaties en praktische informatie worden hier geplaatst zodra ze bekend zijn.
-      </p>
+      <h2>Workshops</h2>
+      <p>Borduren, textiel en upcycling.</p>
     </article>
   </section>
 
@@ -169,11 +170,11 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
           werkt aan projecten met anderen en geeft workshops. Maskers keren regelmatig terug in haar werk.
         </p>
         <a
-          class="text-link"
+          class="quiet-link"
           href="https://www.instagram.com/studio_wievien/"
           rel="noopener noreferrer"
           target="_blank"
-        >Instagram</a>
+        >Instagram <span aria-hidden="true">↗</span></a>
       </div>
     </div>
   </section>
@@ -183,122 +184,119 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
   .hero {
     min-height: calc(100svh - 70px);
     display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(360px, 1.1fr);
-    gap: clamp(2rem, 6vw, 7rem);
+    grid-template-columns: minmax(0, 0.86fr) minmax(360px, 1.14fr);
+    gap: clamp(2.5rem, 6vw, 7.5rem);
     align-items: center;
-    padding-block: clamp(2.5rem, 6vw, 5.5rem);
+    padding-block: clamp(3rem, 6vw, 6rem);
   }
 
   .hero-copy {
-    max-width: 600px;
+    max-width: 620px;
   }
 
   .hero h1 {
     margin-top: 1rem;
-    max-width: 8ch;
-    font-size: clamp(3.5rem, 7.2vw, 7.4rem);
-    line-height: 0.88;
+    font-size: clamp(4.1rem, 8.1vw, 8rem);
+    line-height: 0.82;
+    letter-spacing: -0.055em;
+  }
+
+  .hero-fields {
+    margin-top: 1.65rem;
+    color: var(--text);
+    font-size: clamp(0.92rem, 1.2vw, 1.05rem);
+    letter-spacing: 0.01em;
   }
 
   .hero-lede {
-    margin-top: 1.8rem;
-    max-width: 36rem;
+    margin-top: 0.8rem;
+    max-width: 31rem;
     color: var(--text-mid);
-    font-size: clamp(1rem, 1.45vw, 1.18rem);
-    line-height: 1.55;
+    font-size: 0.94rem;
+    line-height: 1.6;
   }
 
-  .hero-link {
+  .quiet-link {
     display: inline-flex;
     align-items: center;
-    gap: 0.7rem;
-    margin-top: 2.4rem;
-    padding: 0.78rem 1rem;
-    border: 1px solid var(--text);
-    font-size: 0.82rem;
+    gap: 0.55rem;
+    margin-top: 2rem;
+    padding-bottom: 0.18rem;
+    border-bottom: 1px solid var(--border-dark);
+    font-size: 0.78rem;
     font-weight: 650;
     text-decoration: none;
-    transition: background 180ms var(--ease), color 180ms var(--ease);
   }
 
-  .hero-link:hover,
-  .hero-link:focus-visible {
-    background: var(--text);
-    color: var(--bg);
+  .quiet-link:hover,
+  .quiet-link:focus-visible {
+    border-color: var(--text);
   }
 
   .hero-figure {
     justify-self: end;
-    width: min(100%, 650px);
+    width: min(100%, 660px);
+  }
+
+  .hero-image-frame {
+    overflow: hidden;
+    background: #f8f8f6;
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--border) 65%, transparent);
   }
 
   .hero-figure img {
     aspect-ratio: 4 / 5;
     object-fit: cover;
     object-position: 50% 39%;
-    background: #f8f8f6;
   }
 
   .hero-figure figcaption {
-    margin-top: 0.55rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.62rem;
     color: var(--text-light);
-    font-size: 0.68rem;
+    font-size: 0.64rem;
+    letter-spacing: 0.015em;
   }
 
   .section-index {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     margin-bottom: var(--section);
     border-top: 1px solid var(--border-dark);
-    border-left: 1px solid var(--border-dark);
   }
 
   .section-link {
-    min-height: 150px;
+    min-height: 92px;
     display: grid;
-    grid-template-columns: auto 1fr auto;
-    grid-template-rows: auto 1fr;
-    gap: 0.75rem 1.2rem;
-    padding: clamp(1.1rem, 2.4vw, 1.8rem);
-    border-right: 1px solid var(--border-dark);
-    border-bottom: 1px solid var(--border-dark);
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 2rem;
+    align-items: center;
+    padding: 1.15rem 0;
+    border-bottom: 1px solid var(--border);
     text-decoration: none;
-    transition: background 180ms var(--ease);
-  }
-
-  .section-link:hover,
-  .section-link:focus-visible {
-    background: var(--accent-soft);
-  }
-
-  .section-number {
-    font-size: 0.68rem;
-    color: var(--text-light);
   }
 
   .section-name {
-    align-self: end;
     font-family: var(--font-heading);
-    font-size: clamp(1.8rem, 3.2vw, 3rem);
+    font-size: clamp(1.8rem, 3vw, 2.75rem);
     line-height: 1;
+    transition: transform 180ms var(--ease);
   }
 
   .section-note {
-    grid-column: 2;
     color: var(--text-mid);
-    font-size: 0.78rem;
+    font-size: 0.74rem;
+    text-align: right;
   }
 
-  .section-arrow {
-    grid-row: 1 / 3;
-    grid-column: 3;
-    align-self: end;
-    font-size: 1rem;
+  .section-link:hover .section-name,
+  .section-link:focus-visible .section-name {
+    transform: translateX(5px);
   }
 
   .selection {
     padding-block: var(--section);
-    background: #ece9e3;
+    background: var(--bg-subtle);
   }
 
   .section-header {
@@ -306,37 +304,38 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
     grid-template-columns: 1fr 2fr;
     gap: 2rem;
     align-items: end;
-    margin-bottom: clamp(2.2rem, 5vw, 4rem);
+    margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
   }
 
   .section-header h2,
   .practice h2,
   .projects h2,
   .about h2 {
-    font-size: clamp(2.5rem, 5vw, 5rem);
-    line-height: 0.94;
+    font-size: clamp(2.5rem, 4.8vw, 4.8rem);
+    line-height: 0.92;
   }
 
   .selection-grid {
     display: grid;
     grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.72fr);
-    gap: clamp(1rem, 2vw, 1.5rem);
+    gap: clamp(1.25rem, 2.4vw, 2rem);
     align-items: start;
   }
 
   .image-frame {
     overflow: hidden;
     background: var(--bg-soft);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--border) 75%, transparent);
   }
 
   .image-frame img {
     height: 100%;
     object-fit: cover;
-    transition: transform 420ms var(--ease);
+    transition: transform 360ms var(--ease);
   }
 
   figure:hover .image-frame img {
-    transform: scale(1.012);
+    transform: scale(1.008);
   }
 
   .image-frame-landscape {
@@ -348,55 +347,59 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
   }
 
   .selection figcaption {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 0.25rem 1rem;
-    padding-top: 0.7rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-top: 0.72rem;
   }
 
-  .selection figcaption span {
+  .selection figcaption > div {
+    display: grid;
+    gap: 0.22rem;
+  }
+
+  .caption-type {
     color: var(--text-light);
-    font-size: 0.67rem;
+    font-size: 0.62rem;
     text-transform: uppercase;
-    letter-spacing: 0.09em;
+    letter-spacing: 0.1em;
   }
 
   .selection figcaption strong {
-    justify-self: end;
-    text-align: right;
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     font-weight: 650;
+    line-height: 1.35;
   }
 
   .selection figcaption small {
-    grid-column: 2;
-    justify-self: end;
+    flex: 0 0 auto;
     color: var(--text-light);
-    font-size: 0.65rem;
+    font-size: 0.61rem;
+    text-align: right;
   }
 
   .fancy {
-    padding-block: clamp(5rem, 11vw, 10rem);
+    padding-block: clamp(5.5rem, 10vw, 9rem);
     background: var(--bg-ink);
     color: var(--text-on-dark);
   }
 
   .fancy .eyebrow {
-    color: #99958f;
+    color: #918d87;
   }
 
   .fancy-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.65fr);
+    grid-template-columns: minmax(0, 1.3fr) minmax(260px, 0.7fr);
     gap: clamp(3rem, 8vw, 8rem);
     align-items: end;
   }
 
   .fancy h2 {
     margin-top: 0.8rem;
-    font-size: clamp(4rem, 10vw, 10rem);
-    line-height: 0.76;
-    letter-spacing: -0.055em;
+    font-size: clamp(4rem, 7vw, 7.5rem);
+    line-height: 0.86;
+    letter-spacing: -0.045em;
   }
 
   .fancy-copy {
@@ -404,19 +407,18 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
   }
 
   .fancy-copy p {
-    max-width: 24rem;
     color: #c6c1ba;
-    font-size: clamp(1.05rem, 1.5vw, 1.22rem);
+    font-size: 0.95rem;
   }
 
   .dark-link {
     display: inline-flex;
     gap: 0.45rem;
-    margin-top: 1.8rem;
+    margin-top: 1.6rem;
     padding-bottom: 0.14rem;
-    border-bottom: 1px solid #77736d;
+    border-bottom: 1px solid #605d58;
     color: var(--text-on-dark);
-    font-size: 0.84rem;
+    font-size: 0.76rem;
     text-decoration: none;
   }
 
@@ -424,39 +426,35 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     padding-block: var(--section);
+    border-bottom: 1px solid var(--border-dark);
   }
 
   .practice-block {
-    padding: clamp(1rem, 3vw, 2.5rem) clamp(1.5rem, 5vw, 4.5rem) clamp(1rem, 3vw, 2.5rem) 0;
+    min-height: 270px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0 clamp(2rem, 5vw, 5rem) 0 0;
   }
 
   .practice-block + .practice-block {
-    padding-left: clamp(1.5rem, 5vw, 4.5rem);
+    padding-left: clamp(2rem, 5vw, 5rem);
     padding-right: 0;
     border-left: 1px solid var(--border-dark);
   }
 
   .practice h2 {
-    margin-top: 0.8rem;
+    margin-top: 0.75rem;
   }
 
-  .practice-intro {
-    margin-top: clamp(2rem, 5vw, 4.5rem);
-    max-width: 22ch;
-    font-family: var(--font-heading);
-    font-size: clamp(1.5rem, 2.6vw, 2.35rem);
-    line-height: 1.12;
-  }
-
-  .practice-copy {
-    margin-top: 1.2rem;
-    max-width: 34rem;
+  .practice-block > p:last-child {
+    max-width: 30rem;
     color: var(--text-mid);
+    font-size: 0.9rem;
   }
 
   .projects {
     padding-block: var(--section);
-    border-top: 1px solid var(--border-dark);
   }
 
   .projects-heading {
@@ -464,7 +462,7 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
     grid-template-columns: 1fr 2fr;
     gap: 2rem;
     align-items: end;
-    margin-bottom: clamp(2rem, 5vw, 4rem);
+    margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
   }
 
   .project-list {
@@ -473,28 +471,28 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
 
   .project-row {
     display: grid;
-    grid-template-columns: 100px minmax(0, 1.35fr) minmax(180px, 0.65fr);
+    grid-template-columns: 90px minmax(0, 1.35fr) minmax(180px, 0.65fr);
     gap: 1rem;
     align-items: baseline;
-    padding-block: 1.25rem;
+    padding-block: 1.2rem;
     border-bottom: 1px solid var(--border);
   }
 
   .project-row strong {
     font-family: var(--font-heading);
-    font-size: clamp(1.25rem, 2vw, 1.8rem);
+    font-size: clamp(1.2rem, 1.8vw, 1.65rem);
     font-weight: 400;
   }
 
   .project-year,
   .project-row > span:last-child {
     color: var(--text-mid);
-    font-size: 0.78rem;
+    font-size: 0.72rem;
   }
 
   .about {
     padding-block: var(--section);
-    background: var(--accent-soft);
+    border-top: 1px solid var(--border-dark);
   }
 
   .about-grid {
@@ -505,31 +503,28 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
   }
 
   .about h2 {
-    margin-top: 0.8rem;
+    margin-top: 0.75rem;
   }
 
   .about-copy {
-    padding-top: 1.5rem;
+    padding-top: 1.45rem;
   }
 
   .about-copy p {
-    max-width: 38rem;
-    font-size: clamp(1.05rem, 1.6vw, 1.25rem);
-    line-height: 1.6;
-  }
-
-  .about-copy .text-link {
-    margin-top: 1.8rem;
+    max-width: 36rem;
+    color: var(--text-mid);
+    font-size: clamp(1rem, 1.4vw, 1.14rem);
+    line-height: 1.68;
   }
 
   @media (max-width: 900px) {
     .hero {
       grid-template-columns: 1fr 1fr;
-      gap: 2rem;
+      gap: 2.5rem;
     }
 
     .hero h1 {
-      font-size: clamp(3.3rem, 8vw, 5.2rem);
+      font-size: clamp(4rem, 9vw, 6rem);
     }
 
     .selection-grid {
@@ -541,61 +536,42 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
     .hero {
       min-height: 0;
       grid-template-columns: 1fr;
-      gap: 2rem;
-      padding-top: 2rem;
-      padding-bottom: 3.5rem;
+      gap: 2.4rem;
+      padding-top: 2.5rem;
+      padding-bottom: 4rem;
     }
 
-    .hero-copy {
-      order: 1;
+    .hero h1 {
+      font-size: clamp(4.3rem, 20vw, 6.3rem);
+      line-height: 0.84;
+    }
+
+    .hero-fields {
+      margin-top: 1.35rem;
     }
 
     .hero-figure {
-      order: 2;
       justify-self: stretch;
       width: 100%;
     }
 
-    .hero h1 {
-      max-width: 9ch;
-      font-size: clamp(3.2rem, 16vw, 5.4rem);
-    }
-
-    .hero-lede {
-      margin-top: 1.25rem;
-    }
-
-    .hero-link {
-      margin-top: 1.6rem;
-    }
-
-    .hero-figure img {
-      aspect-ratio: 4 / 5;
-    }
-
     .section-index {
-      grid-template-columns: 1fr;
       margin-bottom: var(--section);
     }
 
     .section-link {
-      min-height: 105px;
-      grid-template-columns: 34px 1fr auto;
-      align-items: center;
-      padding: 1rem;
+      min-height: 78px;
+      gap: 1rem;
+      padding-block: 0.95rem;
     }
 
     .section-name {
-      align-self: center;
-      font-size: 1.75rem;
+      font-size: 1.7rem;
     }
 
     .section-note {
-      grid-column: 2;
-    }
-
-    .section-arrow {
-      align-self: center;
+      max-width: 14rem;
+      font-size: 0.68rem;
     }
 
     .section-header,
@@ -606,7 +582,7 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
 
     .selection-grid {
       grid-template-columns: 1fr;
-      gap: 3rem;
+      gap: 3.25rem;
     }
 
     .image-frame-landscape {
@@ -614,18 +590,16 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
     }
 
     .selection-side {
-      width: 78%;
-      margin-left: auto;
+      width: 100%;
+      margin: 0;
     }
 
     .selection figcaption {
-      grid-template-columns: 1fr;
+      display: grid;
+      gap: 0.55rem;
     }
 
-    .selection figcaption strong,
     .selection figcaption small {
-      grid-column: 1;
-      justify-self: start;
       text-align: left;
     }
 
@@ -640,27 +614,24 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
     }
 
     .fancy h2 {
-      font-size: clamp(4.4rem, 24vw, 7rem);
+      font-size: clamp(4rem, 18vw, 6rem);
     }
 
     .practice-block,
     .practice-block + .practice-block {
-      padding: 0 0 3.5rem;
+      min-height: 230px;
+      padding: 0 0 3rem;
     }
 
     .practice-block + .practice-block {
-      padding-top: 3.5rem;
+      padding-top: 3rem;
       border-left: 0;
       border-top: 1px solid var(--border-dark);
     }
 
-    .practice-intro {
-      margin-top: 2rem;
-    }
-
     .project-row {
-      grid-template-columns: 58px 1fr;
-      gap: 0.35rem 1rem;
+      grid-template-columns: 52px 1fr;
+      gap: 0.3rem 1rem;
     }
 
     .project-row > span:last-child {
@@ -668,17 +639,11 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
     }
 
     .about-grid {
-      gap: 1.5rem;
+      gap: 1.4rem;
     }
 
     .about-copy {
       padding-top: 0;
-    }
-  }
-
-  @media (max-width: 420px) {
-    .selection-side {
-      width: 88%;
     }
   }
 </style>

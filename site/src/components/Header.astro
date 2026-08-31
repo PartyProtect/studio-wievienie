@@ -36,9 +36,7 @@ const nav = lang === 'nl'
       href="https://www.instagram.com/studio_wievien/"
       rel="noopener noreferrer"
       target="_blank"
-    >
-      Instagram ↗
-    </a>
+    >Instagram ↗</a>
 
     <details class="mobile-menu">
       <summary>Menu</summary>
@@ -61,14 +59,14 @@ const nav = lang === 'nl'
     position: sticky;
     top: 0;
     z-index: 50;
-    background: color-mix(in srgb, var(--bg) 94%, transparent);
-    border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    background: color-mix(in srgb, var(--bg) 97%, transparent);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 
   .header-inner {
-    min-height: 70px;
+    min-height: 68px;
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
@@ -77,8 +75,9 @@ const nav = lang === 'nl'
 
   .brand {
     font-family: var(--font-heading);
-    font-size: 1.22rem;
-    letter-spacing: -0.02em;
+    font-size: 1.16rem;
+    letter-spacing: -0.025em;
+    line-height: 1;
     text-decoration: none;
     white-space: nowrap;
   }
@@ -86,16 +85,17 @@ const nav = lang === 'nl'
   .desktop-nav {
     display: flex;
     justify-content: center;
-    gap: clamp(0.85rem, 2.2vw, 2rem);
+    gap: clamp(1rem, 2.2vw, 2rem);
   }
 
   .desktop-nav a,
   .instagram {
-    font-size: 0.78rem;
-    font-weight: 650;
-    text-decoration: none;
     color: var(--text-mid);
-    transition: color 180ms var(--ease);
+    font-size: 0.72rem;
+    font-weight: 650;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: color 160ms var(--ease);
   }
 
   .desktop-nav a:hover,
@@ -113,7 +113,8 @@ const nav = lang === 'nl'
   .mobile-menu summary {
     list-style: none;
     cursor: pointer;
-    font-size: 0.8rem;
+    color: var(--text-mid);
+    font-size: 0.74rem;
     font-weight: 650;
   }
 
@@ -123,12 +124,12 @@ const nav = lang === 'nl'
 
   .mobile-panel {
     position: fixed;
-    top: 70px;
+    top: 62px;
     left: 0;
     right: 0;
     background: var(--bg);
-    border-bottom: 1px solid var(--border);
-    padding: 1rem var(--gutter) 1.5rem;
+    border-bottom: 1px solid var(--border-dark);
+    padding: 0.75rem var(--gutter) 1.25rem;
   }
 
   .mobile-panel nav {
@@ -136,10 +137,11 @@ const nav = lang === 'nl'
   }
 
   .mobile-panel a {
-    padding: 0.82rem 0;
+    padding: 0.9rem 0;
     border-bottom: 1px solid var(--border);
     font-family: var(--font-heading);
     font-size: 1.35rem;
+    line-height: 1;
     text-decoration: none;
   }
 
@@ -160,10 +162,6 @@ const nav = lang === 'nl'
 
     .mobile-menu {
       display: block;
-    }
-
-    .mobile-panel {
-      top: 62px;
     }
   }
 </style>

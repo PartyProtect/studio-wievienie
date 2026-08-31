@@ -1,11 +1,17 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 
-const doors = [
-  { number: '01', title: 'Werk', note: 'Mode, objecten & projecten', href: '#werk' },
+const sections = [
+  { number: '01', title: 'Werk', note: 'Selectie & projecten', href: '#werk' },
   { number: '02', title: 'Fancy Boogers', note: 'Kledinglijn', href: '#fancy-boogers' },
-  { number: '03', title: 'Borduurwerk', note: 'Textiel & opdrachten', href: '#borduurwerk' },
-  { number: '04', title: 'Workshops', note: 'Samen maken', href: '#workshops' },
+  { number: '03', title: 'Borduurwerk', note: 'Textiel & detail', href: '#borduurwerk' },
+  { number: '04', title: 'Workshops', note: 'Borduren, textiel & upcycling', href: '#workshops' },
+];
+
+const projects = [
+  { year: '2026', title: 'Carnavalproject', place: 'FASHIONCLASH' },
+  { year: '2025', title: 'Studio Wievien bij Juunam', place: 'FASHIONCLASH Festival' },
+  { year: '2024', title: 'New Fashion Narratives', place: 'Bureau Europa' },
 ];
 
 const heroImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8026f5a085d80/92c0dc63-a0bc-4686-81b0-d0bcc698c06b/Unknown.jpeg';
@@ -15,176 +21,159 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
 
 <BaseLayout
   title="Studio Wievien"
-  description="Studio Wievien — mode, textiel, borduurwerk, workshops, projecten en Fancy Boogers."
+  description="Studio Wievien — mode, textiel, borduurwerk, objecten, projecten, workshops en Fancy Boogers."
   lang="nl"
   currentPath="/"
 >
-  <section class="hero shell">
+  <section class="hero shell" aria-labelledby="hero-title">
     <div class="hero-copy">
       <p class="eyebrow">Studio Wievien · Maastricht</p>
-      <h1>Mode, textiel, objecten en workshops.</h1>
+      <h1 id="hero-title">Mode, textiel en objecten.</h1>
       <p class="hero-lede">
-        Van Fancy Boogers tot borduurwerk en projecten rond identiteit, materiaal en maken.
+        Studio Wievien is het werk van ontwerper Wievien Alberts: kleding, maskers,
+        borduurwerk, projecten en workshops.
       </p>
-      <a class="hero-link" href="#begin">Kijk rond <span aria-hidden="true">↓</span></a>
+      <a class="hero-link" href="#werk">Werk bekijken <span aria-hidden="true">↓</span></a>
     </div>
 
-    <!-- Temporary press image for the design prototype. Replace with owned/licensed photography before launch. -->
     <figure class="hero-figure">
       <img
         src={heroImage}
-        alt="Ontwerp van Wievien met een lichtblauwe en lila hoofdvorm met kralen voor het gezicht"
+        alt="Lichtblauw en lila hoofdobject van Studio Wievien met kralen voor het gezicht"
         loading="eager"
         fetchpriority="high"
+        decoding="async"
       />
-      <figcaption>Studio Wievien · ontwerp / masker</figcaption>
+      <figcaption>Studio Wievien · via FASHIONCLASH</figcaption>
     </figure>
   </section>
 
-  <section class="start shell" id="begin" aria-labelledby="start-heading">
-    <div class="section-intro">
-      <p class="eyebrow">Begin hier</p>
-      <h2 id="start-heading">Vier ingangen, één studio.</h2>
-    </div>
+  <nav class="section-index shell" aria-label="Onderdelen van Studio Wievien">
+    {sections.map(({ number, title, note, href }) => (
+      <a class="section-link" href={href}>
+        <span class="section-number">{number}</span>
+        <span class="section-name">{title}</span>
+        <span class="section-note">{note}</span>
+        <span class="section-arrow" aria-hidden="true">↓</span>
+      </a>
+    ))}
+  </nav>
 
-    <div class="door-grid">
-      {doors.map(({ number, title, note, href }) => (
-        <a class="door" href={href}>
-          <span class="door-number">{number}</span>
-          <span class="door-main">
-            <strong>{title}</strong>
-            <small>{note}</small>
-          </span>
-          <span class="door-arrow" aria-hidden="true">↘</span>
-        </a>
-      ))}
-    </div>
-  </section>
-
-  <section class="work" id="werk" aria-labelledby="work-heading">
+  <section class="selection" id="werk" aria-labelledby="selection-title">
     <div class="shell">
-      <div class="section-heading-row">
-        <div>
-          <p class="eyebrow">Werk</p>
-          <h2 id="work-heading">Een paar plekken om binnen te kijken.</h2>
-        </div>
-        <p class="section-note">De homepage blijft klein. Het archief mag later groot worden.</p>
-      </div>
+      <header class="section-header">
+        <p class="eyebrow">Werk</p>
+        <h2 id="selection-title">Selectie</h2>
+      </header>
 
-      <div class="work-layout">
-        <!-- Temporary public event photography used to establish visual direction. -->
-        <figure class="work-feature">
-          <div class="image-frame image-frame-wide">
+      <div class="selection-grid">
+        <figure class="selection-main">
+          <div class="image-frame image-frame-landscape">
             <img
               src={juunamImage}
-              alt="Kledingpresentatie op rekken tijdens FASHIONCLASH Festival 2025 bij Juunam"
+              alt="Presentatie bij Juunam tijdens FASHIONCLASH Festival 2025"
               loading="lazy"
+              decoding="async"
             />
           </div>
           <figcaption>
             <span>Presentatie</span>
-            <strong>Studio Wievien · FASHIONCLASH 2025</strong>
+            <strong>Juunam · FASHIONCLASH Festival 2025</strong>
+            <small>Foto: Mitch van Schijndel</small>
           </figcaption>
         </figure>
 
-        <div class="work-side">
-          <figure class="work-small">
-            <div class="image-frame image-frame-portrait">
-              <img
-                src={projectImage}
-                alt="Model in een blauw en zilverkleurig experimenteel kostuum tijdens een FASHIONCLASH project"
-                loading="lazy"
-              />
-            </div>
-            <figcaption>
-              <span>Projecten</span>
-              <strong>Samenwerkingen & experiment</strong>
-            </figcaption>
-          </figure>
-
-          <div class="work-statement">
-            <p class="eyebrow">De praktijk</p>
-            <p>
-              Kleding, maskers, textiel, borduurwerk en projecten hoeven niet in één vakje te passen.
-              <strong>Werk</strong> wordt straks de plek waar alles samenkomt.
-            </p>
+        <figure class="selection-side">
+          <div class="image-frame image-frame-portrait">
+            <img
+              src={projectImage}
+              alt="Beeld uit het FASHIONCLASH carnavalproject 2026"
+              loading="lazy"
+              decoding="async"
+            />
           </div>
-        </div>
+          <figcaption>
+            <span>Project</span>
+            <strong>Carnavalproject 2026 · FASHIONCLASH</strong>
+            <small>Foto: Jonathan Widdershoven</small>
+          </figcaption>
+        </figure>
       </div>
     </div>
   </section>
 
-  <section class="fancy" id="fancy-boogers" aria-labelledby="fancy-heading">
-    <div class="shell fancy-inner">
+  <section class="fancy" id="fancy-boogers" aria-labelledby="fancy-title">
+    <div class="shell fancy-grid">
       <div>
         <p class="eyebrow">Kledinglijn</p>
-        <h2 id="fancy-heading">Fancy<br />Boogers</h2>
+        <h2 id="fancy-title">Fancy<br />Boogers</h2>
       </div>
       <div class="fancy-copy">
-        <p>
-          Een eigen kamer binnen Studio Wievien. Meer kleding, meer attitude, dezelfde hand erachter.
-        </p>
-        <span class="coming-soon">Collectiepagina volgt</span>
+        <p>De eigen kledinglijn van Studio Wievien.</p>
+        <a
+          class="dark-link"
+          href="https://www.instagram.com/studio_wievien/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >@studio_wievien <span aria-hidden="true">↗</span></a>
       </div>
     </div>
   </section>
 
-  <section class="embroidery" id="borduurwerk" aria-labelledby="embroidery-heading">
-    <div class="shell split-section">
-      <div class="split-title">
-        <p class="eyebrow">Textiel</p>
-        <h2 id="embroidery-heading">Borduurwerk</h2>
-      </div>
-      <div class="split-copy">
-        <p class="big-copy">
-          Handwerk kan klein en precies zijn, of een kledingstuk volledig veranderen.
-        </p>
-        <p>
-          Hier komt straks werk samen met informatie over opdrachten, technieken en wat er mogelijk is.
-          Voor nu houden we de plek rustig totdat het echte materiaal erin zit.
-        </p>
-      </div>
+  <section class="practice shell" aria-label="Borduurwerk en workshops">
+    <article class="practice-block" id="borduurwerk">
+      <p class="eyebrow">Textiel</p>
+      <h2>Borduurwerk</h2>
+      <p class="practice-intro">Borduurwerk en textielbewerking op kleding en andere dragers.</p>
+      <p class="practice-copy">
+        Hier komen voorbeelden van werk, technieken en informatie over opdrachten samen.
+      </p>
+    </article>
+
+    <article class="practice-block" id="workshops">
+      <p class="eyebrow">Workshops</p>
+      <h2>Samen maken</h2>
+      <p class="practice-intro">Workshops rond borduren, textiel en upcycling.</p>
+      <p class="practice-copy">
+        Nieuwe data, locaties en praktische informatie worden hier geplaatst zodra ze bekend zijn.
+      </p>
+    </article>
+  </section>
+
+  <section class="projects shell" aria-labelledby="projects-title">
+    <header class="projects-heading">
+      <p class="eyebrow">Projecten & presentaties</p>
+      <h2 id="projects-title">2024–2026</h2>
+    </header>
+
+    <div class="project-list">
+      {projects.map(({ year, title, place }) => (
+        <div class="project-row">
+          <span class="project-year">{year}</span>
+          <strong>{title}</strong>
+          <span>{place}</span>
+        </div>
+      ))}
     </div>
   </section>
 
-  <section class="workshops" id="workshops" aria-labelledby="workshops-heading">
-    <div class="shell split-section">
-      <div class="split-title">
-        <p class="eyebrow">Samen maken</p>
-        <h2 id="workshops-heading">Workshops</h2>
+  <section class="about" id="over" aria-labelledby="about-title">
+    <div class="shell about-grid">
+      <div>
+        <p class="eyebrow">Over</p>
+        <h2 id="about-title">Wievien Alberts</h2>
       </div>
-      <div class="split-copy">
-        <p class="big-copy">Geen verzonnen kalender. Alleen workshops die echt gepland staan.</p>
+      <div class="about-copy">
         <p>
-          Nieuwe data, locaties en praktische informatie krijgen hier een duidelijke plek zodra ze bekend zijn.
+          Wievien Alberts werkt met kleding, textiel, maskers en objecten. Ze maakt eigen werk,
+          werkt aan projecten met anderen en geeft workshops. Maskers keren regelmatig terug in haar werk.
         </p>
         <a
           class="text-link"
           href="https://www.instagram.com/studio_wievien/"
           rel="noopener noreferrer"
           target="_blank"
-        >Volg Studio Wievien op Instagram</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="about" id="over" aria-labelledby="about-heading">
-    <div class="shell about-inner">
-      <p class="eyebrow">Over</p>
-      <div class="about-grid">
-        <h2 id="about-heading">Wievien werkt instinctief met mode, kleur, materiaal en identiteit.</h2>
-        <div class="about-copy">
-          <p>
-            Haar praktijk beweegt tussen ontwerpen, maken en experimenteren. Maskers keren terug als een manier om
-            verandering en identiteit te onderzoeken; daarnaast werkt ze met kleding, textiel en participatieve projecten.
-          </p>
-          <a
-            class="text-link"
-            href="https://www.instagram.com/studio_wievien/"
-            rel="noopener noreferrer"
-            target="_blank"
-          >@studio_wievien</a>
-        </div>
+        >Instagram</a>
       </div>
     </div>
   </section>
@@ -194,40 +183,37 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
   .hero {
     min-height: calc(100svh - 70px);
     display: grid;
-    grid-template-columns: minmax(0, 0.88fr) minmax(340px, 1.12fr);
-    gap: clamp(2rem, 6vw, 6.5rem);
+    grid-template-columns: minmax(0, 0.9fr) minmax(360px, 1.1fr);
+    gap: clamp(2rem, 6vw, 7rem);
     align-items: center;
-    padding-block: clamp(2.5rem, 5vw, 5rem);
+    padding-block: clamp(2.5rem, 6vw, 5.5rem);
   }
 
   .hero-copy {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    max-width: 590px;
+    max-width: 600px;
   }
 
   .hero h1 {
-    margin-top: 1.1rem;
-    font-size: clamp(3rem, 6.1vw, 6.5rem);
-    line-height: 0.91;
-    max-width: 8.6ch;
+    margin-top: 1rem;
+    max-width: 8ch;
+    font-size: clamp(3.5rem, 7.2vw, 7.4rem);
+    line-height: 0.88;
   }
 
   .hero-lede {
     margin-top: 1.8rem;
-    max-width: 39rem;
+    max-width: 36rem;
     color: var(--text-mid);
-    font-size: clamp(1rem, 1.5vw, 1.18rem);
+    font-size: clamp(1rem, 1.45vw, 1.18rem);
     line-height: 1.55;
   }
 
   .hero-link {
-    margin-top: 2.5rem;
     display: inline-flex;
-    gap: 0.65rem;
     align-items: center;
-    padding: 0.82rem 1.05rem;
+    gap: 0.7rem;
+    margin-top: 2.4rem;
+    padding: 0.78rem 1rem;
     border: 1px solid var(--text);
     font-size: 0.82rem;
     font-weight: 650;
@@ -243,7 +229,7 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
 
   .hero-figure {
     justify-self: end;
-    width: min(100%, 660px);
+    width: min(100%, 650px);
   }
 
   .hero-figure img {
@@ -254,114 +240,86 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
   }
 
   .hero-figure figcaption {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-top: 0.6rem;
+    margin-top: 0.55rem;
     color: var(--text-light);
-    font-size: 0.7rem;
+    font-size: 0.68rem;
   }
 
-  .start {
-    padding-block: var(--section);
-  }
-
-  .section-intro {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 2rem;
-    align-items: end;
-    margin-bottom: 2.2rem;
-  }
-
-  .section-intro h2,
-  .section-heading-row h2,
-  .split-title h2 {
-    font-size: clamp(2.15rem, 4vw, 4.25rem);
-    line-height: 0.98;
-  }
-
-  .door-grid {
+  .section-index {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-bottom: var(--section);
     border-top: 1px solid var(--border-dark);
     border-left: 1px solid var(--border-dark);
   }
 
-  .door {
-    min-height: 190px;
+  .section-link {
+    min-height: 150px;
     display: grid;
     grid-template-columns: auto 1fr auto;
-    gap: 1.25rem;
-    align-items: end;
-    padding: clamp(1.2rem, 2.5vw, 2rem);
+    grid-template-rows: auto 1fr;
+    gap: 0.75rem 1.2rem;
+    padding: clamp(1.1rem, 2.4vw, 1.8rem);
     border-right: 1px solid var(--border-dark);
     border-bottom: 1px solid var(--border-dark);
     text-decoration: none;
-    transition: background 220ms var(--ease);
+    transition: background 180ms var(--ease);
   }
 
-  .door:hover,
-  .door:focus-visible {
+  .section-link:hover,
+  .section-link:focus-visible {
     background: var(--accent-soft);
   }
 
-  .door-number {
-    align-self: start;
-    font-size: 0.72rem;
+  .section-number {
+    font-size: 0.68rem;
     color: var(--text-light);
   }
 
-  .door-main {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-  }
-
-  .door-main strong {
+  .section-name {
+    align-self: end;
     font-family: var(--font-heading);
-    font-size: clamp(1.8rem, 3vw, 3rem);
-    font-weight: 400;
+    font-size: clamp(1.8rem, 3.2vw, 3rem);
     line-height: 1;
   }
 
-  .door-main small {
+  .section-note {
+    grid-column: 2;
     color: var(--text-mid);
     font-size: 0.78rem;
   }
 
-  .door-arrow {
-    font-size: 1.25rem;
+  .section-arrow {
+    grid-row: 1 / 3;
+    grid-column: 3;
+    align-self: end;
+    font-size: 1rem;
   }
 
-  .work {
+  .selection {
     padding-block: var(--section);
-    background: #eeebe5;
+    background: #ece9e3;
   }
 
-  .section-heading-row {
+  .section-header {
     display: grid;
-    grid-template-columns: minmax(0, 1.6fr) minmax(220px, 0.7fr);
+    grid-template-columns: 1fr 2fr;
     gap: 2rem;
     align-items: end;
-    margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+    margin-bottom: clamp(2.2rem, 5vw, 4rem);
   }
 
-  .section-heading-row h2 {
-    margin-top: 0.9rem;
-    max-width: 14ch;
+  .section-header h2,
+  .practice h2,
+  .projects h2,
+  .about h2 {
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    line-height: 0.94;
   }
 
-  .section-note {
-    color: var(--text-mid);
-    max-width: 30ch;
-    justify-self: end;
-    font-size: 0.9rem;
-  }
-
-  .work-layout {
+  .selection-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.75fr);
+    grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.72fr);
     gap: clamp(1rem, 2vw, 1.5rem);
     align-items: start;
   }
@@ -372,17 +330,16 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
   }
 
   .image-frame img {
-    width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 500ms var(--ease);
+    transition: transform 420ms var(--ease);
   }
 
   figure:hover .image-frame img {
-    transform: scale(1.015);
+    transform: scale(1.012);
   }
 
-  .image-frame-wide {
+  .image-frame-landscape {
     aspect-ratio: 3 / 2;
   }
 
@@ -390,289 +347,338 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
     aspect-ratio: 4 / 5;
   }
 
-  .work-feature figcaption,
-  .work-small figcaption {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    padding-top: 0.72rem;
+  .selection figcaption {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.25rem 1rem;
+    padding-top: 0.7rem;
   }
 
-  .work-feature figcaption span,
-  .work-small figcaption span {
+  .selection figcaption span {
     color: var(--text-light);
-    font-size: 0.7rem;
+    font-size: 0.67rem;
     text-transform: uppercase;
     letter-spacing: 0.09em;
   }
 
-  .work-feature figcaption strong,
-  .work-small figcaption strong {
+  .selection figcaption strong {
+    justify-self: end;
     text-align: right;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     font-weight: 650;
   }
 
-  .work-side {
-    display: grid;
-    gap: clamp(2.5rem, 5vw, 5rem);
-  }
-
-  .work-statement {
-    padding-top: 1.25rem;
-    border-top: 1px solid var(--border-dark);
-  }
-
-  .work-statement > p:last-child {
-    margin-top: 1rem;
-    font-family: var(--font-heading);
-    font-size: clamp(1.45rem, 2.5vw, 2.45rem);
-    line-height: 1.14;
-  }
-
-  .work-statement strong {
-    font-weight: 400;
-    font-style: italic;
+  .selection figcaption small {
+    grid-column: 2;
+    justify-self: end;
+    color: var(--text-light);
+    font-size: 0.65rem;
   }
 
   .fancy {
+    padding-block: clamp(5rem, 11vw, 10rem);
     background: var(--bg-ink);
     color: var(--text-on-dark);
-    padding-block: var(--section);
   }
 
   .fancy .eyebrow {
-    color: #aaa59d;
+    color: #99958f;
   }
 
-  .fancy-inner {
+  .fancy-grid {
     display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: clamp(3rem, 10vw, 10rem);
+    grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.65fr);
+    gap: clamp(3rem, 8vw, 8rem);
     align-items: end;
   }
 
   .fancy h2 {
-    margin-top: 1rem;
+    margin-top: 0.8rem;
     font-size: clamp(4rem, 10vw, 10rem);
-    line-height: 0.73;
+    line-height: 0.76;
     letter-spacing: -0.055em;
-    color: var(--text-on-dark);
   }
 
   .fancy-copy {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    max-width: 28rem;
-    padding-bottom: 0.5rem;
+    padding-bottom: 0.4rem;
   }
 
   .fancy-copy p {
-    font-size: clamp(1.05rem, 1.8vw, 1.35rem);
-    color: #d0cbc3;
+    max-width: 24rem;
+    color: #c6c1ba;
+    font-size: clamp(1.05rem, 1.5vw, 1.22rem);
   }
 
-  .coming-soon {
-    width: fit-content;
-    padding: 0.55rem 0.75rem;
-    border: 1px solid #68645e;
-    color: #b8b2aa;
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+  .dark-link {
+    display: inline-flex;
+    gap: 0.45rem;
+    margin-top: 1.8rem;
+    padding-bottom: 0.14rem;
+    border-bottom: 1px solid #77736d;
+    color: var(--text-on-dark);
+    font-size: 0.84rem;
+    text-decoration: none;
   }
 
-  .embroidery,
-  .workshops,
-  .about {
+  .practice {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     padding-block: var(--section);
   }
 
-  .embroidery {
-    background: var(--accent-soft);
+  .practice-block {
+    padding: clamp(1rem, 3vw, 2.5rem) clamp(1.5rem, 5vw, 4.5rem) clamp(1rem, 3vw, 2.5rem) 0;
   }
 
-  .workshops {
-    background: var(--bg);
-    border-top: 1px solid var(--border);
+  .practice-block + .practice-block {
+    padding-left: clamp(1.5rem, 5vw, 4.5rem);
+    padding-right: 0;
+    border-left: 1px solid var(--border-dark);
   }
 
-  .split-section {
-    display: grid;
-    grid-template-columns: minmax(260px, 0.85fr) minmax(0, 1.15fr);
-    gap: clamp(3rem, 9vw, 9rem);
+  .practice h2 {
+    margin-top: 0.8rem;
   }
 
-  .split-title h2 {
-    margin-top: 0.9rem;
-  }
-
-  .split-copy {
-    max-width: 42rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .split-copy .big-copy {
+  .practice-intro {
+    margin-top: clamp(2rem, 5vw, 4.5rem);
+    max-width: 22ch;
     font-family: var(--font-heading);
-    font-size: clamp(1.75rem, 3.3vw, 3.3rem);
-    line-height: 1.08;
+    font-size: clamp(1.5rem, 2.6vw, 2.35rem);
+    line-height: 1.12;
   }
 
-  .split-copy > p:not(.big-copy) {
+  .practice-copy {
+    margin-top: 1.2rem;
+    max-width: 34rem;
     color: var(--text-mid);
-    max-width: 38rem;
+  }
+
+  .projects {
+    padding-block: var(--section);
+    border-top: 1px solid var(--border-dark);
+  }
+
+  .projects-heading {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+    align-items: end;
+    margin-bottom: clamp(2rem, 5vw, 4rem);
+  }
+
+  .project-list {
+    border-top: 1px solid var(--border-dark);
+  }
+
+  .project-row {
+    display: grid;
+    grid-template-columns: 100px minmax(0, 1.35fr) minmax(180px, 0.65fr);
+    gap: 1rem;
+    align-items: baseline;
+    padding-block: 1.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .project-row strong {
+    font-family: var(--font-heading);
+    font-size: clamp(1.25rem, 2vw, 1.8rem);
+    font-weight: 400;
+  }
+
+  .project-year,
+  .project-row > span:last-child {
+    color: var(--text-mid);
+    font-size: 0.78rem;
   }
 
   .about {
-    background: var(--accent-lilac);
-  }
-
-  .about-inner > .eyebrow {
-    margin-bottom: 1.2rem;
+    padding-block: var(--section);
+    background: var(--accent-soft);
   }
 
   .about-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.6fr);
-    gap: clamp(3rem, 9vw, 9rem);
+    grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+    gap: clamp(3rem, 8vw, 8rem);
     align-items: start;
   }
 
   .about h2 {
-    font-size: clamp(2.4rem, 5.5vw, 5.6rem);
-    line-height: 0.98;
-    max-width: 12ch;
+    margin-top: 0.8rem;
   }
 
   .about-copy {
-    display: flex;
-    flex-direction: column;
-    gap: 1.6rem;
-    color: #514b56;
-    max-width: 31rem;
-    padding-top: 0.4rem;
+    padding-top: 1.5rem;
   }
 
-  @media (max-width: 850px) {
+  .about-copy p {
+    max-width: 38rem;
+    font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+    line-height: 1.6;
+  }
+
+  .about-copy .text-link {
+    margin-top: 1.8rem;
+  }
+
+  @media (max-width: 900px) {
     .hero {
-      min-height: auto;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(3.3rem, 8vw, 5.2rem);
+    }
+
+    .selection-grid {
+      grid-template-columns: minmax(0, 1.25fr) minmax(240px, 0.75fr);
+    }
+  }
+
+  @media (max-width: 720px) {
+    .hero {
+      min-height: 0;
       grid-template-columns: 1fr;
       gap: 2rem;
-      padding-top: 3rem;
-      padding-bottom: 5rem;
+      padding-top: 2rem;
+      padding-bottom: 3.5rem;
     }
 
     .hero-copy {
-      max-width: 100%;
+      order: 1;
+    }
+
+    .hero-figure {
+      order: 2;
+      justify-self: stretch;
+      width: 100%;
     }
 
     .hero h1 {
       max-width: 9ch;
-      font-size: clamp(3.6rem, 15vw, 6.3rem);
+      font-size: clamp(3.2rem, 16vw, 5.4rem);
     }
 
     .hero-lede {
-      max-width: 31rem;
-    }
-
-    .hero-figure {
-      width: 100%;
-      justify-self: stretch;
-    }
-
-    .hero-figure img {
-      aspect-ratio: 4 / 4.65;
-      object-position: 50% 34%;
-    }
-
-    .section-intro,
-    .section-heading-row,
-    .work-layout,
-    .fancy-inner,
-    .split-section,
-    .about-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .section-intro,
-    .section-heading-row {
-      gap: 1rem;
-    }
-
-    .section-note {
-      justify-self: start;
-    }
-
-    .work-side {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      align-items: start;
-      gap: 1rem;
-    }
-
-    .work-statement {
-      margin-top: 0;
-    }
-
-    .fancy-inner {
-      gap: 4rem;
-    }
-
-    .fancy h2 {
-      font-size: clamp(4.6rem, 18vw, 8rem);
-    }
-
-    .split-section,
-    .about-grid {
-      gap: 2.5rem;
-    }
-  }
-
-  @media (max-width: 600px) {
-    .hero h1 {
-      font-size: clamp(3.25rem, 17vw, 5.1rem);
+      margin-top: 1.25rem;
     }
 
     .hero-link {
-      margin-top: 1.8rem;
+      margin-top: 1.6rem;
     }
 
-    .door-grid {
+    .hero-figure img {
+      aspect-ratio: 4 / 5;
+    }
+
+    .section-index {
+      grid-template-columns: 1fr;
+      margin-bottom: var(--section);
+    }
+
+    .section-link {
+      min-height: 105px;
+      grid-template-columns: 34px 1fr auto;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .section-name {
+      align-self: center;
+      font-size: 1.75rem;
+    }
+
+    .section-note {
+      grid-column: 2;
+    }
+
+    .section-arrow {
+      align-self: center;
+    }
+
+    .section-header,
+    .projects-heading {
+      grid-template-columns: 1fr;
+      gap: 0.7rem;
+    }
+
+    .selection-grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    .image-frame-landscape {
+      aspect-ratio: 4 / 3;
+    }
+
+    .selection-side {
+      width: 78%;
+      margin-left: auto;
+    }
+
+    .selection figcaption {
       grid-template-columns: 1fr;
     }
 
-    .door {
-      min-height: 130px;
-    }
-
-    .work-side {
-      grid-template-columns: 1fr;
-      gap: 2.8rem;
-    }
-
-    .image-frame-portrait {
-      aspect-ratio: 4 / 4.5;
-    }
-
-    .work-feature figcaption,
-    .work-small figcaption {
-      flex-direction: column;
-      gap: 0.25rem;
-    }
-
-    .work-feature figcaption strong,
-    .work-small figcaption strong {
+    .selection figcaption strong,
+    .selection figcaption small {
+      grid-column: 1;
+      justify-self: start;
       text-align: left;
     }
 
-    .fancy h2 {
-      font-size: clamp(4rem, 21vw, 6.5rem);
+    .fancy-grid,
+    .practice,
+    .about-grid {
+      grid-template-columns: 1fr;
     }
 
-    .about h2 {
-      font-size: clamp(2.6rem, 13vw, 4.4rem);
+    .fancy-grid {
+      gap: 3rem;
+    }
+
+    .fancy h2 {
+      font-size: clamp(4.4rem, 24vw, 7rem);
+    }
+
+    .practice-block,
+    .practice-block + .practice-block {
+      padding: 0 0 3.5rem;
+    }
+
+    .practice-block + .practice-block {
+      padding-top: 3.5rem;
+      border-left: 0;
+      border-top: 1px solid var(--border-dark);
+    }
+
+    .practice-intro {
+      margin-top: 2rem;
+    }
+
+    .project-row {
+      grid-template-columns: 58px 1fr;
+      gap: 0.35rem 1rem;
+    }
+
+    .project-row > span:last-child {
+      grid-column: 2;
+    }
+
+    .about-grid {
+      gap: 1.5rem;
+    }
+
+    .about-copy {
+      padding-top: 0;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .selection-side {
+      width: 88%;
     }
   }
 </style>

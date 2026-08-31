@@ -1,27 +1,30 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #f5f2ec;
-  --bg-card: #ece7df;
-  --bg-soft: #e8e2d9;
-  --bg-ink: #171716;
-  --text: #171716;
-  --text-mid: #625f59;
-  --text-light: #8a867f;
-  --text-on-dark: #f7f4ee;
+  --bg: #f5f3ee;
+  --bg-subtle: #eeece7;
+  --bg-card: #ebe7e0;
+  --bg-soft: #e7e2da;
+  --bg-ink: #181817;
+
+  --text: #191918;
+  --text-mid: #66625c;
+  --text-light: #8b867e;
+  --text-on-dark: #f5f2ec;
+
   --border: #d8d2c9;
-  --border-dark: #bdb6ac;
-  --accent: #748f9a;
-  --accent-soft: #dfeaec;
-  --accent-lilac: #e8e0ef;
+  --border-dark: #bcb5ab;
+
+  --accent: #746f67;
+  --accent-soft: #eeece7;
+  --accent-lilac: #e8e3eb;
 
   --font-heading: Georgia, 'Times New Roman', serif;
   --font-body: 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
 
   --page: 1280px;
   --gutter: clamp(1rem, 3vw, 2.5rem);
-  --section: clamp(4.5rem, 9vw, 8.5rem);
-  --radius: 10px;
+  --section: clamp(4.75rem, 9vw, 8.5rem);
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -67,7 +70,8 @@ h2,
 h3 {
   font-family: var(--font-heading);
   font-weight: 400;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
 }
 
 a {
@@ -100,40 +104,17 @@ select {
 }
 
 .eyebrow {
-  font-size: 0.72rem;
+  font-size: 0.66rem;
   font-weight: 700;
-  letter-spacing: 0.13em;
+  letter-spacing: 0.14em;
   line-height: 1.2;
   text-transform: uppercase;
   color: var(--text-mid);
 }
 
-.text-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  width: fit-content;
-  font-size: 0.9rem;
-  font-weight: 650;
-  text-decoration: none;
-  border-bottom: 1px solid currentColor;
-  padding-bottom: 0.12rem;
-}
-
-.text-link::after {
-  content: '↗';
-  font-size: 0.88em;
-  transition: transform 180ms var(--ease);
-}
-
-.text-link:hover::after,
-.text-link:focus-visible::after {
-  transform: translate(2px, -2px);
-}
-
 :focus-visible {
-  outline: 2px solid var(--text);
-  outline-offset: 4px;
+  outline: 1px solid var(--text);
+  outline-offset: 5px;
 }
 
 @media (max-width: 720px) {
@@ -143,7 +124,7 @@ select {
 
   :root {
     --gutter: 1rem;
-    --section: 4.5rem;
+    --section: 4.75rem;
   }
 }
 

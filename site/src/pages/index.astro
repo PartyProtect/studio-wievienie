@@ -1,635 +1,678 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const doors = [
+  { number: '01', title: 'Werk', note: 'Mode, objecten & projecten', href: '#werk' },
+  { number: '02', title: 'Fancy Boogers', note: 'Kledinglijn', href: '#fancy-boogers' },
+  { number: '03', title: 'Borduurwerk', note: 'Textiel & opdrachten', href: '#borduurwerk' },
+  { number: '04', title: 'Workshops', note: 'Samen maken', href: '#workshops' },
+];
+
+const heroImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8026f5a085d80/92c0dc63-a0bc-4686-81b0-d0bcc698c06b/Unknown.jpeg';
+const juunamImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8026f5a085d80/1767703456320-YMAS5DUHNMV0VR29ZRLF/MVS_20251120_0093_WEB.jpg';
+const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8026f5a085d80/1772014449994-RK7LCIFVZK23UJQJ4WWS/538A4606_JonathanWiddershoven.jpg';
 ---
 
 <BaseLayout
   title="Studio Wievien"
-  description="Studio Wievien — borduurwerk, Fancy Boogers kledinglijn, workshops en meer. Handgemaakt met liefde."
+  description="Studio Wievien — mode, textiel, borduurwerk, workshops, projecten en Fancy Boogers."
   lang="nl"
   currentPath="/"
 >
-
-  <!-- Scroll progress bar -->
-  <div class="scroll-progress" aria-hidden="true"></div>
-
-  <!-- Hero — first snap, soft fade into taupe intro below -->
-  <section class="hero snap-section section-fade-bottom" style="--section-fade-to: var(--bg-taupe);">
-    <div class="hero-inner">
-      <div class="hero-content">
-        <p class="section-label">Borduurwerk &middot; Kleding &middot; Workshops</p>
-        <h1>Studio<br/>Wievien</h1>
-        <p class="hero-sub">Alles met de hand gemaakt &mdash;<br/>van draad tot streetwear.</p>
-        <div class="hero-cta">
-          <a href="/nl/werk/" class="btn btn-primary">Bekijk het werk</a>
-          <a href="/nl/winkel/" class="btn btn-ghost">Winkel</a>
-        </div>
-      </div>
-      <div class="hero-visual">
-        <div class="hero-placeholder parallax-img" aria-hidden="true">
-          <span>Hero foto</span>
-        </div>
-      </div>
-    </div>
-    <!-- Scroll hint -->
-    <div class="scroll-hint" aria-hidden="true">
-      <div class="scroll-hint-line"></div>
-    </div>
-  </section>
-
-  <!-- Intro — fade + scale entrance, fades into warm featured below -->
-  <section class="section intro snap-section transition-fade-scale section-fade-bottom" style="--section-fade-to: var(--bg-warm);">
-    <div class="intro-inner">
-      <hr class="divider" />
-      <h2>Over Wievien</h2>
-      <p class="intro-text">
-        Wievien is maker, borduurster en ontwerper. Vanuit haar studio werkt ze aan handgeborduurde stukken,
-        de kledinglijn Fancy Boogers, en geeft ze workshops voor iedereen die zelf wil leren borduren.
+  <section class="hero shell">
+    <div class="hero-copy">
+      <p class="eyebrow">Studio Wievien · Maastricht</p>
+      <h1>Mode, textiel, objecten en workshops.</h1>
+      <p class="hero-lede">
+        Van Fancy Boogers tot borduurwerk en projecten rond identiteit, materiaal en maken.
       </p>
-      <a href="/nl/over-wievien/" class="link-subtle">Meer over Wievien</a>
+      <a class="hero-link" href="#begin">Kijk rond <span aria-hidden="true">↓</span></a>
+    </div>
+
+    <!-- Temporary press image for the design prototype. Replace with owned/licensed photography before launch. -->
+    <figure class="hero-figure">
+      <img
+        src={heroImage}
+        alt="Ontwerp van Wievien met een lichtblauwe en lila hoofdvorm met kralen voor het gezicht"
+        loading="eager"
+        fetchpriority="high"
+      />
+      <figcaption>Studio Wievien · ontwerp / masker</figcaption>
+    </figure>
+  </section>
+
+  <section class="start shell" id="begin" aria-labelledby="start-heading">
+    <div class="section-intro">
+      <p class="eyebrow">Begin hier</p>
+      <h2 id="start-heading">Vier ingangen, één studio.</h2>
+    </div>
+
+    <div class="door-grid">
+      {doors.map(({ number, title, note, href }) => (
+        <a class="door" href={href}>
+          <span class="door-number">{number}</span>
+          <span class="door-main">
+            <strong>{title}</strong>
+            <small>{note}</small>
+          </span>
+          <span class="door-arrow" aria-hidden="true">↘</span>
+        </a>
+      ))}
     </div>
   </section>
 
-  <!-- Featured Work — rises up with clip reveal, fades into dark FB -->
-  <section class="section featured snap-section transition-rise section-fade-bottom" style="--section-fade-to: var(--bg-contrast);">
-    <div class="section-inner">
-      <div class="featured-header">
-        <p class="section-label">Geselecteerd werk</p>
-        <h2>Uitgelicht</h2>
-      </div>
-      <div class="work-grid reveal-stagger">
-        {[1, 2, 3, 4, 5, 6].map((i) => (
-          <article class="work-card reveal">
-            <div class="work-card-image duotone-wrap">
-              <div class="placeholder-img" aria-hidden="true">{i}</div>
-            </div>
-            <div class="work-card-info">
-              <h3>Werk titel {i}</h3>
-              <p class="work-card-cat">Borduurwerk</p>
-            </div>
-          </article>
-        ))}
-      </div>
-      <div class="section-footer reveal">
-        <a href="/nl/werk/" class="link-subtle">Bekijk al het werk</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Fancy Boogers — dramatic wipe entrance -->
-  <section class="section fancy-boogers snap-section transition-wipe">
-    <div class="section-inner fb-grid">
-      <div class="fb-image">
-        <div class="placeholder-img wide" aria-hidden="true">Fancy Boogers foto</div>
-      </div>
-      <div class="fb-content">
-        <p class="section-label fb-label">Kledinglijn</p>
-        <h2>Fancy<br/>Boogers</h2>
-        <p class="fb-description">
-          Waar borduurwerk en streetwear samenkomen.
-          Elk stuk is uniek — handgemaakt en gelimiteerd.
-        </p>
-        <a href="/nl/fancy-boogers/" class="btn btn-light">Bekijk de collectie</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Workshops — gentle float entrance -->
-  <section class="section workshops snap-section transition-float">
-    <!-- Accent line — decorative top, marks dark→light transition -->
-    <hr class="accent-line ws-accent" aria-hidden="true" />
-    <div class="section-inner">
-      <div class="ws-header">
+  <section class="work" id="werk" aria-labelledby="work-heading">
+    <div class="shell">
+      <div class="section-heading-row">
         <div>
-          <p class="section-label">Leer het zelf</p>
-          <h2>Workshops</h2>
+          <p class="eyebrow">Werk</p>
+          <h2 id="work-heading">Een paar plekken om binnen te kijken.</h2>
         </div>
-        <a href="/nl/workshops/" class="link-subtle">Alle workshops</a>
+        <p class="section-note">De homepage blijft klein. Het archief mag later groot worden.</p>
       </div>
-      <p class="prose ws-desc">
-        Leer borduren van Wievien zelf. Kleine groepen, persoonlijke begeleiding,
-        alle materialen inbegrepen.
-      </p>
-      <div class="ws-card gradient-border">
-        <div class="ws-card-image">
-          <div class="placeholder-img" aria-hidden="true">Workshop foto</div>
-        </div>
-        <div class="ws-card-info">
-          <p class="ws-card-date">Zaterdag 15 april 2026</p>
-          <h3>Basisborduurwerk</h3>
-          <p class="ws-card-details">Amsterdam &middot; 3 uur &middot; &euro;45 p.p.</p>
-          <p class="ws-card-spots">Nog 8 plaatsen</p>
+
+      <div class="work-layout">
+        <!-- Temporary public event photography used to establish visual direction. -->
+        <figure class="work-feature">
+          <div class="image-frame image-frame-wide">
+            <img
+              src={juunamImage}
+              alt="Kledingpresentatie op rekken tijdens FASHIONCLASH Festival 2025 bij Juunam"
+              loading="lazy"
+            />
+          </div>
+          <figcaption>
+            <span>Presentatie</span>
+            <strong>Studio Wievien · FASHIONCLASH 2025</strong>
+          </figcaption>
+        </figure>
+
+        <div class="work-side">
+          <figure class="work-small">
+            <div class="image-frame image-frame-portrait">
+              <img
+                src={projectImage}
+                alt="Model in een blauw en zilverkleurig experimenteel kostuum tijdens een FASHIONCLASH project"
+                loading="lazy"
+              />
+            </div>
+            <figcaption>
+              <span>Projecten</span>
+              <strong>Samenwerkingen & experiment</strong>
+            </figcaption>
+          </figure>
+
+          <div class="work-statement">
+            <p class="eyebrow">De praktijk</p>
+            <p>
+              Kleding, maskers, textiel, borduurwerk en projecten hoeven niet in één vakje te passen.
+              <strong>Werk</strong> wordt straks de plek waar alles samenkomt.
+            </p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
+  <section class="fancy" id="fancy-boogers" aria-labelledby="fancy-heading">
+    <div class="shell fancy-inner">
+      <div>
+        <p class="eyebrow">Kledinglijn</p>
+        <h2 id="fancy-heading">Fancy<br />Boogers</h2>
+      </div>
+      <div class="fancy-copy">
+        <p>
+          Een eigen kamer binnen Studio Wievien. Meer kleding, meer attitude, dezelfde hand erachter.
+        </p>
+        <span class="coming-soon">Collectiepagina volgt</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="embroidery" id="borduurwerk" aria-labelledby="embroidery-heading">
+    <div class="shell split-section">
+      <div class="split-title">
+        <p class="eyebrow">Textiel</p>
+        <h2 id="embroidery-heading">Borduurwerk</h2>
+      </div>
+      <div class="split-copy">
+        <p class="big-copy">
+          Handwerk kan klein en precies zijn, of een kledingstuk volledig veranderen.
+        </p>
+        <p>
+          Hier komt straks werk samen met informatie over opdrachten, technieken en wat er mogelijk is.
+          Voor nu houden we de plek rustig totdat het echte materiaal erin zit.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="workshops" id="workshops" aria-labelledby="workshops-heading">
+    <div class="shell split-section">
+      <div class="split-title">
+        <p class="eyebrow">Samen maken</p>
+        <h2 id="workshops-heading">Workshops</h2>
+      </div>
+      <div class="split-copy">
+        <p class="big-copy">Geen verzonnen kalender. Alleen workshops die echt gepland staan.</p>
+        <p>
+          Nieuwe data, locaties en praktische informatie krijgen hier een duidelijke plek zodra ze bekend zijn.
+        </p>
+        <a
+          class="text-link"
+          href="https://www.instagram.com/studio_wievien/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >Volg Studio Wievien op Instagram</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="over" aria-labelledby="about-heading">
+    <div class="shell about-inner">
+      <p class="eyebrow">Over</p>
+      <div class="about-grid">
+        <h2 id="about-heading">Wievien werkt instinctief met mode, kleur, materiaal en identiteit.</h2>
+        <div class="about-copy">
+          <p>
+            Haar praktijk beweegt tussen ontwerpen, maken en experimenteren. Maskers keren terug als een manier om
+            verandering en identiteit te onderzoeken; daarnaast werkt ze met kleding, textiel en participatieve projecten.
+          </p>
+          <a
+            class="text-link"
+            href="https://www.instagram.com/studio_wievien/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >@studio_wievien</a>
+        </div>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
-  /* ===========================
-     HERO — first snap section, full viewport
-     =========================== */
   .hero {
-    padding: 0 1.5rem;
-  }
-
-  .hero-inner {
-    max-width: 1200px;
-    margin: 0 auto;
+    min-height: calc(100svh - 70px);
     display: grid;
-    grid-template-columns: 1fr 1.15fr;
-    gap: 4rem;
+    grid-template-columns: minmax(0, 0.88fr) minmax(340px, 1.12fr);
+    gap: clamp(2rem, 6vw, 6.5rem);
     align-items: center;
+    padding-block: clamp(2.5rem, 5vw, 5rem);
   }
 
-  .hero-content {
+  .hero-copy {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
-  }
-
-  /* Scroll hint — animated thin line */
-  .scroll-hint {
-    position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .scroll-hint-line {
-    width: 1px;
-    height: 40px;
-    background: linear-gradient(to bottom, transparent, var(--border-dark));
-    animation: scrollPulse 2s var(--ease-in-out) infinite;
-  }
-
-  @keyframes scrollPulse {
-    0%, 100% { opacity: 0.3; transform: scaleY(0.6); transform-origin: top; }
-    50% { opacity: 1; transform: scaleY(1); transform-origin: top; }
+    align-items: flex-start;
+    max-width: 590px;
   }
 
   .hero h1 {
-    font-size: clamp(3rem, 7vw, 5.5rem);
-    font-weight: 400;
-    line-height: 0.95;
-    letter-spacing: -0.02em;
+    margin-top: 1.1rem;
+    font-size: clamp(3rem, 6.1vw, 6.5rem);
+    line-height: 0.91;
+    max-width: 8.6ch;
   }
 
-  .hero-sub {
-    font-size: clamp(1rem, 1.5vw, 1.125rem);
+  .hero-lede {
+    margin-top: 1.8rem;
+    max-width: 39rem;
     color: var(--text-mid);
-    line-height: 1.6;
-    max-width: 360px;
+    font-size: clamp(1rem, 1.5vw, 1.18rem);
+    line-height: 1.55;
   }
 
-  .hero-cta {
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-    margin-top: 0.5rem;
-  }
-
-  .hero-visual {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-placeholder {
-    aspect-ratio: 3/4;
-    width: 100%;
-    border-radius: 2px;
-  }
-
-  /* ===========================
-     BUTTONS — restrained, editorial
-     =========================== */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: all 0.35s var(--ease-out);
-    cursor: pointer;
-  }
-
-  .btn-primary {
-    background-color: var(--text);
-    color: var(--bg);
-    border: 1px solid var(--text);
-  }
-
-  .btn-primary:hover {
-    background-color: var(--accent-hover);
-    border-color: var(--accent-hover);
-    color: var(--bg);
-  }
-
-  .btn-ghost {
-    background: transparent;
-    color: var(--text);
-    border: 1px solid var(--border-dark);
-  }
-
-  .btn-ghost:hover {
-    border-color: var(--text);
-    color: var(--text);
-  }
-
-  /* Light button for dark sections */
-  .btn-light {
-    background: var(--text-on-dark);
-    color: var(--bg-contrast);
-    border: 1px solid var(--text-on-dark);
-  }
-
-  .btn-light:hover {
-    background: var(--accent-light);
-    border-color: var(--accent-light);
-    color: var(--bg-contrast);
-  }
-
-  /* ===========================
-     LINK — subtle editorial
-     =========================== */
-  .link-subtle {
-    font-size: 0.8125rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--text-mid);
-    text-decoration: none;
-    position: relative;
-    transition: color 0.3s var(--ease-out);
-  }
-
-  .link-subtle::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background: var(--text);
-    transition: width 0.4s var(--ease-out);
-  }
-
-  .link-subtle:hover {
-    color: var(--text);
-  }
-
-  .link-subtle:hover::after {
-    width: 100%;
-  }
-
-  /* ===========================
-     SECTIONS — full-viewport snap targets
-     =========================== */
-  .section {
-    padding: var(--space-xl) 1.5rem;
-    position: relative;
-  }
-
-  .section-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .section h2 {
-    margin-top: 0.5rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .section-footer {
+  .hero-link {
     margin-top: 2.5rem;
-    text-align: center;
-  }
-
-  /* ===========================
-     INTRO — elegant taupe band
-     Fades + scales in as you snap to it
-     =========================== */
-  .intro {
-    background-color: var(--bg-taupe);
-    text-align: center;
-    padding: var(--space-2xl) 1.5rem;
-  }
-
-  .intro-inner {
-    max-width: 560px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
+    display: inline-flex;
+    gap: 0.65rem;
     align-items: center;
-    gap: 1.25rem;
+    padding: 0.82rem 1.05rem;
+    border: 1px solid var(--text);
+    font-size: 0.82rem;
+    font-weight: 650;
+    text-decoration: none;
+    transition: background 180ms var(--ease), color 180ms var(--ease);
   }
 
-  .intro .divider {
-    background-color: var(--border-dark);
+  .hero-link:hover,
+  .hero-link:focus-visible {
+    background: var(--text);
+    color: var(--bg);
   }
 
-  .intro-text {
-    color: var(--text-mid);
-    font-size: 1.0625rem;
-    line-height: 1.75;
+  .hero-figure {
+    justify-self: end;
+    width: min(100%, 660px);
   }
 
-  /* ===========================
-     FEATURED WORK — rises into view with clip
-     =========================== */
-  .featured {
-    background-color: var(--bg-warm);
-    padding-top: var(--space-2xl);
-    padding-bottom: var(--space-2xl);
+  .hero-figure img {
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: 50% 39%;
+    background: #f8f8f6;
   }
 
-  .featured-header {
-    margin-bottom: 2.5rem;
-  }
-
-  .work-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.25rem;
-  }
-
-  .work-card {
-    cursor: pointer;
-    transition: opacity 0.4s var(--ease-out);
-  }
-
-  .work-card-image {
-    overflow: hidden;
-    border-radius: 2px;
-    margin-bottom: 0.75rem;
-    position: relative;
-  }
-
-  .work-card-image .placeholder-img {
-    aspect-ratio: 4/5;
-    transition: transform 0.6s var(--ease-out);
-  }
-
-  .work-card:hover .work-card-image .placeholder-img {
-    transform: scale(1.04);
-  }
-
-  /* :has() — All-but-me spotlight with color-mix desaturation */
-  .work-grid:has(.work-card:hover) .work-card:not(:hover) {
-    opacity: 0.35;
-    filter: saturate(0.6);
-    transition: opacity 0.5s var(--ease-out), filter 0.5s var(--ease-out);
-  }
-
-  .work-card h3 {
-    font-size: 1rem;
-    font-weight: 500;
-    font-family: var(--font-heading);
-  }
-
-  .work-card-cat {
-    font-size: 0.6875rem;
-    color: var(--text-light);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-top: 0.2rem;
-  }
-
-  /* ===========================
-     FANCY BOOGERS — DARK editorial contrast
-     The dramatic moment. Everything else is light;
-     this section inverts to near-black.
-     Like a dark spread in a fashion magazine.
-     =========================== */
-  .fancy-boogers {
-    background-color: var(--bg-contrast);
-    color: var(--text-on-dark);
-    overflow: hidden;
-    padding: var(--space-2xl) 1.5rem;
-  }
-
-  .fb-grid {
-    display: grid;
-    grid-template-columns: 1.3fr 1fr;
-    gap: 4rem;
-    align-items: center;
-  }
-
-  .fb-image {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .fb-image .placeholder-img {
-    aspect-ratio: 4/5;
-    border-radius: 2px;
-    background-color: var(--bg-contrast-mid);
-    color: var(--text-on-dark-muted);
-  }
-
-  .fb-content {
+  .hero-figure figcaption {
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .fb-label {
-    color: var(--accent-light);
-  }
-
-  .fb-content h2 {
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    line-height: 0.95;
-    margin-bottom: 0.75rem;
-    color: var(--text-on-dark);
-  }
-
-  .fb-description {
-    color: var(--text-on-dark-mid);
-    line-height: 1.7;
-    max-width: 400px;
-  }
-
-  .fb-content .btn {
-    margin-top: 1.5rem;
-    align-self: flex-start;
-  }
-
-  /* ===========================
-     WORKSHOPS — taupe section
-     Warm after the dark FB section
-     =========================== */
-  .workshops {
-    background-color: var(--bg-taupe);
-    padding: var(--space-2xl) 1.5rem;
-    position: relative;
-  }
-
-  .ws-accent {
-    position: absolute;
-    top: 0;
-    left: 5%;
-    right: 5%;
-    z-index: 1;
-  }
-
-  .ws-header {
-    display: flex;
-    align-items: flex-end;
     justify-content: space-between;
-    margin-bottom: 1rem;
-    gap: 2rem;
+    gap: 1rem;
+    margin-top: 0.6rem;
+    color: var(--text-light);
+    font-size: 0.7rem;
   }
 
-  .ws-desc {
-    color: var(--text-mid);
-    margin-bottom: 2rem;
+  .start {
+    padding-block: var(--section);
   }
 
-  .ws-card {
+  .section-intro {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+    align-items: end;
+    margin-bottom: 2.2rem;
   }
 
-  .ws-card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-lg);
+  .section-intro h2,
+  .section-heading-row h2,
+  .split-title h2 {
+    font-size: clamp(2.15rem, 4vw, 4.25rem);
+    line-height: 0.98;
   }
 
-  .ws-card-image .placeholder-img {
-    aspect-ratio: 16/10;
-    border-radius: 0;
-    height: 100%;
+  .door-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-top: 1px solid var(--border-dark);
+    border-left: 1px solid var(--border-dark);
   }
 
-  .ws-card-info {
-    padding: 2.25rem;
+  .door {
+    min-height: 190px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1.25rem;
+    align-items: end;
+    padding: clamp(1.2rem, 2.5vw, 2rem);
+    border-right: 1px solid var(--border-dark);
+    border-bottom: 1px solid var(--border-dark);
+    text-decoration: none;
+    transition: background 220ms var(--ease);
+  }
+
+  .door:hover,
+  .door:focus-visible {
+    background: var(--accent-soft);
+  }
+
+  .door-number {
+    align-self: start;
+    font-size: 0.72rem;
+    color: var(--text-light);
+  }
+
+  .door-main {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    gap: 0.35rem;
   }
 
-  .ws-card-date {
-    font-size: 0.6875rem;
-    font-weight: 600;
-    color: var(--text-light);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    margin-bottom: 0.5rem;
+  .door-main strong {
+    font-family: var(--font-heading);
+    font-size: clamp(1.8rem, 3vw, 3rem);
+    font-weight: 400;
+    line-height: 1;
   }
 
-  .ws-card-info h3 {
-    font-size: 1.375rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .ws-card-details {
-    font-size: 0.9375rem;
+  .door-main small {
     color: var(--text-mid);
-    margin-bottom: 0.5rem;
+    font-size: 0.78rem;
   }
 
-  .ws-card-spots {
-    font-size: 0.8125rem;
-    color: var(--accent);
-    font-weight: 500;
+  .door-arrow {
+    font-size: 1.25rem;
   }
 
-  /* ===========================
-     PLACEHOLDERS
-     (replaced with real photos later)
-     =========================== */
-  .placeholder-img {
-    background-color: var(--bg-elevated);
+  .work {
+    padding-block: var(--section);
+    background: #eeebe5;
+  }
+
+  .section-heading-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(220px, 0.7fr);
+    gap: 2rem;
+    align-items: end;
+    margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+  }
+
+  .section-heading-row h2 {
+    margin-top: 0.9rem;
+    max-width: 14ch;
+  }
+
+  .section-note {
+    color: var(--text-mid);
+    max-width: 30ch;
+    justify-self: end;
+    font-size: 0.9rem;
+  }
+
+  .work-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.75fr);
+    gap: clamp(1rem, 2vw, 1.5rem);
+    align-items: start;
+  }
+
+  .image-frame {
+    overflow: hidden;
+    background: var(--bg-soft);
+  }
+
+  .image-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 500ms var(--ease);
+  }
+
+  figure:hover .image-frame img {
+    transform: scale(1.015);
+  }
+
+  .image-frame-wide {
+    aspect-ratio: 3 / 2;
+  }
+
+  .image-frame-portrait {
+    aspect-ratio: 4 / 5;
+  }
+
+  .work-feature figcaption,
+  .work-small figcaption {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-light);
-    font-size: 0.8125rem;
-    font-style: italic;
-    border-radius: 2px;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 0.72rem;
   }
 
-  /* ===========================
-     MOBILE
-     =========================== */
-  @media (max-width: 768px) {
+  .work-feature figcaption span,
+  .work-small figcaption span {
+    color: var(--text-light);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+  }
+
+  .work-feature figcaption strong,
+  .work-small figcaption strong {
+    text-align: right;
+    font-size: 0.8rem;
+    font-weight: 650;
+  }
+
+  .work-side {
+    display: grid;
+    gap: clamp(2.5rem, 5vw, 5rem);
+  }
+
+  .work-statement {
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-dark);
+  }
+
+  .work-statement > p:last-child {
+    margin-top: 1rem;
+    font-family: var(--font-heading);
+    font-size: clamp(1.45rem, 2.5vw, 2.45rem);
+    line-height: 1.14;
+  }
+
+  .work-statement strong {
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  .fancy {
+    background: var(--bg-ink);
+    color: var(--text-on-dark);
+    padding-block: var(--section);
+  }
+
+  .fancy .eyebrow {
+    color: #aaa59d;
+  }
+
+  .fancy-inner {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: clamp(3rem, 10vw, 10rem);
+    align-items: end;
+  }
+
+  .fancy h2 {
+    margin-top: 1rem;
+    font-size: clamp(4rem, 10vw, 10rem);
+    line-height: 0.73;
+    letter-spacing: -0.055em;
+    color: var(--text-on-dark);
+  }
+
+  .fancy-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 28rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .fancy-copy p {
+    font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+    color: #d0cbc3;
+  }
+
+  .coming-soon {
+    width: fit-content;
+    padding: 0.55rem 0.75rem;
+    border: 1px solid #68645e;
+    color: #b8b2aa;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .embroidery,
+  .workshops,
+  .about {
+    padding-block: var(--section);
+  }
+
+  .embroidery {
+    background: var(--accent-soft);
+  }
+
+  .workshops {
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+  }
+
+  .split-section {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(3rem, 9vw, 9rem);
+  }
+
+  .split-title h2 {
+    margin-top: 0.9rem;
+  }
+
+  .split-copy {
+    max-width: 42rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .split-copy .big-copy {
+    font-family: var(--font-heading);
+    font-size: clamp(1.75rem, 3.3vw, 3.3rem);
+    line-height: 1.08;
+  }
+
+  .split-copy > p:not(.big-copy) {
+    color: var(--text-mid);
+    max-width: 38rem;
+  }
+
+  .about {
+    background: var(--accent-lilac);
+  }
+
+  .about-inner > .eyebrow {
+    margin-bottom: 1.2rem;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.6fr);
+    gap: clamp(3rem, 9vw, 9rem);
+    align-items: start;
+  }
+
+  .about h2 {
+    font-size: clamp(2.4rem, 5.5vw, 5.6rem);
+    line-height: 0.98;
+    max-width: 12ch;
+  }
+
+  .about-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    color: #514b56;
+    max-width: 31rem;
+    padding-top: 0.4rem;
+  }
+
+  @media (max-width: 850px) {
     .hero {
-      padding: 0 1rem;
-    }
-
-    .hero-inner {
+      min-height: auto;
       grid-template-columns: 1fr;
-      gap: 2.5rem;
+      gap: 2rem;
+      padding-top: 3rem;
+      padding-bottom: 5rem;
     }
 
-    .hero-visual {
-      order: -1;
+    .hero-copy {
+      max-width: 100%;
     }
 
     .hero h1 {
-      font-size: clamp(2.8rem, 12vw, 4rem);
+      max-width: 9ch;
+      font-size: clamp(3.6rem, 15vw, 6.3rem);
     }
 
-    .work-grid {
-      grid-template-columns: repeat(2, 1fr);
+    .hero-lede {
+      max-width: 31rem;
     }
 
-    .fb-grid {
-      grid-template-columns: 1fr;
-      gap: 2rem;
+    .hero-figure {
+      width: 100%;
+      justify-self: stretch;
     }
 
-    .section {
-      padding: 3.5rem 1rem;
+    .hero-figure img {
+      aspect-ratio: 4 / 4.65;
+      object-position: 50% 34%;
     }
 
-    .intro,
-    .fancy-boogers,
-    .featured,
-    .workshops {
-      padding-left: 1rem;
-      padding-right: 1rem;
-    }
-
-    /* On mobile, relax snap — content can be taller than viewport */
-    .snap-section {
-      min-height: auto;
-    }
-
-    .ws-card {
+    .section-intro,
+    .section-heading-row,
+    .work-layout,
+    .fancy-inner,
+    .split-section,
+    .about-grid {
       grid-template-columns: 1fr;
     }
 
-    .ws-card-image .placeholder-img {
-      aspect-ratio: 16/9;
+    .section-intro,
+    .section-heading-row {
+      gap: 1rem;
     }
 
-    .ws-header {
-      flex-direction: column;
-      align-items: flex-start;
+    .section-note {
+      justify-self: start;
     }
 
-    .scroll-hint {
-      display: none;
+    .work-side {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: start;
+      gap: 1rem;
+    }
+
+    .work-statement {
+      margin-top: 0;
+    }
+
+    .fancy-inner {
+      gap: 4rem;
+    }
+
+    .fancy h2 {
+      font-size: clamp(4.6rem, 18vw, 8rem);
+    }
+
+    .split-section,
+    .about-grid {
+      gap: 2.5rem;
     }
   }
 
-  @media (max-width: 480px) {
-    .work-grid {
+  @media (max-width: 600px) {
+    .hero h1 {
+      font-size: clamp(3.25rem, 17vw, 5.1rem);
+    }
+
+    .hero-link {
+      margin-top: 1.8rem;
+    }
+
+    .door-grid {
       grid-template-columns: 1fr;
+    }
+
+    .door {
+      min-height: 130px;
+    }
+
+    .work-side {
+      grid-template-columns: 1fr;
+      gap: 2.8rem;
+    }
+
+    .image-frame-portrait {
+      aspect-ratio: 4 / 4.5;
+    }
+
+    .work-feature figcaption,
+    .work-small figcaption {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .work-feature figcaption strong,
+    .work-small figcaption strong {
+      text-align: left;
+    }
+
+    .fancy h2 {
+      font-size: clamp(4rem, 21vw, 6.5rem);
+    }
+
+    .about h2 {
+      font-size: clamp(2.6rem, 13vw, 4.4rem);
     }
   }
 </style>

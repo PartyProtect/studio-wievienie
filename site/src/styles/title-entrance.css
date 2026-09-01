@@ -87,8 +87,8 @@ html[data-assembly='playing'] [data-assemble='wievien'][data-title-entrance='com
 }
 
 /* One measured W waits above the empty first-letter slot, turns just enough to
-   feel intentional, and drops last. The legacy class names are kept stable so
-   the motion layer does not need another structural rewrite. */
+   feel intentional, and drops last. The legacy class names stay stable so the
+   motion layer does not need another structural rewrite. */
 .title-ww-monogram {
   position: absolute;
   z-index: 4;

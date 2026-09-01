@@ -66,22 +66,23 @@ html[data-assembly='playing'] [data-assemble='wievien'][data-title-entrance='com
   color: var(--ink);
 }
 
+/* A faint projected silhouette gives direction; the contact shadow carries weight. */
 .title-motion-shadow-ink {
-  color: rgb(23 23 22 / 0.28);
+  color: rgb(23 23 22 / 0.11);
 }
 
 .title-motion-cast {
-  filter: blur(2.4px);
+  filter: blur(4.6px);
   mix-blend-mode: multiply;
   opacity: 0;
 }
 
 .title-motion-contact {
   position: absolute;
-  height: 5px;
+  height: 4px;
   border-radius: 50%;
-  background: rgb(23 23 22 / 0.28);
-  filter: blur(5px);
+  background: rgb(23 23 22 / 0.34);
+  filter: blur(5.5px);
   mix-blend-mode: multiply;
   transform-origin: center;
   opacity: 0;
@@ -89,16 +90,83 @@ html[data-assembly='playing'] [data-assemble='wievien'][data-title-entrance='com
 }
 
 .title-motion-studio .title-motion-contact {
-  height: 7px;
+  height: 6px;
   filter: blur(6px);
 }
 
-/* The quiet site waits until the name has completed its entrance. */
-html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame,
-html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame img {
-  animation-delay: 7700ms !important;
+/* Let Studio own the opening beat. */
+html[data-assembly='playing'] [data-assemble='eyebrow'] {
+  animation: assembly-small-settle 500ms 1180ms var(--ease) both !important;
 }
 
+/* The header rule can frame the stage, but its words wait for the name. */
+html[data-assembly='pending'] .header-inner > *,
+html[data-assembly='playing'] .header-inner > * {
+  opacity: 0;
+  transform: translateY(-0.45rem);
+  animation: none !important;
+}
+
+html[data-assembly='playing'] .header-inner > * {
+  animation: assembly-small-settle 500ms 7480ms var(--ease) both !important;
+}
+
+/* No pale photograph fragment before the title has finished. */
+html[data-assembly='pending'] [data-assemble='image'] .hero-image-frame,
+html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame {
+  visibility: hidden;
+  opacity: 0;
+}
+
+html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame {
+  animation: title-image-frame-in 1120ms 7700ms var(--ease) forwards !important;
+}
+
+html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame img {
+  animation: title-image-content-in 1280ms 7700ms var(--ease) forwards !important;
+}
+
+@keyframes title-image-frame-in {
+  0% {
+    visibility: visible;
+    opacity: 0;
+    clip-path: inset(5% 88% 5% 0);
+    transform: translateX(1.4rem);
+  }
+
+  18% {
+    opacity: 0.72;
+    clip-path: inset(5% 66% 5% 0);
+  }
+
+  48% {
+    opacity: 1;
+    clip-path: inset(3% 38% 3% 0);
+  }
+
+  78% {
+    clip-path: inset(1% 8% 1% 0);
+  }
+
+  100% {
+    visibility: visible;
+    opacity: 1;
+    clip-path: inset(0);
+    transform: none;
+  }
+}
+
+@keyframes title-image-content-in {
+  from {
+    transform: scale(1.055) translateX(0.7%);
+  }
+
+  to {
+    transform: scale(1) translateX(0);
+  }
+}
+
+/* The quiet site waits until the name has completed its entrance. */
 html[data-assembly='playing'] [data-assemble='guides'] { animation-delay: 7500ms !important; }
 html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-top { animation-delay: 7540ms !important; }
 html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-right { animation-delay: 7720ms !important; }
@@ -112,6 +180,17 @@ html[data-assembly='playing'] [data-assemble='door']:nth-child(2) { animation-de
 html[data-assembly='playing'] [data-assemble='door']:nth-child(3) { animation-delay: 8680ms !important; }
 html[data-assembly='playing'] [data-assemble='door']:nth-child(4) { animation-delay: 8810ms !important; }
 
+@media (max-width: 720px) {
+  .title-motion-contact {
+    height: 3px;
+    filter: blur(4.5px);
+  }
+
+  .title-motion-cast {
+    filter: blur(4px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .title-motion-layer {
     display: none !important;
@@ -120,5 +199,10 @@ html[data-assembly='playing'] [data-assemble='door']:nth-child(4) { animation-de
   [data-assemble='studio'],
   [data-assemble='wievien'] {
     visibility: visible !important;
+  }
+
+  [data-assemble='image'] .hero-image-frame {
+    visibility: visible !important;
+    opacity: 1 !important;
   }
 }

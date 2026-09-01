@@ -249,15 +249,16 @@ export const createTitleEntranceRuntime = ({ root, studioSource, nameSource }) =
       const altitude = Math.max(0, frame.z);
       const distance = clamp(altitude / maxAltitude, 0, 1);
       const impact = frame.scaleY < 0.92 ? 1 : 0;
-      const projectedX = frame.x + altitude * 0.065 + 5;
-      const opacity = clamp(0.06 + (1 - distance) * 0.17 + impact * 0.055, 0.025, 0.31);
+      const projectedX = frame.x + altitude * 0.035 + 3;
+      const projectedY = 6 + altitude * 0.012;
+      const opacity = clamp(0.13 + (1 - distance) * 0.18 + impact * 0.05, 0.055, 0.34);
 
       if (kind === 'cast') {
         const scaleX = frame.scaleX * (1 - distance * 0.38) * (1 + frame.stretch * 0.5 + impact * 0.18);
-        const scaleY = 0.26 * (1 - distance * 0.32) * (impact ? 0.72 : 1);
+        const scaleY = 0.24 * (1 - distance * 0.32) * (impact ? 0.7 : 1);
         return {
           offset: frame.offset,
-          transform: `translate(${px(projectedX)}, 8px) skewX(-29deg) rotate(${frame.rotation * 0.12}deg) scale(${scaleX}, ${scaleY})`,
+          transform: `translate(${px(projectedX)}, ${px(projectedY)}) skewX(-29deg) rotate(${frame.rotation * 0.12}deg) scale(${scaleX}, ${scaleY})`,
           transformOrigin: `${px(metric.left + metric.width * frame.originX)} ${px(metric.originY)}`,
           opacity,
         };
@@ -267,7 +268,7 @@ export const createTitleEntranceRuntime = ({ root, studioSource, nameSource }) =
       const scaleY = (0.42 + (1 - distance) * 0.58) * (impact ? 0.55 : 1);
       return {
         offset: frame.offset,
-        transform: `translateX(${px(projectedX)}) scale(${scaleX}, ${scaleY})`,
+        transform: `translate(${px(projectedX)}, ${px(projectedY)}) scale(${scaleX}, ${scaleY})`,
         opacity: opacity + 0.015,
       };
     });

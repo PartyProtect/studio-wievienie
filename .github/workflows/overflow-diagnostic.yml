@@ -1,0 +1,118 @@
+name: Mobile overflow diagnostic
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out pull request
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Install and build
+        working-directory: site
+        run: |
+          npm ci
+          npm run build
+          npm install --no-save --no-package-lock playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Find mobile overflow source
+        working-directory: site
+        run: |
+          npm run preview -- --host 127.0.0.1 --port 4321 > /tmp/wievien-preview.log 2>&1 &
+          PREVIEW_PID=$!
+          trap 'kill $PREVIEW_PID || true' EXIT
+
+          for attempt in {1..60}; do
+            if curl --fail --silent http://127.0.0.1:4321/ > /dev/null; then
+              break
+            fi
+            sleep 0.25
+          done
+
+          cat > .overflow-diagnostic.mjs <<'JS'
+          import { chromium } from 'playwright';
+
+          const browser = await chromium.launch({ headless: true });
+          const origin = 'http://127.0.0.1:4321';
+
+          const inspect = async (page, label) => {
+            await page.goto(`${origin}/?overflow=${label}`, { waitUntil: 'domcontentloaded' });
+            await page.waitForTimeout(900);
+            const report = await page.evaluate(() => {
+              const viewport = document.documentElement.clientWidth;
+              const describe = (element) => {
+                const rect = element.getBoundingClientRect();
+                const style = getComputedStyle(element);
+                return {
+                  tag: element.tagName.toLowerCase(),
+                  id: element.id || null,
+                  className: typeof element.className === 'string' ? element.className : null,
+                  text: (element.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 80),
+                  left: Number(rect.left.toFixed(2)),
+                  right: Number(rect.right.toFixed(2)),
+                  width: Number(rect.width.toFixed(2)),
+                  display: style.display,
+                  position: style.position,
+                  overflowX: style.overflowX,
+                  transform: style.transform,
+                };
+              };
+
+              const offenders = [...document.querySelectorAll('body *')]
+                .filter((element) => {
+                  const rect = element.getBoundingClientRect();
+                  return rect.right > viewport + 0.5 || rect.left < -0.5;
+                })
+                .map(describe)
+                .sort((a, b) => Math.max(b.right - viewport, -b.left) - Math.max(a.right - viewport, -a.left));
+
+              return {
+                innerWidth: window.innerWidth,
+                clientWidth: viewport,
+                scrollWidth: document.documentElement.scrollWidth,
+                bodyScrollWidth: document.body.scrollWidth,
+                offenders,
+              };
+            });
+            console.log(`OVERFLOW ${label}\n${JSON.stringify(report, null, 2)}`);
+          };
+
+          const reduced = await browser.newContext({
+            viewport: { width: 390, height: 844 },
+            isMobile: true,
+            hasTouch: true,
+            reducedMotion: 'reduce',
+          });
+          await inspect(await reduced.newPage(), 'reduced');
+          await reduced.close();
+
+          const noJs = await browser.newContext({
+            viewport: { width: 390, height: 844 },
+            isMobile: true,
+            hasTouch: true,
+            javaScriptEnabled: false,
+          });
+          await inspect(await noJs.newPage(), 'no-js');
+          await noJs.close();
+
+          await browser.close();
+          JS
+
+          node .overflow-diagnostic.mjs
+          rm .overflow-diagnostic.mjs

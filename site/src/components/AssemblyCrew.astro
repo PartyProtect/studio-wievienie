@@ -1,14 +1,14 @@
 <div class="assembly-crew" data-assemble="crew" aria-hidden="true">
-  <svg class="crew-rope" viewBox="0 0 100 40" preserveAspectRatio="none" role="presentation" focusable="false">
+  <svg class="crew-rope" viewBox="0 0 100 30" preserveAspectRatio="none" role="presentation" focusable="false">
     <defs>
-      <filter id="crew-rope-brush" x="-4%" y="-40%" width="108%" height="180%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.024 0.18" numOctaves="2" seed="11" result="noise" />
-        <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.6" xChannelSelector="R" yChannelSelector="G" />
+      <filter id="crew-rope-brush" x="-4%" y="-35%" width="108%" height="170%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.022 0.16" numOctaves="2" seed="11" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.48" xChannelSelector="R" yChannelSelector="G" />
       </filter>
     </defs>
-    <g class="crew-rope-ink" filter="url(#crew-rope-brush)">
-      <path class="crew-rope-cast" d="M0 31 C21 -2 58 5 100 3" />
-      <path class="crew-rope-taut" d="M0 31 C23 28 61 13 100 6" />
+    <g filter="url(#crew-rope-brush)">
+      <path class="crew-rope-cast" d="M0 23 C20 -4 57 0 100 4" />
+      <path class="crew-rope-taut" d="M0 23 C31 21 68 11 100 5" />
     </g>
   </svg>
 
@@ -23,21 +23,22 @@
     <g class="crew-ink" filter="url(#crew-brush)">
       <path class="crew-ground" d="M3 118 C36 116 74 119 115 117" />
 
-      <g class="crew-question crew-question-supervisor">
-        <text x="20" y="25">?</text>
-      </g>
-      <g class="crew-question crew-question-worker">
-        <text x="62" y="18">?</text>
-      </g>
+      <g class="crew-question crew-question-supervisor"><text x="18" y="24">?</text></g>
+      <g class="crew-question crew-question-worker"><text x="66" y="18">?</text></g>
 
       <g class="crew-supervisor">
-        <path class="crew-hat" d="M18 48 C20 42 24 39 29 39 C34 39 38 43 39 48 M16 49 C23 51 33 50 41 51" />
-        <circle cx="29" cy="56" r="6.2" />
+        <g class="crew-supervisor-head">
+          <path class="crew-hat" d="M18 48 C20 42 24 39 29 39 C34 39 38 43 39 48 M16 49 C23 51 33 50 41 51" />
+          <circle cx="29" cy="56" r="6.2" />
+        </g>
         <path class="crew-heavy" d="M29 63 C29 72 29 82 30 92" />
         <path d="M30 91 L20 116 M30 91 L42 116" />
-        <path d="M29 69 L16 76" />
-        <path class="crew-clipboard" d="M8 73 L21 76 L18 97 L5 94 Z" />
-        <path class="crew-clipboard-mark" d="M10 79 L17 81 M9 84 L16 86 M8 89 L14 90" />
+
+        <g class="crew-supervisor-clipboard-arm">
+          <path d="M29 69 L16 76" />
+          <path class="crew-clipboard" d="M8 73 L21 76 L18 97 L5 94 Z" />
+          <path class="crew-clipboard-mark" d="M10 79 L17 81 M9 84 L16 86 M8 89 L14 90" />
+        </g>
 
         <g class="crew-supervisor-point-arm">
           <path class="crew-heavy" d="M29 68 L44 61 L57 63" />
@@ -51,12 +52,31 @@
       </g>
 
       <g class="crew-worker-stage">
-        <g class="crew-worker">
-          <path class="crew-hat" d="M68 42 C70 35 75 32 81 32 C87 32 91 36 92 42 M66 43 C73 45 85 44 94 45" />
-          <circle cx="80" cy="50" r="6.6" />
+        <g class="crew-worker-body">
+          <g class="crew-worker-head">
+            <path class="crew-hat" d="M68 42 C70 35 75 32 81 32 C87 32 91 36 92 42 M66 43 C73 45 85 44 94 45" />
+            <circle cx="80" cy="50" r="6.6" />
+          </g>
           <path class="crew-heavy" d="M77 58 C71 69 67 80 65 92" />
           <path d="M66 91 L49 117 M66 91 L88 114" />
-          <path class="crew-heavy" d="M74 63 L93 69" />
+        </g>
+
+        <g class="crew-worker-scratch-arm">
+          <path class="crew-heavy" d="M74 63 L65 52 L70 43" />
+          <path d="M70 43 L73 40 M70 43 L67 40" />
+        </g>
+
+        <g class="crew-worker-rest-arm">
+          <path d="M73 64 L88 76" />
+        </g>
+
+        <g class="crew-worker-throw-arm">
+          <path class="crew-heavy" d="M73 63 L91 55 L101 59" />
+          <path d="M99 56 L104 59 L99 62" />
+        </g>
+
+        <g class="crew-worker-pull-arms">
+          <path class="crew-heavy" d="M74 63 L93 68" />
           <path class="crew-heavy" d="M71 67 L92 73" />
         </g>
       </g>
@@ -77,17 +97,21 @@
     overflow: visible;
   }
 
+  /* 92 / 160 = 57.5%: the rope now begins at the worker's actual grip. */
   .crew-rope {
     position: absolute;
-    left: 4.6rem;
-    bottom: 2.35rem;
-    width: 105vw;
-    height: 3rem;
+    left: 57.5%;
+    bottom: 45.8%;
+    z-index: 3;
+    width: 104vw;
+    height: clamp(2.4rem, 3.3vw, 3.4rem);
     overflow: visible;
-    transform-origin: left 78%;
+    transform-origin: 0 76.7%;
   }
 
   .crew-figures {
+    position: relative;
+    z-index: 4;
     display: block;
     width: 100%;
     height: auto;
@@ -113,21 +137,10 @@
     letter-spacing: -0.04em;
   }
 
-  .crew-heavy {
-    stroke-width: 1.92;
-  }
-
-  .crew-hat {
-    stroke-width: 1.38;
-  }
-
-  .crew-clipboard-mark {
-    stroke-width: 1.02;
-  }
-
-  .crew-ground {
-    opacity: 0.42;
-  }
+  .crew-heavy { stroke-width: 1.92; }
+  .crew-hat { stroke-width: 1.38; }
+  .crew-clipboard-mark { stroke-width: 1.02; }
+  .crew-ground { opacity: 0.42; }
 
   .crew-rope-cast,
   .crew-rope-taut,
@@ -136,6 +149,9 @@
   .crew-worker-stage,
   .crew-supervisor-point-arm,
   .crew-supervisor-thumb-arm,
+  .crew-worker-scratch-arm,
+  .crew-worker-throw-arm,
+  .crew-worker-pull-arms,
   .crew-question {
     opacity: 0;
   }
@@ -147,26 +163,33 @@
     stroke-dashoffset: 120;
   }
 
+  .crew-supervisor-head,
+  .crew-worker-head {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+  }
+
   .crew-supervisor-point-arm,
-  .crew-supervisor-thumb-arm {
+  .crew-supervisor-thumb-arm,
+  .crew-supervisor-clipboard-arm {
     transform-origin: 29px 68px;
     transform-box: fill-box;
   }
 
-  .crew-worker {
+  .crew-worker-body,
+  .crew-worker-scratch-arm,
+  .crew-worker-rest-arm,
+  .crew-worker-throw-arm,
+  .crew-worker-pull-arms {
     transform-origin: 66px 92px;
     transform-box: fill-box;
   }
 
   :global(html[data-assembly='pending']),
-  :global(html[data-assembly='playing']) {
-    overflow-x: clip;
-  }
+  :global(html[data-assembly='playing']) { overflow-x: clip; }
 
   :global(html[data-assembly='pending']) .assembly-crew,
-  :global(html[data-assembly='playing']) .assembly-crew {
-    display: block;
-  }
+  :global(html[data-assembly='playing']) .assembly-crew { display: block; }
 
   :global(html[data-assembly='pending'] [data-assemble='wievien']) {
     opacity: 0 !important;
@@ -174,151 +197,209 @@
   }
 
   :global(html[data-assembly='playing'] [data-assemble='wievien']) {
-    animation: assembly-wievien-story-haul 3600ms 4540ms linear both !important;
+    animation: assembly-wievien-story-haul 3300ms 4720ms linear both !important;
   }
 
   :global(html[data-assembly='playing'] [data-assemble='fields']) {
-    animation: assembly-small-settle 700ms 7700ms var(--ease) both !important;
+    animation: assembly-small-settle 700ms 8050ms var(--ease) both !important;
   }
-
-  :global(html[data-assembly='playing'] [data-assemble='cta']) {
-    animation: assembly-small-settle 700ms 8020ms var(--ease) both !important;
-  }
-
   :global(html[data-assembly='playing'] [data-assemble='caption']) {
-    animation: assembly-small-settle 650ms 7840ms var(--ease) both !important;
+    animation: assembly-small-settle 650ms 8150ms var(--ease) both !important;
   }
-
+  :global(html[data-assembly='playing'] [data-assemble='cta']) {
+    animation: assembly-small-settle 700ms 8380ms var(--ease) both !important;
+  }
   :global(html[data-assembly='playing'] [data-assemble='index']) {
-    animation: assembly-index-line 700ms 8220ms ease-out both !important;
+    animation: assembly-index-line 700ms 9000ms ease-out both !important;
   }
-
   :global(html[data-assembly='playing'] [data-assemble='door']) {
     animation-name: assembly-door !important;
     animation-duration: 800ms !important;
     animation-timing-function: var(--ease) !important;
     animation-fill-mode: both !important;
   }
-
-  :global(html[data-assembly='playing'] [data-assemble='door']:nth-child(1)) { animation-delay: 8400ms !important; }
-  :global(html[data-assembly='playing'] [data-assemble='door']:nth-child(2)) { animation-delay: 8570ms !important; }
-  :global(html[data-assembly='playing'] [data-assemble='door']:nth-child(3)) { animation-delay: 8740ms !important; }
-  :global(html[data-assembly='playing'] [data-assemble='door']:nth-child(4)) { animation-delay: 8910ms !important; }
+  :global(html[data-assembly='playing'] [data-assemble='door']:nth-child(1)) { animation-delay: 9160ms !important; }
+  :global(html[data-assembly='playing'] [data-assemble='door']:nth-child(2)) { animation-delay: 9330ms !important; }
+  :global(html[data-assembly='playing'] [data-assemble='door']:nth-child(3)) { animation-delay: 9500ms !important; }
+  :global(html[data-assembly='playing'] [data-assemble='door']:nth-child(4)) { animation-delay: 9670ms !important; }
 
   :global(html[data-assembly='playing']) .assembly-crew {
     animation:
-      crew-enter 520ms 1740ms var(--ease) both,
-      crew-exit 700ms 9060ms var(--ease) both;
+      crew-enter 520ms 1680ms var(--ease) both,
+      crew-exit 720ms 9940ms var(--ease) both;
   }
+  :global(html[data-assembly='playing']) .crew-ground { animation: crew-ground-in 500ms 1760ms ease-out both; }
+  :global(html[data-assembly='playing']) .crew-supervisor { animation: supervisor-arrive 520ms 1870ms var(--ease) both; }
+  :global(html[data-assembly='playing']) .crew-worker-stage { animation: worker-arrive 520ms 1970ms var(--ease) both; }
 
-  :global(html[data-assembly='playing']) .crew-ground { animation: crew-ground-in 500ms 1810ms ease-out both; }
-  :global(html[data-assembly='playing']) .crew-supervisor { animation: supervisor-arrive 520ms 1910ms var(--ease) both; }
-  :global(html[data-assembly='playing']) .crew-worker-stage { animation: worker-arrive 520ms 2020ms var(--ease) both; }
-  :global(html[data-assembly='playing']) .crew-question-worker { animation: question-pop 1200ms 2660ms var(--ease) both; }
-  :global(html[data-assembly='playing']) .crew-question-supervisor { animation: question-pop 1080ms 2840ms var(--ease) both; }
-  :global(html[data-assembly='playing']) .crew-supervisor-point-arm { animation: supervisor-point 1180ms 3520ms var(--ease) both; }
-  :global(html[data-assembly='playing']) .crew-rope-cast { animation: rope-cast 860ms 3980ms ease-out both; }
+  /* Acting before the problem is solved. */
+  :global(html[data-assembly='playing']) .crew-worker-head {
+    animation: worker-look 1500ms 2160ms var(--ease) both;
+  }
+  :global(html[data-assembly='playing']) .crew-supervisor-head {
+    animation: supervisor-look 1500ms 2240ms var(--ease) both;
+  }
+  :global(html[data-assembly='playing']) .crew-worker-scratch-arm {
+    animation: worker-scratch 1350ms 2320ms var(--ease) both;
+  }
+  :global(html[data-assembly='playing']) .crew-worker-rest-arm {
+    animation: rest-arm-fade 650ms 2020ms var(--ease) both;
+  }
+  :global(html[data-assembly='playing']) .crew-supervisor-clipboard-arm {
+    animation: clipboard-check 1250ms 2350ms var(--ease) both;
+  }
+  :global(html[data-assembly='playing']) .crew-question-worker { animation: question-pop 1150ms 2740ms var(--ease) both; }
+  :global(html[data-assembly='playing']) .crew-question-supervisor { animation: question-pop 1050ms 2920ms var(--ease) both; }
+
+  :global(html[data-assembly='playing']) .crew-supervisor-point-arm {
+    animation: supervisor-point 1050ms 3500ms var(--ease) both;
+  }
+  :global(html[data-assembly='playing']) .crew-worker-throw-arm {
+    animation: worker-throw 900ms 3920ms var(--ease) both;
+  }
+  :global(html[data-assembly='playing']) .crew-rope-cast {
+    animation: rope-cast 860ms 4050ms ease-out both;
+  }
   :global(html[data-assembly='playing']) .crew-rope-taut {
     animation:
-      rope-tighten 420ms 4510ms ease-out both,
-      rope-strain 2550ms 4900ms linear both,
-      rope-shorten 3600ms 4540ms linear both;
+      rope-tighten 440ms 4570ms ease-out both,
+      rope-strain 2850ms 4930ms linear both,
+      rope-shorten 3300ms 4720ms linear both;
   }
-  :global(html[data-assembly='playing']) .crew-worker {
+
+  :global(html[data-assembly='playing']) .crew-worker-pull-arms {
+    animation: pull-arms-appear 420ms 4510ms var(--ease) both;
+  }
+  :global(html[data-assembly='playing']) .crew-worker-body {
     animation:
-      worker-haul 3060ms 4680ms linear both,
-      worker-release 420ms 7640ms var(--ease) both;
+      worker-haul 3000ms 4760ms linear both,
+      worker-release 460ms 7860ms var(--ease) both;
   }
   :global(html[data-assembly='playing']) .crew-supervisor-thumb-arm {
-    animation: supervisor-thumb 500ms 7330ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: supervisor-thumb 500ms 8460ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
   @keyframes assembly-wievien-story-haul {
     0%   { opacity: 0; transform: translateX(105vw) translateY(0.05em) rotate(2.8deg) scale(1.03); }
-    10%  { opacity: 1; transform: translateX(88vw) translateY(0.045em) rotate(2.45deg) scale(1.024); }
-    22%  { transform: translateX(61vw) translateY(0.038em) rotate(1.82deg) scale(1.018); }
-    31%  { transform: translateX(69vw) translateY(0.042em) rotate(2.06deg) scale(1.02); }
-    46%  { transform: translateX(33vw) translateY(0.024em) rotate(0.98deg) scale(1.011); }
-    56%  { transform: translateX(40vw) translateY(0.03em) rotate(1.22deg) scale(1.013); }
-    73%  { transform: translateX(11vw) translateY(0.012em) rotate(0.38deg) scale(1.004); }
-    81%  { transform: translateX(15vw) translateY(0.016em) rotate(0.52deg) scale(1.006); }
-    92%  { transform: translateX(0.8vw) translateY(0.002em) rotate(0.06deg) scale(1.001); }
+    9%   { opacity: 1; transform: translateX(91vw) translateY(0.047em) rotate(2.5deg) scale(1.026); }
+    18%  { transform: translateX(95vw) translateY(0.05em) rotate(2.62deg) scale(1.027); }
+    35%  { transform: translateX(64vw) translateY(0.036em) rotate(1.78deg) scale(1.018); }
+    44%  { transform: translateX(69vw) translateY(0.041em) rotate(1.96deg) scale(1.02); }
+    62%  { transform: translateX(35vw) translateY(0.021em) rotate(0.96deg) scale(1.009); }
+    70%  { transform: translateX(39vw) translateY(0.025em) rotate(1.12deg) scale(1.01); }
+    86%  { transform: translateX(10vw) translateY(0.008em) rotate(0.28deg) scale(1.003); }
+    92%  { transform: translateX(13vw) translateY(0.01em) rotate(0.36deg) scale(1.004); }
+    98%  { transform: translateX(0.6vw) translateY(0.001em) rotate(0.04deg) scale(1); }
     100% { opacity: 1; transform: none; }
   }
 
   @keyframes rope-shorten {
     0%   { transform: scaleX(1); }
-    10%  { transform: scaleX(0.86); }
-    22%  { transform: scaleX(0.61); }
-    31%  { transform: scaleX(0.68); }
-    46%  { transform: scaleX(0.34); }
-    56%  { transform: scaleX(0.4); }
-    73%  { transform: scaleX(0.19); }
-    81%  { transform: scaleX(0.22); }
-    92%  { transform: scaleX(0.12); }
-    100% { transform: scaleX(0.1); }
+    9%   { transform: scaleX(0.88); }
+    18%  { transform: scaleX(0.92); }
+    35%  { transform: scaleX(0.63); }
+    44%  { transform: scaleX(0.68); }
+    62%  { transform: scaleX(0.36); }
+    70%  { transform: scaleX(0.4); }
+    86%  { transform: scaleX(0.17); }
+    92%  { transform: scaleX(0.2); }
+    98%,100% { transform: scaleX(0.105); }
   }
 
   @keyframes crew-enter {
     from { opacity: 0; transform: translate(-0.35rem, 0.18rem); }
     to { opacity: 1; transform: none; }
   }
-
   @keyframes crew-exit {
     from { opacity: 1; }
     to { opacity: 0; transform: translateY(0.24rem); }
   }
-
   @keyframes crew-ground-in {
     from { opacity: 0; stroke-dasharray: 120; stroke-dashoffset: 120; }
     to { opacity: 0.42; stroke-dasharray: 120; stroke-dashoffset: 0; }
   }
-
   @keyframes supervisor-arrive {
     from { opacity: 0; transform: translateY(0.32rem); }
     to { opacity: 0.76; transform: none; }
   }
-
   @keyframes worker-arrive {
     from { opacity: 0; transform: translateX(-0.28rem); }
     to { opacity: 0.9; transform: none; }
   }
 
+  @keyframes worker-look {
+    0%, 14% { transform: rotate(0deg) translateY(0); }
+    34% { transform: rotate(10deg) translateY(0.5px); }
+    58% { transform: rotate(-7deg) translateY(0); }
+    78%,100% { transform: rotate(5deg) translateY(0.4px); }
+  }
+  @keyframes supervisor-look {
+    0%,18% { transform: rotate(0deg); }
+    42% { transform: rotate(-7deg); }
+    68% { transform: rotate(6deg); }
+    100% { transform: rotate(2deg); }
+  }
+  @keyframes worker-scratch {
+    0% { opacity: 0; transform: rotate(18deg); }
+    18% { opacity: 0.95; transform: rotate(-8deg); }
+    35% { transform: rotate(4deg) translateY(-1px); }
+    52% { transform: rotate(-5deg) translateY(1px); }
+    70% { transform: rotate(3deg); }
+    100% { opacity: 0; transform: rotate(20deg) translateY(2px); }
+  }
+  @keyframes rest-arm-fade {
+    0% { opacity: 0; }
+    25%,70% { opacity: 0.8; }
+    100% { opacity: 0; }
+  }
+  @keyframes clipboard-check {
+    0% { transform: rotate(0deg) translateY(0); }
+    30% { transform: rotate(-5deg) translateY(-1px); }
+    54% { transform: rotate(2deg) translateY(0); }
+    75% { transform: rotate(-3deg) translateY(-0.5px); }
+    100% { transform: rotate(0deg); }
+  }
   @keyframes question-pop {
     0% { opacity: 0; transform: translateY(5px) scale(0.55) rotate(-10deg); }
     24% { opacity: 0.85; transform: translateY(0) scale(1.06) rotate(0deg); }
     62% { opacity: 0.82; transform: scale(1) rotate(-2deg); }
     100% { opacity: 0; transform: translateY(-3px) scale(0.96) rotate(2deg); }
   }
-
   @keyframes supervisor-point {
-    0% { opacity: 0; transform: rotate(28deg); }
-    24% { opacity: 0.92; transform: rotate(-4deg); }
-    72% { opacity: 0.92; transform: rotate(0deg); }
-    100% { opacity: 0; transform: rotate(2deg); }
+    0% { opacity: 0; transform: rotate(26deg); }
+    24% { opacity: 0.94; transform: rotate(-6deg); }
+    66% { opacity: 0.94; transform: rotate(0deg); }
+    100% { opacity: 0; transform: rotate(3deg); }
   }
-
+  @keyframes worker-throw {
+    0% { opacity: 0; transform: rotate(28deg) translateX(-2px); }
+    18% { opacity: 0.96; transform: rotate(-13deg) translateX(1px); }
+    48% { transform: rotate(-27deg) translateX(4px) translateY(-1px); }
+    72% { transform: rotate(5deg) translateX(1px); }
+    100% { opacity: 0; transform: rotate(16deg); }
+  }
   @keyframes rope-cast {
-    0% { opacity: 0; stroke-dashoffset: 120; transform: translateY(7px) rotate(-1.5deg); }
-    60% { opacity: 0.82; stroke-dashoffset: 0; transform: translateY(-2px) rotate(0.4deg); }
-    100% { opacity: 0.14; stroke-dashoffset: 0; transform: none; }
+    0% { opacity: 0; stroke-dashoffset: 120; transform: translateY(8px) rotate(-2deg); }
+    55% { opacity: 0.82; stroke-dashoffset: 0; transform: translateY(-3px) rotate(0.8deg); }
+    100% { opacity: 0.12; stroke-dashoffset: 0; transform: none; }
   }
-
   @keyframes rope-tighten {
     from { opacity: 0; stroke-dashoffset: 120; }
-    to { opacity: 0.88; stroke-dashoffset: 0; }
+    to { opacity: 0.9; stroke-dashoffset: 0; }
   }
-
   @keyframes rope-strain {
     0%,100% { translate: 0 0; }
-    12% { translate: 0 0.8px; }
-    22% { translate: 0 -0.42px; }
-    38% { translate: 0 1px; }
-    49% { translate: 0 -0.56px; }
-    67% { translate: 0 0.82px; }
-    79% { translate: 0 -0.38px; }
+    12% { translate: 0 0.7px; }
+    22% { translate: 0 -0.38px; }
+    38% { translate: 0 0.9px; }
+    49% { translate: 0 -0.5px; }
+    67% { translate: 0 0.75px; }
+    79% { translate: 0 -0.34px; }
   }
-
+  @keyframes pull-arms-appear {
+    0% { opacity: 0; transform: translateX(4px); }
+    100% { opacity: 0.95; transform: none; }
+  }
   @keyframes worker-haul {
     0% { transform: rotate(-4deg) translateX(0); }
     12% { transform: rotate(-17deg) translateX(-4px) translateY(1px); }
@@ -330,12 +411,10 @@
     90% { transform: rotate(-26deg) translateX(-8px) translateY(1px); }
     100% { transform: rotate(-17deg) translateX(-2px); }
   }
-
   @keyframes worker-release {
     from { opacity: 0.9; transform: rotate(-17deg) translateX(-2px); }
-    to { opacity: 0.9; transform: rotate(-8deg) translateX(0); }
+    to { opacity: 0.9; transform: rotate(-7deg) translateX(0); }
   }
-
   @keyframes supervisor-thumb {
     0% { opacity: 0; transform: rotate(72deg); }
     40% { opacity: 0.92; transform: rotate(-7deg); }
@@ -349,14 +428,12 @@
       width: 8.9rem;
       opacity: 0.9;
     }
-
     .crew-rope {
-      left: 3.95rem;
-      bottom: 2rem;
-      width: 108vw;
+      left: 57.5%;
+      bottom: 45.8%;
+      width: 105vw;
       height: 2.4rem;
     }
-
     .crew-question text { font-size: 12px; }
   }
 

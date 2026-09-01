@@ -53,7 +53,6 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
   <meta name="twitter:description" content={description} />
   {ogImageURL && <meta name="twitter:image" content={ogImageURL} />}
 
-  <!-- Decide before first paint whether the one-time homepage assembly should run. -->
   <script is:inline>
     (() => {
       const root = document.documentElement;
@@ -77,7 +76,6 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
     })();
   </script>
 
-  <!-- Prototype font delivery. Self-host before launch. -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -115,7 +113,7 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
           window.setTimeout(() => {
             root.dataset.assembly = 'done';
             window.setTimeout(() => root.removeAttribute('data-assembly'), 100);
-          }, 7700);
+          }, 10150);
         });
       };
 

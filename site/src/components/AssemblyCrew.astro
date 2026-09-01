@@ -5,5 +5,9 @@ import '@/styles/title-entrance.css';
 <div class="title-entrance" aria-hidden="true"></div>
 
 <script>
-  import '@/scripts/title-entrance.js';
+  const state = document.documentElement.dataset.assembly;
+
+  if (state === 'pending' || state === 'playing') {
+    import('@/scripts/title-entrance.js');
+  }
 </script>

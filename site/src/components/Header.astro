@@ -59,14 +59,14 @@ const nav = lang === 'nl'
     position: sticky;
     top: 0;
     z-index: 50;
-    background: color-mix(in srgb, var(--bg) 97%, transparent);
-    border-bottom: 1px solid var(--border);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: color-mix(in srgb, var(--bg) 96%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--line) 82%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 
   .header-inner {
-    min-height: 68px;
+    min-height: 64px;
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
@@ -74,9 +74,9 @@ const nav = lang === 'nl'
   }
 
   .brand {
-    font-family: var(--font-heading);
-    font-size: 1.16rem;
-    letter-spacing: -0.025em;
+    font-family: var(--font-display);
+    font-size: 1.13rem;
+    letter-spacing: -0.03em;
     line-height: 1;
     text-decoration: none;
     white-space: nowrap;
@@ -90,10 +90,10 @@ const nav = lang === 'nl'
 
   .desktop-nav a,
   .instagram {
-    color: var(--text-mid);
-    font-size: 0.72rem;
-    font-weight: 650;
-    letter-spacing: 0.01em;
+    color: var(--ink-soft);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.015em;
     text-decoration: none;
     transition: color 160ms var(--ease);
   }
@@ -102,7 +102,7 @@ const nav = lang === 'nl'
   .desktop-nav a:focus-visible,
   .instagram:hover,
   .instagram:focus-visible {
-    color: var(--text);
+    color: var(--ink);
   }
 
   .mobile-menu {
@@ -113,9 +113,9 @@ const nav = lang === 'nl'
   .mobile-menu summary {
     list-style: none;
     cursor: pointer;
-    color: var(--text-mid);
-    font-size: 0.74rem;
-    font-weight: 650;
+    color: var(--ink-soft);
+    font-size: 0.7rem;
+    font-weight: 600;
   }
 
   .mobile-menu summary::-webkit-details-marker {
@@ -124,11 +124,11 @@ const nav = lang === 'nl'
 
   .mobile-panel {
     position: fixed;
-    top: 62px;
+    top: 60px;
     left: 0;
     right: 0;
     background: var(--bg);
-    border-bottom: 1px solid var(--border-dark);
+    border-bottom: 1px solid var(--line-strong);
     padding: 0.75rem var(--gutter) 1.25rem;
   }
 
@@ -137,11 +137,12 @@ const nav = lang === 'nl'
   }
 
   .mobile-panel a {
-    padding: 0.9rem 0;
-    border-bottom: 1px solid var(--border);
-    font-family: var(--font-heading);
-    font-size: 1.35rem;
+    padding: 0.95rem 0;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-display);
+    font-size: 1.55rem;
     line-height: 1;
+    letter-spacing: -0.03em;
     text-decoration: none;
   }
 
@@ -152,7 +153,7 @@ const nav = lang === 'nl'
   @media (max-width: 850px) {
     .header-inner {
       grid-template-columns: 1fr auto;
-      min-height: 62px;
+      min-height: 60px;
     }
 
     .desktop-nav,

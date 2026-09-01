@@ -139,13 +139,13 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
     ];
 
     const sequences = [
-      { delay: 1720, duration: 1580, easing: 'cubic-bezier(.18,.74,.2,1)', shadowLead: 0 },
-      { delay: 3050, duration: 820, easing: 'cubic-bezier(.16,.88,.22,1)', shadowLead: 170 },
-      { delay: 3370, duration: 1040, easing: 'cubic-bezier(.2,.72,.18,1)', shadowLead: 80 },
+      { delay: 1700, duration: 1500, easing: 'linear', shadowLead: 0 },
+      { delay: 3280, duration: 720, easing: 'cubic-bezier(.16,.88,.22,1)', shadowLead: 150 },
+      { delay: 3620, duration: 920, easing: 'cubic-bezier(.2,.72,.18,1)', shadowLead: 90 },
       { delay: 4700, duration: 1040, easing: 'cubic-bezier(.14,.84,.22,1)', shadowLead: 260 },
-      { delay: 5620, duration: 660, easing: 'cubic-bezier(.17,.86,.25,1)', shadowLead: 120 },
-      { delay: 5800, duration: 900, easing: 'cubic-bezier(.2,.78,.2,1)', shadowLead: 160 },
-      { delay: 6460, duration: 910, easing: 'cubic-bezier(.1,.76,.18,1)', shadowLead: 130 },
+      { delay: 5650, duration: 640, easing: 'cubic-bezier(.17,.86,.25,1)', shadowLead: 120 },
+      { delay: 5870, duration: 840, easing: 'cubic-bezier(.2,.78,.2,1)', shadowLead: 150 },
+      { delay: 6500, duration: 900, easing: 'cubic-bezier(.1,.76,.18,1)', shadowLead: 140 },
     ];
 
     paths.forEach((path, index) => playPath(scene, index, path, sequences[index]));
@@ -156,7 +156,7 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
 
     later(() => {
       reactToImpact(scene, [5, 4, 3, 2, 1, 0], (index, order) => Math.max(1.2, 7 - order * 0.9), 330, 34);
-    }, 7010);
+    }, 7050);
 
     later(() => {
       activeAnimations.push(
@@ -170,7 +170,7 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
           { opacity: 0.9, transform: 'scaleX(1)' },
         ], { duration: 230, easing: 'ease-out', fill: 'forwards' }),
       );
-    }, 7410);
+    }, 7450);
 
     later(() => {
       nameSource.dataset.titleEntrance = 'complete';
@@ -187,7 +187,7 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
         { duration: 520, easing: 'ease-out', fill: 'forwards' },
       );
       Promise.allSettled([glyphFade.finished, shadowFade.finished]).then(() => scene.layer.remove());
-    }, 7640);
+    }, 7680);
   };
 
   const start = () => {

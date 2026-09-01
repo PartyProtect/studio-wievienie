@@ -2,41 +2,57 @@
 
 Studio Wievien is the digital home of Wievien’s creative practice: fashion, textile work, embroidery, objects, workshops, projects and Fancy Boogers.
 
-This is a creative studio first and a website second. The work should feel present, easy to discover and unmistakably made by a person.
+This is a creative studio first and a website second. The site should make the work easy to discover while leaving enough freedom for different bodies of work to become genuinely different experiences.
 
-## The canvas
+## The architecture
 
-The site should have a strong, calm visual foundation that keeps looking good as the material changes.
+Studio Wievien is the parent practice, not a single visual theme.
 
-Think of a well-made exhibition space rather than a page designed around one perfect photograph. Images may be portrait, landscape, colourful, strange, rough or quiet. The surrounding system should hold them together through good typography, spacing, hierarchy and a small family of dependable layouts.
+There are three useful scales:
 
-The overall feeling is clean, warm and creative. Not sterile, not loud, not aggressively minimal. There should be enough restraint that Wievien’s work remains the most visually interesting thing on the page.
+- the Studio Wievien layer introduces the practice, provides overview and wayfinding, and connects the work
+- substantial projects, collections or labels may become their own project worlds when they have enough identity, material or function to justify it
+- individual works can have focused detail pages without needing an entire mini-site
 
-Consistency should come from sensibility rather than making every section identical. Fancy Boogers may have more attitude. A project archive may be quieter. A workshop page may be practical and welcoming. They should feel like rooms in the same building.
+A project world may use its own typography, palette, layout logic, motion, navigation and interaction model. It does not need to look like the Studio homepage or like another project. Keep a clear route back to Studio Wievien so the visitor understands the larger context.
+
+Consistency should come from authorship, clear information architecture, reliable interaction and shared technical foundations rather than visual sameness.
+
+Fancy Boogers is the first clear example of this model: it can behave as a clothing label and shop inside Studio Wievien while having a visual identity of its own. Treat it as precedent for project autonomy, not as a template for future projects.
+
+## Shape the canvas first
+
+Do not decide a project’s art direction before understanding its material.
+
+Start by looking at the real photographs, objects, writing, purpose and actions the project needs. Establish the useful canvas: content hierarchy, route structure, navigation, responsive behavior, accessibility and technical boundaries. Then explore what visual language belongs on that canvas.
+
+Global guidance should define useful constraints and shared infrastructure, not pre-solve future creative decisions. Do not turn a successful local choice into a repository-wide rule simply because it worked once.
+
+When a project has no clear visual answer yet, prototype more than one possibility and judge the rendered result. The work is allowed to surprise the system.
 
 ## The work
 
 Start with what actually exists: photographs, garments, embroidery, objects, exhibitions, process material and real information.
 
-The homepage introduces. Overview pages organize. Detail pages hold depth. The site should be able to grow from a handful of pieces to hundreds without turning the homepage into an archive.
+The homepage introduces. Overview pages organize. Detail pages hold depth. Project worlds may go deeper when their content or purpose warrants it. The site should be able to grow from a handful of pieces to hundreds without turning the homepage into an archive.
 
-Photography carries much of the experience. Present it simply and confidently. A good default image treatment is more valuable than a special composition that only works with one photograph.
+Photography often carries much of the experience, but do not force every image into one global crop, aspect ratio or presentation pattern. Respect the source material and design the local composition around what is genuinely available.
 
 ## Character
 
-Studio Wievien should feel human.
+Studio Wievien should feel human, but there is no required global aesthetic recipe for achieving that.
 
-There can be elegance without preciousness, playfulness without childishness, polish without corporate smoothness. Fancy Boogers is a useful clue: humour, oddness and irreverence are allowed to remain visible.
+Elegance, humour, restraint, noise, oddness, stillness and theatricality are all available when the work earns them. Handmade character should mostly come from the actual work rather than decorative shorthand for “handmade.”
 
-Handmade character should mostly come from the actual work rather than decorative shorthand for “handmade.”
+Avoid importing generic fashion, portfolio, e-commerce or agency conventions without asking whether they help this particular project. Familiar patterns are useful when they make something clearer; they are not a visual obligation.
 
 ## Writing
 
-Writing should sound like somebody speaking: warm, direct, specific and unforced.
+Writing should sound like somebody speaking: direct, specific and unforced.
 
-Real information is better than brand language. If a piece took twelve hours to embroider, say that. If something started as a joke, that may be more interesting than turning it into an abstract artistic statement.
+Real information is better than invented brand language. If something started as a joke, that may be more useful than translating it into an abstract artistic statement.
 
-Do not invent Wievien’s biography, motivations, opinions, product details, prices, workshop dates or artistic meaning. Leave room for the real answer when we do not know it.
+Do not invent Wievien’s biography, motivations, opinions, product details, prices, workshop dates, artistic meaning or production claims. Leave room for the real answer when we do not know it.
 
 Dutch is primary. English should preserve the same personality rather than becoming more formal.
 
@@ -44,28 +60,46 @@ Dutch is primary. English should preserve the same personality rather than becom
 
 The visitor should never have to wrestle with the design.
 
-Movement can create rhythm or emphasis, but stillness is available too. Effects are part of the composition only when they help it. The site should already look complete before special effects are added.
+Movement, stillness, unusual navigation and conventional controls are all available. Use the interaction model that suits the project, then make it legible and robust. Buying, commissioning, joining a workshop, viewing work or returning to Studio Wievien should never require solving a puzzle.
 
-Navigation should feel obvious. Controls should work. Buying, commissioning, joining a workshop or contacting Wievien should never require solving a puzzle.
+Motion should have a reason to exist, should stop consuming attention when its job is done, and must have a reduced-motion path.
+
+## Shared plumbing, separate art direction
+
+Share infrastructure where doing so improves reliability: metadata, SEO helpers, image handling, accessibility utilities, data models, analytics, common behavior and small navigation primitives.
+
+Do not make a visual component global merely to reduce duplication. A shared component should usually share behavior or semantics first; its appearance may be exposed to the project rather than imposed on it.
+
+Project-specific CSS, fonts and client-side code should stay project-specific. Entering one project should not make visitors download the visual machinery of every other project.
+
+## Performance
+
+Astro is the current foundation and suits this architecture well. Prefer static HTML and CSS by default and add client-side JavaScript only where interaction needs it.
+
+Keep route costs local. A project should load its own fonts, styles, motion and interactive modules only when visited. Avoid global dependencies for effects used by one project.
+
+Treat images as part of the build rather than inert files: keep good source masters when possible, generate appropriately sized variants, use modern formats when useful, reserve eager loading for genuinely critical imagery and lazy-load work that begins below the fold.
+
+Judge performance in the browser on realistic mobile conditions. Protect layout stability, responsiveness and perceived loading quality rather than chasing clever implementation for its own sake.
 
 ## Mobile and accessibility
 
-Mobile is its own canvas, not a squeezed desktop layout. Recompose when necessary while keeping the same hierarchy and visual language.
+Mobile is its own canvas, not a squeezed desktop composition. Recompose when necessary. A project may change its layout substantially between desktop and mobile while preserving content hierarchy and purpose.
 
-Readable text, keyboard navigation, visible focus, useful alt text, sensible touch targets and reduced-motion support are part of the finished design rather than cleanup afterwards.
-
-## Technology
-
-Astro is the current foundation and suits the project well.
-
-Keep technology behind the curtain. Use the simplest implementation that preserves the idea. Technical cleverness matters when it improves the experience, performance or maintainability; otherwise the finished page matters more.
+Readable text, keyboard navigation, visible focus, useful alt text, sensible touch targets, semantic structure and reduced-motion support are part of the design from the beginning.
 
 ## Source of truth
 
-Real work, real photographs and real information about Wievien outrank old design documents and previous experiments.
+Real work, real photographs, real product information and direct requirements from Wievien outrank old design documents and previous experiments.
 
-The repository contains history. Treat it as context, not law.
+The current implementation is evidence, not law. The repository contains history; use it to understand what was tried, not to prevent a better answer.
 
-When the actual work suggests a better direction, follow the work. When the browser shows that an idea is not working, change it.
+When sources conflict, prefer the newest reliable material and explicit current requirements. Do not silently carry speculative content or abandoned visual assumptions forward.
 
-Look before deciding. Make something when uncertainty remains. Inspect the result. Keep what earns its place.
+## Working method
+
+Look before deciding.
+
+Understand the material and the job of the page. Shape the canvas. Make the smallest useful experiment that can answer the open question. Render it on desktop and mobile. Judge the actual result. Keep what earns its place and remove what does not.
+
+Do not write tomorrow’s art direction into today’s infrastructure.

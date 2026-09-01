@@ -10,8 +10,7 @@ interface Props {
   currentPath?: string;
   ogImage?: string;
   noindex?: boolean;
-  hideChrome?: boolean;
-  themeColor?: string;
+  firstVisitAssembly?: boolean;
 }
 
 const {
@@ -21,8 +20,7 @@ const {
   currentPath = '',
   ogImage,
   noindex = false,
-  hideChrome = false,
-  themeColor = '#f6f4ef',
+  firstVisitAssembly = false,
 } = Astro.props;
 
 const fullTitle = title === 'Studio Wievien' ? title : `${title} — Studio Wievien`;
@@ -32,11 +30,11 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
 ---
 
 <!DOCTYPE html>
-<html lang={lang}>
+<html lang={lang} data-assembly-enabled={firstVisitAssembly ? 'true' : undefined}>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content={themeColor} />
+  <meta name="theme-color" content="#f6f4ef" />
   <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
   <title>{fullTitle}</title>
   <meta name="description" content={description} />
@@ -56,22 +54,28 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
   {ogImageURL && <meta name="twitter:image" content={ogImageURL} />}
 
   <script is:inline>
-    try {
-      const fancyArrivalKey = 'studio-wievien:fancy-arrival';
-      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const normalizePath = (path) => path.replace(/\/+$/, '') || '/';
+    (() => {
+      const root = document.documentElement;
+      if (root.dataset.assemblyEnabled !== 'true') return;
 
-      if (
-        !reducedMotion &&
-        normalizePath(window.location.pathname) === '/fancy-boogers' &&
-        sessionStorage.getItem(fancyArrivalKey) === '1'
-      ) {
-        document.documentElement.classList.add('fancy-arrival-pending');
+      const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) return;
+
+      const forceReplay = new URLSearchParams(window.location.search).get('intro') === '1';
+      let hasSeenIntro = false;
+
+      try {
+        hasSeenIntro = sessionStorage.getItem('studio-wievien-assembly-seen') === '1';
+      } catch {
+        // Storage can be unavailable in strict privacy modes; the intro still works.
       }
-    } catch {}
+
+      if (!hasSeenIntro || forceReplay) {
+        root.dataset.assembly = 'pending';
+      }
+    })();
   </script>
 
-  <!-- Prototype font delivery. Self-host before launch. -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -83,108 +87,77 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
 </head>
 <body>
   <a class="skip-link" href="#main-content">{skipLabel}</a>
+  <Header lang={lang} currentPath={currentPath} />
 
-  <div data-page-shell>
-    {!hideChrome && <Header lang={lang} currentPath={currentPath} />}
+  <main id="main-content">
+    <slot />
+  </main>
 
-    <main id="main-content">
-      <slot />
-    </main>
-
-    {!hideChrome && <Footer lang={lang} />}
-  </div>
-
-  <div class="fancy-transition-overlay" data-fancy-transition-overlay aria-hidden="true"></div>
+  <Footer lang={lang} />
 
   <script is:inline>
     (() => {
       const root = document.documentElement;
-      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-      const fancyArrivalKey = 'studio-wievien:fancy-arrival';
-      const fancyPath = '/fancy-boogers';
-      const pullDuration = 430;
-      const revealDuration = 560;
-      let busy = false;
+      if (root.dataset.assembly !== 'pending') return;
 
-      const normalizePath = (path) => path.replace(/\/+$/, '') || '/';
+      let fallbackTimer = 0;
+      let finished = false;
 
-      const closeMobileMenu = () => {
-        document.querySelectorAll('.mobile-menu[open]').forEach((menu) => {
-          menu.removeAttribute('open');
-        });
-      };
-
-      const cleanup = () => {
-        root.classList.remove(
-          'fancy-arrival-pending',
-          'is-fancy-transitioning',
-          'is-fancy-pulling',
-          'is-fancy-covered',
-          'is-fancy-revealing'
-        );
-        busy = false;
-      };
-
-      const startTransition = (url) => {
-        if (busy || reducedMotion.matches) return;
-        busy = true;
-        closeMobileMenu();
-        root.classList.add('is-fancy-transitioning', 'is-fancy-pulling');
-
-        window.setTimeout(() => {
-          try {
-            sessionStorage.setItem(fancyArrivalKey, '1');
-          } catch {}
-          window.location.assign(url.href);
-        }, pullDuration);
-      };
-
-      document.addEventListener('click', (event) => {
-        if (
-          event.defaultPrevented ||
-          event.button !== 0 ||
-          event.metaKey ||
-          event.ctrlKey ||
-          event.shiftKey ||
-          event.altKey
-        ) return;
-
-        const link = event.target.closest('a[href]');
-        if (!link || link.hasAttribute('download')) return;
-        if (link.target && link.target !== '_self') return;
-
-        let url;
+      const rememberIntro = () => {
         try {
-          url = new URL(link.href, window.location.href);
+          sessionStorage.setItem('studio-wievien-assembly-seen', '1');
         } catch {
+          // The experience never depends on storage being available.
+        }
+      };
+
+      const finish = () => {
+        if (finished) return;
+        finished = true;
+        window.clearTimeout(fallbackTimer);
+        root.dataset.assembly = 'done';
+        window.setTimeout(() => root.removeAttribute('data-assembly'), 100);
+      };
+
+      const prepareIntroFonts = async () => {
+        if (!document.fonts?.load) return true;
+
+        try {
+          return await Promise.race([
+            Promise.all([
+              document.fonts.load('400 1em "Newsreader"'),
+              document.fonts.load('400 1em "Manrope"'),
+              document.fonts.load('600 1em "Manrope"'),
+            ]).then((fontGroups) => fontGroups.every((faces) => faces.length > 0)),
+            new Promise((resolve) => window.setTimeout(() => resolve(false), 1100)),
+          ]);
+        } catch {
+          return false;
+        }
+      };
+
+      const play = async () => {
+        const introFontsReady = await prepareIntroFonts();
+
+        if (!introFontsReady) {
+          rememberIntro();
+          finish();
           return;
         }
 
-        if (url.origin !== window.location.origin) return;
-        if (normalizePath(url.pathname) !== fancyPath) return;
-        if (normalizePath(window.location.pathname) === fancyPath) return;
-        if (reducedMotion.matches) return;
-
-        event.preventDefault();
-        startTransition(url);
-      });
-
-      const pendingArrival = root.classList.contains('fancy-arrival-pending');
-      if (pendingArrival) {
-        try {
-          sessionStorage.removeItem(fancyArrivalKey);
-        } catch {}
-
-        root.classList.add('is-fancy-transitioning', 'is-fancy-covered');
+        window.addEventListener('wievien:intro-complete', finish, { once: true });
 
         requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            root.classList.remove('fancy-arrival-pending');
-            root.classList.add('is-fancy-revealing');
-          });
+          root.dataset.assembly = 'playing';
+          rememberIntro();
+          fallbackTimer = window.setTimeout(finish, 12000);
         });
+      };
 
-        window.setTimeout(cleanup, revealDuration + 180);
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', play, { once: true });
+      } else {
+        play();
       }
     })();
   </script>

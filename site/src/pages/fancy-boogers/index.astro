@@ -1,0 +1,776 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const collection = [
+  { no: '01', name: 'Toile Terror Shirt', meta: 'Tops · designer fabric', price: '€345' },
+  { no: '02', name: 'The Boogie Blazer', meta: 'Outerwear · 1 of 1', price: '€245' },
+  { no: '03', name: 'The Original Booger', meta: 'Accessories · 1 of 1', price: '€38' },
+  { no: '04', name: 'Snout Beanie', meta: 'Accessories', price: '€65' },
+  { no: '05', name: 'Tissue Tee', meta: 'Tops', price: '€55' },
+  { no: '06', name: 'Big Sniff Hoodie', meta: 'Tops', price: '€185' },
+  { no: '07', name: 'Two-Tone Bogey Scarf', meta: 'Knitwear · 1 of 1', price: '€90' },
+  { no: '08', name: 'Booger Cardigan', meta: 'Knitwear · made to order', price: '€280' },
+  { no: '09', name: 'Nose-to-Toe Knit Dress', meta: 'Dresses · 1 of 1', price: '€340' },
+  { no: '10', name: 'The Big Blanket Coat', meta: 'Outerwear · made to order', price: '€460' },
+  { no: '11', name: 'Runny Nose Tote', meta: 'Bags', price: '€120' },
+];
+---
+
+<BaseLayout
+  title="Fancy Boogers · SS26"
+  description="Fancy Boogers by Studio Wievien. Noses, knitted by hand. Handmade, made to order and one-of-one pieces from the SS26 collection."
+  lang="nl"
+  currentPath="/fancy-boogers/"
+  ogImage="/images/fancy-boogers/toile-terror-hero.webp"
+  hideChrome={true}
+  themeColor="#171716"
+>
+  <div class="storefront">
+    <header class="store-nav shell">
+      <a class="store-brand" href="/" aria-label="Terug naar Studio Wievien">Studio Wievien</a>
+      <span class="store-season">SS26 · Fancy Boogers</span>
+      <a
+        class="store-instagram"
+        href="https://www.instagram.com/studio_wievien/"
+        rel="noopener noreferrer"
+        target="_blank"
+      >@studio_wievien ↗</a>
+    </header>
+
+    <section class="store-hero shell" aria-labelledby="store-title">
+      <div class="store-hero-copy" data-fancy-store-intro>
+        <p class="store-kicker">Handmade · made to order · 1 of 1</p>
+        <h1 id="store-title" data-fancy-store-title>Fancy<br />Boogers</h1>
+        <p class="store-tagline">Noses, knitted by hand.</p>
+      </div>
+
+      <div class="store-hero-aside" data-fancy-store-intro>
+        <span class="drop-pill">SS26 Drop</span>
+        <p>A tiny studio with a runny sense of humour.</p>
+        <a href="#collection" class="store-jump">View collection ↓</a>
+      </div>
+    </section>
+
+    <section class="feature feature-toile" aria-labelledby="toile-title">
+      <div class="feature-heading shell">
+        <div>
+          <p class="feature-index">01 · Tops</p>
+          <h2 id="toile-title">Toile Terror Shirt</h2>
+        </div>
+        <div class="feature-price">
+          <span>Designer fabric</span>
+          <strong>€345</strong>
+        </div>
+      </div>
+
+      <div class="photo-triptych shell">
+        <figure class="photo-card photo-card-lead">
+          <img src="/images/fancy-boogers/toile-terror-hero.webp" alt="Toile Terror Shirt, back view against a red background" loading="eager" decoding="async" />
+        </figure>
+        <figure class="photo-card">
+          <img src="/images/fancy-boogers/toile-terror-look-01.webp" alt="Fancy Boogers Toile Terror Shirt look against a red background" loading="lazy" decoding="async" />
+        </figure>
+        <figure class="photo-card">
+          <img src="/images/fancy-boogers/toile-terror-look-02.webp" alt="Model wearing the Toile Terror Shirt against a red background" loading="lazy" decoding="async" />
+        </figure>
+      </div>
+
+      <div class="feature-copy shell">
+        <p>
+          Boxy short-sleeve camp shirt cut from reworked designer toile de Jouy fabric — the real deal,
+          monkeys and all. Finished with a hand-embroidered nose. Because it's genuine designer cloth,
+          only a handful will ever exist. Front and back are one continuous scene.
+        </p>
+        <span>Featured · SS26</span>
+      </div>
+    </section>
+
+    <section class="story shell" aria-labelledby="story-title">
+      <p class="story-label">The story</p>
+      <div>
+        <h2 id="story-title">A tiny studio with a<br />runny sense of humour.</h2>
+        <p>
+          Fancy Boogers started with one felted nose and a refusal to take fashion too seriously.
+          Everything is knitted, felted and stitched by hand — no factories, no two exactly alike.
+          Pieces are made to order from natural, deadstock and reworked designer fabrics, so you wear
+          something genuinely one of a kind. Snot for everyone — and that's the point.
+        </p>
+      </div>
+      <dl class="story-facts">
+        <div><dt>Made by hand</dt><dd>Every single piece</dd></div>
+        <div><dt>Materials</dt><dd>Deadstock & reworked</dd></div>
+        <div><dt>Lead time</dt><dd>1–3 weeks, to order</dd></div>
+        <div><dt>Studio</dt><dd>@studio_wievien</dd></div>
+      </dl>
+    </section>
+
+    <section class="feature feature-boogie" aria-labelledby="boogie-title">
+      <div class="feature-heading shell">
+        <div>
+          <p class="feature-index">02 · Outerwear</p>
+          <h2 id="boogie-title">The Boogie Blazer</h2>
+        </div>
+        <div class="feature-price">
+          <span>1 of 1</span>
+          <strong>€245</strong>
+        </div>
+      </div>
+
+      <div class="photo-triptych photo-triptych-offset shell">
+        <figure class="photo-card photo-card-lead">
+          <img src="/images/fancy-boogers/boogie-blazer-hero.webp" alt="The Boogie Blazer from the back against a green background" loading="lazy" decoding="async" />
+        </figure>
+        <figure class="photo-card">
+          <img src="/images/fancy-boogers/boogie-blazer-look-01.webp" alt="Model wearing The Boogie Blazer against a green background" loading="lazy" decoding="async" />
+        </figure>
+        <figure class="photo-card">
+          <img src="/images/fancy-boogers/boogie-blazer-look-02.webp" alt="Front view of The Boogie Blazer against a green background" loading="lazy" decoding="async" />
+        </figure>
+      </div>
+
+      <div class="feature-copy shell">
+        <p>
+          Reworked oversized vintage suit blazer with a felted nose brooch on the lapel and a
+          hand-embroidered studio_wievien crest sprawled across the back. One of one — snot your dad's old suit.
+        </p>
+        <span>Featured · 1 of 1</span>
+      </div>
+    </section>
+
+    <section class="lookbook" aria-labelledby="lookbook-title">
+      <div class="lookbook-heading shell">
+        <p>Lookbook</p>
+        <h2 id="lookbook-title">The Slime Stripe drop</h2>
+        <span>SS26</span>
+      </div>
+
+      <div class="lookbook-grid shell">
+        <figure>
+          <img src="/images/fancy-boogers/slime-stripe-look-01.webp" alt="Slime Stripe look 01 against a purple background" loading="lazy" decoding="async" />
+          <figcaption>Look 01 · Slime Stripe shirt & skirt</figcaption>
+        </figure>
+        <figure>
+          <img src="/images/fancy-boogers/slime-stripe-look-02.webp" alt="Slime Stripe look 02 against a purple background" loading="lazy" decoding="async" />
+          <figcaption>Look 02 · Oversized striped camp shirt</figcaption>
+        </figure>
+        <figure class="lookbook-wide">
+          <img src="/images/fancy-boogers/slime-stripe-look-03.webp" alt="The full SS26 Slime Stripe pairing against a purple background" loading="lazy" decoding="async" />
+          <figcaption>Look 03 · The full SS26 pairing</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="collection shell" id="collection" aria-labelledby="collection-title">
+      <header class="collection-heading">
+        <div>
+          <p>The collection</p>
+          <h2 id="collection-title">11 pieces</h2>
+        </div>
+        <span>Made to order in the studio.</span>
+      </header>
+
+      <div class="collection-list">
+        {collection.map((item) => (
+          <div class="collection-row">
+            <span class="collection-no">{item.no}</span>
+            <strong>{item.name}</strong>
+            <span class="collection-meta">{item.meta}</span>
+            <span class="collection-price">{item.price}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="store-contact shell" aria-labelledby="contact-title">
+      <p>Made to order · Studio Wievien</p>
+      <h2 id="contact-title">Want one?<br />Talk to the studio.</h2>
+      <a
+        href="https://www.instagram.com/studio_wievien/"
+        rel="noopener noreferrer"
+        target="_blank"
+      >@studio_wievien ↗</a>
+    </section>
+
+    <footer class="store-footer shell">
+      <a href="/">← Studio Wievien</a>
+      <span>Fancy Boogers · SS26</span>
+      <a
+        href="https://www.instagram.com/studio_wievien/"
+        rel="noopener noreferrer"
+        target="_blank"
+      >Instagram ↗</a>
+    </footer>
+  </div>
+</BaseLayout>
+
+<style>
+  :global(body) {
+    background: #171716;
+  }
+
+  .storefront {
+    min-height: 100dvh;
+    overflow: hidden;
+    background: #171716;
+    color: #f6f4ef;
+  }
+
+  .storefront a {
+    color: inherit;
+  }
+
+  .store-nav {
+    min-height: 68px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1.5rem;
+    border-bottom: 1px solid #353331;
+    font-size: 0.66rem;
+    font-weight: 600;
+  }
+
+  .store-brand,
+  .store-instagram {
+    text-decoration: none;
+  }
+
+  .store-brand {
+    justify-self: start;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 400;
+    letter-spacing: -0.025em;
+  }
+
+  .store-season {
+    color: #8f8b85;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .store-instagram {
+    justify-self: end;
+    color: #b9b5ae;
+  }
+
+  .store-hero {
+    min-height: min(880px, calc(100svh - 68px));
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(250px, 0.45fr);
+    gap: clamp(3rem, 8vw, 9rem);
+    align-items: end;
+    padding-block: clamp(5rem, 9vw, 9rem);
+  }
+
+  .store-kicker,
+  .story-label,
+  .feature-index,
+  .lookbook-heading p,
+  .collection-heading p,
+  .store-contact > p {
+    color: #96918b;
+    font-size: 0.64rem;
+    font-weight: 600;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .store-hero h1 {
+    margin-top: 1.1rem;
+    font-size: clamp(6rem, 13.5vw, 13rem);
+    line-height: 0.68;
+    letter-spacing: -0.07em;
+  }
+
+  .store-tagline {
+    margin-top: 3rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 3vw, 3rem);
+    line-height: 1;
+    letter-spacing: -0.035em;
+  }
+
+  .store-hero-aside {
+    align-self: end;
+    padding-bottom: 0.4rem;
+  }
+
+  .drop-pill {
+    display: inline-flex;
+    padding: 0.38rem 0.7rem 0.32rem;
+    border-radius: 999px;
+    background: #8cff00;
+    color: #171716;
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .store-hero-aside p {
+    margin-top: 1.5rem;
+    max-width: 18rem;
+    color: #b9b5ae;
+    font-size: 0.82rem;
+    line-height: 1.65;
+  }
+
+  .store-jump {
+    display: inline-block;
+    margin-top: 1.6rem;
+    padding-bottom: 0.16rem;
+    border-bottom: 1px solid #69655f;
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .feature {
+    padding-block: clamp(5.5rem, 10vw, 10rem);
+    border-top: 1px solid #353331;
+  }
+
+  .feature-heading {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: end;
+    margin-bottom: clamp(2rem, 4vw, 3.7rem);
+  }
+
+  .feature-heading h2,
+  .lookbook-heading h2,
+  .collection-heading h2,
+  .store-contact h2 {
+    margin-top: 0.55rem;
+    font-size: clamp(3.1rem, 6.7vw, 7rem);
+    line-height: 0.84;
+    letter-spacing: -0.055em;
+  }
+
+  .feature-price {
+    display: grid;
+    justify-items: end;
+    gap: 0.45rem;
+  }
+
+  .feature-price span {
+    color: #96918b;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .feature-price strong {
+    font-family: var(--font-display);
+    font-size: clamp(1.7rem, 2.8vw, 2.8rem);
+    font-weight: 400;
+  }
+
+  .photo-triptych {
+    display: grid;
+    grid-template-columns: 1.25fr 0.88fr 0.88fr;
+    gap: clamp(0.55rem, 1.2vw, 1rem);
+    align-items: stretch;
+  }
+
+  .photo-triptych-offset {
+    grid-template-columns: 0.88fr 0.88fr 1.25fr;
+  }
+
+  .photo-triptych-offset .photo-card-lead {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .photo-triptych-offset .photo-card:nth-child(2) {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .photo-triptych-offset .photo-card:nth-child(3) {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .photo-card {
+    min-height: clamp(360px, 56vw, 760px);
+    overflow: hidden;
+    background: #242321;
+  }
+
+  .photo-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 700ms var(--ease);
+  }
+
+  .feature-copy {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(160px, 0.6fr);
+    gap: 2rem;
+    align-items: end;
+    margin-top: 1.4rem;
+  }
+
+  .feature-copy p {
+    max-width: 54rem;
+    color: #c7c3bc;
+    font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+    line-height: 1.7;
+  }
+
+  .feature-copy span {
+    justify-self: end;
+    color: #77736e;
+    font-size: 0.59rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .story {
+    display: grid;
+    grid-template-columns: 0.42fr minmax(0, 1.2fr) minmax(240px, 0.55fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    padding-block: clamp(6rem, 11vw, 11rem);
+    border-top: 1px solid #353331;
+  }
+
+  .story h2 {
+    font-size: clamp(2.8rem, 5.5vw, 5.8rem);
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+  }
+
+  .story > div > p {
+    margin-top: 2rem;
+    max-width: 48rem;
+    color: #b9b5ae;
+    font-size: 0.92rem;
+    line-height: 1.75;
+  }
+
+  .story-facts {
+    margin: 0;
+    border-top: 1px solid #353331;
+  }
+
+  .story-facts div {
+    padding-block: 0.9rem;
+    border-bottom: 1px solid #353331;
+  }
+
+  .story-facts dt {
+    color: #77736e;
+    font-size: 0.57rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .story-facts dd {
+    margin: 0.2rem 0 0;
+    font-size: 0.73rem;
+  }
+
+  .lookbook {
+    padding-block: clamp(6rem, 11vw, 11rem);
+    border-top: 1px solid #353331;
+  }
+
+  .lookbook-heading {
+    display: grid;
+    grid-template-columns: 0.45fr 1.35fr auto;
+    gap: 2rem;
+    align-items: end;
+    margin-bottom: clamp(2.5rem, 5vw, 5rem);
+  }
+
+  .lookbook-heading span {
+    color: #96918b;
+    font-size: 0.63rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .lookbook-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.7rem, 1.4vw, 1.2rem);
+  }
+
+  .lookbook-grid figure {
+    margin: 0;
+  }
+
+  .lookbook-grid img {
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+  }
+
+  .lookbook-wide {
+    grid-column: 1 / -1;
+    width: 76%;
+    margin-left: auto !important;
+  }
+
+  .lookbook-wide img {
+    aspect-ratio: 16 / 9;
+  }
+
+  .lookbook-grid figcaption {
+    padding-top: 0.62rem;
+    color: #77736e;
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+
+  .collection {
+    padding-block: clamp(6rem, 11vw, 11rem);
+    border-top: 1px solid #353331;
+  }
+
+  .collection-heading {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: end;
+    margin-bottom: clamp(3rem, 6vw, 5.5rem);
+  }
+
+  .collection-heading > span {
+    color: #96918b;
+    font-size: 0.63rem;
+  }
+
+  .collection-list {
+    border-top: 1px solid #55514c;
+  }
+
+  .collection-row {
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1.35fr) minmax(190px, 0.7fr) auto;
+    gap: 1rem;
+    align-items: baseline;
+    padding-block: 1.25rem;
+    border-bottom: 1px solid #353331;
+  }
+
+  .collection-no,
+  .collection-meta {
+    color: #77736e;
+    font-size: 0.59rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .collection-row strong {
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 2.25vw, 2rem);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+  }
+
+  .collection-price {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+  }
+
+  .store-contact {
+    min-height: 72svh;
+    display: grid;
+    align-content: center;
+    justify-items: start;
+    padding-block: clamp(6rem, 12vw, 12rem);
+    border-top: 1px solid #353331;
+  }
+
+  .store-contact h2 {
+    margin-top: 1.2rem;
+    font-size: clamp(4rem, 9vw, 9rem);
+  }
+
+  .store-contact a {
+    display: inline-block;
+    margin-top: 2.4rem;
+    padding-bottom: 0.18rem;
+    border-bottom: 1px solid #69655f;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .store-footer {
+    min-height: 78px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 1rem;
+    align-items: center;
+    border-top: 1px solid #353331;
+    color: #77736e;
+    font-size: 0.62rem;
+  }
+
+  .store-footer a {
+    text-decoration: none;
+  }
+
+  .store-footer a:last-child {
+    justify-self: end;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .photo-card:hover img {
+      transform: scale(1.012);
+    }
+  }
+
+  @media (max-width: 760px) {
+    .store-nav {
+      grid-template-columns: 1fr auto;
+      min-height: 62px;
+    }
+
+    .store-season {
+      display: none;
+    }
+
+    .store-instagram {
+      font-size: 0.58rem;
+    }
+
+    .store-hero {
+      min-height: calc(100svh - 62px);
+      grid-template-columns: 1fr;
+      gap: 3.4rem;
+      align-content: end;
+      padding-block: 4rem 3.4rem;
+    }
+
+    .store-hero h1 {
+      font-size: clamp(5.4rem, 25vw, 8.5rem);
+      line-height: 0.7;
+    }
+
+    .store-tagline {
+      margin-top: 2rem;
+      font-size: 1.8rem;
+    }
+
+    .feature-heading,
+    .collection-heading {
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+    }
+
+    .feature-heading h2,
+    .lookbook-heading h2,
+    .collection-heading h2 {
+      font-size: clamp(2.7rem, 12vw, 4rem);
+    }
+
+    .photo-triptych,
+    .photo-triptych-offset {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.55rem;
+    }
+
+    .photo-triptych .photo-card-lead,
+    .photo-triptych-offset .photo-card-lead {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      min-height: 76svh;
+    }
+
+    .photo-triptych-offset .photo-card:nth-child(2) {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .photo-triptych-offset .photo-card:nth-child(3) {
+      grid-column: 2;
+      grid-row: 2;
+    }
+
+    .photo-card {
+      min-height: 48vw;
+    }
+
+    .feature-copy {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .feature-copy span {
+      justify-self: start;
+    }
+
+    .story {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .story h2 {
+      font-size: clamp(2.8rem, 13vw, 4.5rem);
+    }
+
+    .lookbook-heading {
+      grid-template-columns: 1fr auto;
+      gap: 0.5rem 1rem;
+    }
+
+    .lookbook-heading p {
+      grid-column: 1 / -1;
+    }
+
+    .lookbook-wide {
+      width: 100%;
+    }
+
+    .collection-heading > span {
+      max-width: 9rem;
+      text-align: right;
+    }
+
+    .collection-row {
+      grid-template-columns: 35px 1fr auto;
+      gap: 0.25rem 0.8rem;
+      padding-block: 1rem;
+    }
+
+    .collection-meta {
+      grid-column: 2 / -1;
+      grid-row: 2;
+    }
+
+    .collection-price {
+      grid-column: 3;
+      grid-row: 1;
+      font-size: 1rem;
+    }
+
+    .store-contact {
+      min-height: 64svh;
+    }
+
+    .store-contact h2 {
+      font-size: clamp(4rem, 18vw, 6rem);
+    }
+
+    .store-footer {
+      grid-template-columns: 1fr auto;
+    }
+
+    .store-footer span {
+      display: none;
+    }
+  }
+</style>

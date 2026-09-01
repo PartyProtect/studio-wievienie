@@ -166,8 +166,8 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
       }),
     );
 
-    /* The rear W is allowed one readable beat, then peels away while the front
-       W hands directly into the real first glyph. */
+    /* The rear W gets a short readable beat, then peels away while the front W
+       hands directly into the authored first glyph. */
     track(
       rear.animate([
         { offset: 0, opacity: .72, transform: 'translate3d(0,0,-4px) rotateZ(0deg) scale(1)' },

@@ -99,6 +99,25 @@ select {
   margin-inline: auto;
 }
 
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 1000;
+  transform: translateY(calc(-100% - 1.5rem));
+  padding: 0.55rem 0.75rem;
+  background: var(--ink);
+  color: var(--on-dark);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 160ms var(--ease);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
 .eyebrow {
   color: var(--ink-soft);
   font-size: 0.66rem;
@@ -131,8 +150,8 @@ select {
 }
 
 :focus-visible {
-  outline: 1px solid var(--ink);
-  outline-offset: 5px;
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
 }
 
 [id] {

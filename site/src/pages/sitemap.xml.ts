@@ -1,4 +1,4 @@
-const pages = ['/', '/werk/'];
+const pages = ['/', '/werk/', '/fancy-boogers/'];
 
 export function GET() {
   const urls = pages

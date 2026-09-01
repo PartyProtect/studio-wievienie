@@ -51,6 +51,21 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
   <meta name="twitter:description" content={description} />
   {ogImageURL && <meta name="twitter:image" content={ogImageURL} />}
 
+  <script is:inline>
+    try {
+      const fancyArrivalKey = 'studio-wievien:fancy-arrival';
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (
+        !reducedMotion &&
+        window.location.hash === '#fancy-boogers' &&
+        sessionStorage.getItem(fancyArrivalKey) === '1'
+      ) {
+        document.documentElement.classList.add('fancy-arrival-pending');
+      }
+    } catch {}
+  </script>
+
   <!-- Prototype font delivery. Self-host before launch. -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -63,12 +78,147 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
 </head>
 <body>
   <a class="skip-link" href="#main-content">{skipLabel}</a>
-  <Header lang={lang} currentPath={currentPath} />
 
-  <main id="main-content">
-    <slot />
-  </main>
+  <div data-page-shell>
+    <Header lang={lang} currentPath={currentPath} />
 
-  <Footer lang={lang} />
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <Footer lang={lang} />
+  </div>
+
+  <div class="fancy-transition-overlay" data-fancy-transition-overlay aria-hidden="true"></div>
+
+  <script is:inline>
+    (() => {
+      const root = document.documentElement;
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const fancyArrivalKey = 'studio-wievien:fancy-arrival';
+      const pullDuration = 380;
+      const revealDuration = 450;
+      let busy = false;
+
+      const normalizePath = (path) => path.replace(/\/+$/, '') || '/';
+      const getTarget = () => document.getElementById('fancy-boogers');
+
+      const closeMobileMenu = () => {
+        document.querySelectorAll('.mobile-menu[open]').forEach((menu) => {
+          menu.removeAttribute('open');
+        });
+      };
+
+      const jumpToTarget = (target) => {
+        const previousScrollBehavior = root.style.scrollBehavior;
+        root.style.scrollBehavior = 'auto';
+        target.scrollIntoView({ behavior: 'auto', block: 'start' });
+        root.style.scrollBehavior = previousScrollBehavior;
+      };
+
+      const cleanup = (target) => {
+        root.classList.remove(
+          'fancy-arrival-pending',
+          'is-fancy-transitioning',
+          'is-fancy-pulling',
+          'is-fancy-covered',
+          'is-fancy-revealing'
+        );
+        target?.classList.remove('is-fancy-arrival-target');
+        busy = false;
+      };
+
+      const revealFancy = (target, updateHistory = false) => {
+        root.classList.add('is-fancy-covered');
+        root.classList.remove('is-fancy-pulling');
+        jumpToTarget(target);
+
+        if (updateHistory && window.location.hash !== '#fancy-boogers') {
+          history.pushState(null, '', `${window.location.pathname}${window.location.search}#fancy-boogers`);
+        }
+
+        target.classList.add('is-fancy-arrival-target');
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            root.classList.remove('fancy-arrival-pending');
+            root.classList.add('is-fancy-revealing');
+          });
+        });
+
+        window.setTimeout(() => cleanup(target), revealDuration + 170);
+      };
+
+      const startTransition = (url) => {
+        if (busy || reducedMotion.matches) return;
+        busy = true;
+        closeMobileMenu();
+
+        const sameDocument =
+          url.origin === window.location.origin &&
+          normalizePath(url.pathname) === normalizePath(window.location.pathname);
+        const target = sameDocument ? getTarget() : null;
+
+        root.classList.add('is-fancy-transitioning', 'is-fancy-pulling');
+
+        window.setTimeout(() => {
+          if (target) {
+            revealFancy(target, true);
+            return;
+          }
+
+          try {
+            sessionStorage.setItem(fancyArrivalKey, '1');
+          } catch {}
+
+          window.location.assign(url.href);
+        }, pullDuration);
+      };
+
+      document.addEventListener('click', (event) => {
+        if (
+          event.defaultPrevented ||
+          event.button !== 0 ||
+          event.metaKey ||
+          event.ctrlKey ||
+          event.shiftKey ||
+          event.altKey
+        ) return;
+
+        const link = event.target.closest('a[href]');
+        if (!link || link.hasAttribute('download')) return;
+        if (link.target && link.target !== '_self') return;
+
+        let url;
+        try {
+          url = new URL(link.href, window.location.href);
+        } catch {
+          return;
+        }
+
+        if (url.origin !== window.location.origin || url.hash !== '#fancy-boogers') return;
+
+        if (reducedMotion.matches) return;
+
+        event.preventDefault();
+        startTransition(url);
+      });
+
+      const pendingArrival = root.classList.contains('fancy-arrival-pending');
+      if (pendingArrival) {
+        try {
+          sessionStorage.removeItem(fancyArrivalKey);
+        } catch {}
+
+        const target = getTarget();
+        if (target) {
+          root.classList.add('is-fancy-transitioning');
+          revealFancy(target, false);
+        } else {
+          cleanup(null);
+        }
+      }
+    })();
+  </script>
 </body>
 </html>

@@ -1,5 +1,13 @@
-html {
+html[data-assembly='pending'],
+html[data-assembly='playing'] {
   overflow-x: clip;
+}
+
+/* Construction guides are intro-only decoration. Keeping their negative inset
+   alive on the static mobile page adds 4px to the document scroll width even
+   at opacity zero. Remove them from layout once there is no intro to perform. */
+html:not([data-assembly='pending']):not([data-assembly='playing']) .assembly-guides {
+  display: none;
 }
 
 /* Keep the authored heading in the accessibility tree while the decorative

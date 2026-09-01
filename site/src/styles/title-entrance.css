@@ -145,19 +145,19 @@ html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame img {
   0% {
     visibility: visible;
     opacity: 0;
-    clip-path: inset(3% 86% 3% 0);
-    transform: translateX(1rem);
+    clip-path: inset(3% 47% 3% 47%);
+    transform: translateY(.35rem) scale(.992);
   }
 
   28% {
-    opacity: .92;
-    clip-path: inset(2.5% 62% 2.5% 0);
+    opacity: .94;
+    clip-path: inset(2.5% 34% 2.5% 34%);
   }
 
   68% {
     opacity: 1;
-    clip-path: inset(1% 20% 1% 0);
-    transform: translateX(.18rem);
+    clip-path: inset(1% 10% 1% 10%);
+    transform: translateY(.08rem) scale(.998);
   }
 
   100% {
@@ -170,15 +170,15 @@ html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame img {
 
 @keyframes piano-image-content-in {
   0% {
-    transform: scale(1.04) translateX(.6%);
+    transform: scale(1.04);
   }
 
   68% {
-    transform: scale(1.008) translateX(.1%);
+    transform: scale(1.008);
   }
 
   100% {
-    transform: scale(1) translateX(0);
+    transform: scale(1);
   }
 }
 

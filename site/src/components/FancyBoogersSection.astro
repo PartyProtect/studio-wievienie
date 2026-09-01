@@ -1,0 +1,301 @@
+<section class="fancy" id="fancy-boogers" aria-labelledby="fancy-title">
+  <div class="shell fancy-intro">
+    <div class="fancy-heading">
+      <p class="eyebrow">Kledinglijn · Studio Wievien</p>
+      <h2 id="fancy-title">Fancy<br />Boogers</h2>
+    </div>
+
+    <div class="fancy-copy">
+      <p class="fancy-lead">Noses, knitted by hand.</p>
+      <p class="fancy-meta">Handmade · made to order · SS26</p>
+      <a
+        class="dark-link"
+        href="https://www.instagram.com/studio_wievien/"
+        rel="noopener noreferrer"
+        target="_blank"
+      >@studio_wievien <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+
+  <div class="shell fancy-gallery">
+    <figure class="fancy-look fancy-look-toile">
+      <div class="fancy-image">
+        <img
+          src="/images/fancy-boogers/toile-terror-editorial.webp"
+          alt="Drie looks met de Toile Terror Shirt uit Fancy Boogers tegen een rode achtergrond"
+          loading="lazy"
+          decoding="async"
+          width="1400"
+          height="622"
+        />
+      </div>
+      <figcaption>
+        <span>01 · Tops</span>
+        <strong>Toile Terror Shirt</strong>
+        <span>Reworked designer fabric</span>
+      </figcaption>
+    </figure>
+
+    <figure class="fancy-look fancy-look-boogie">
+      <div class="fancy-image">
+        <img
+          src="/images/fancy-boogers/boogie-blazer-editorial.webp"
+          alt="Drie looks met The Boogie Blazer uit Fancy Boogers tegen een groene achtergrond"
+          loading="lazy"
+          decoding="async"
+          width="1400"
+          height="622"
+        />
+      </div>
+      <figcaption>
+        <span>02 · Outerwear</span>
+        <strong>The Boogie Blazer</strong>
+        <span>1 of 1</span>
+      </figcaption>
+    </figure>
+
+    <figure class="fancy-look fancy-look-slime">
+      <div class="fancy-image">
+        <img
+          src="/images/fancy-boogers/slime-stripe-editorial.webp"
+          alt="Drie looks uit de Slime Stripe drop van Fancy Boogers tegen een paarse achtergrond"
+          loading="lazy"
+          decoding="async"
+          width="1400"
+          height="622"
+        />
+      </div>
+      <figcaption>
+        <span>03 · Lookbook</span>
+        <strong>The Slime Stripe drop</strong>
+        <span>SS26</span>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="fancy-kinetic" aria-hidden="true">
+    <div class="fancy-track">
+      <span>Noses, knitted by hand · Handmade · Made to order · 1 of 1 · SS26 · </span>
+      <span>Noses, knitted by hand · Handmade · Made to order · 1 of 1 · SS26 · </span>
+      <span>Noses, knitted by hand · Handmade · Made to order · 1 of 1 · SS26 · </span>
+      <span>Noses, knitted by hand · Handmade · Made to order · 1 of 1 · SS26 · </span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .fancy {
+    padding-block: clamp(6rem, 10vw, 10rem) 0;
+    overflow: hidden;
+    background: var(--dark);
+    color: var(--on-dark);
+  }
+
+  .fancy .eyebrow {
+    color: var(--on-dark-soft);
+  }
+
+  .fancy-intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.65fr);
+    gap: clamp(3rem, 8vw, 9rem);
+    align-items: end;
+  }
+
+  .fancy h2 {
+    margin-top: 0.8rem;
+    max-width: 9ch;
+    font-size: clamp(4.1rem, 8vw, 8rem);
+    line-height: 0.76;
+    letter-spacing: -0.062em;
+  }
+
+  .fancy-copy {
+    padding-bottom: 0.35rem;
+  }
+
+  .fancy-lead {
+    max-width: 24rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.45rem, 2.35vw, 2.2rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+  }
+
+  .fancy-meta {
+    margin-top: 1rem;
+    color: #8f8b85;
+    font-size: 0.63rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .dark-link {
+    display: inline-flex;
+    gap: 0.45rem;
+    margin-top: 1.8rem;
+    padding-bottom: 0.18rem;
+    border-bottom: 1px solid #67645f;
+    color: var(--on-dark);
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .fancy-gallery {
+    display: grid;
+    gap: clamp(3.8rem, 8vw, 7.8rem);
+    margin-top: clamp(4.5rem, 8vw, 8rem);
+  }
+
+  .fancy-look {
+    margin: 0;
+  }
+
+  .fancy-look-boogie {
+    width: 88%;
+    margin-left: auto;
+  }
+
+  .fancy-look-slime {
+    width: 94%;
+  }
+
+  .fancy-image {
+    overflow: hidden;
+    background: #1b1a1c;
+  }
+
+  .fancy-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 700ms var(--ease);
+  }
+
+  .fancy-look figcaption {
+    display: grid;
+    grid-template-columns: minmax(110px, 0.7fr) minmax(0, 1.6fr) minmax(140px, 0.7fr);
+    gap: 1rem;
+    align-items: baseline;
+    padding-top: 0.72rem;
+    border-top: 1px solid #343331;
+  }
+
+  .fancy-look figcaption span {
+    color: #8f8b85;
+    font-size: 0.59rem;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+
+  .fancy-look figcaption span:last-child {
+    text-align: right;
+  }
+
+  .fancy-look figcaption strong {
+    justify-self: center;
+    color: var(--on-dark);
+    font-family: var(--font-display);
+    font-size: clamp(1.05rem, 1.7vw, 1.55rem);
+    font-weight: 400;
+    letter-spacing: -0.025em;
+  }
+
+  .fancy-kinetic {
+    margin-top: clamp(5rem, 9vw, 9rem);
+    overflow: hidden;
+    border-top: 1px solid #343331;
+    border-bottom: 1px solid #343331;
+    padding-block: 0.95rem;
+  }
+
+  .fancy-track {
+    display: flex;
+    width: max-content;
+    color: #8f8b85;
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    animation: fancyFlow 30s linear infinite;
+  }
+
+  .fancy-track span {
+    padding-right: 2.2rem;
+  }
+
+  @keyframes fancyFlow {
+    to {
+      transform: translateX(-25%);
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .fancy-look:hover .fancy-image img {
+      transform: scale(1.008);
+    }
+  }
+
+  @media (max-width: 720px) {
+    .fancy-intro {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .fancy h2 {
+      font-size: clamp(4.2rem, 20vw, 6rem);
+    }
+
+    .fancy-gallery {
+      gap: 3.8rem;
+      margin-top: 4.5rem;
+    }
+
+    .fancy-look-boogie,
+    .fancy-look-slime {
+      width: 100%;
+      margin-left: 0;
+    }
+
+    .fancy-look figcaption {
+      grid-template-columns: 1fr auto;
+      gap: 0.22rem 1rem;
+    }
+
+    .fancy-look figcaption strong {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      justify-self: start;
+      font-size: 1.25rem;
+    }
+
+    .fancy-look figcaption span:first-child {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .fancy-look figcaption span:last-child {
+      grid-column: 2;
+      grid-row: 2;
+    }
+
+    .fancy-kinetic {
+      margin-top: 4.5rem;
+      padding-block: 0.8rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fancy-track {
+      animation: none;
+    }
+
+    .fancy-image img {
+      transition: none;
+    }
+  }
+</style>

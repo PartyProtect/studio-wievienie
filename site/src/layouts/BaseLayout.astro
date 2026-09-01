@@ -10,6 +10,7 @@ interface Props {
   currentPath?: string;
   ogImage?: string;
   noindex?: boolean;
+  firstVisitAssembly?: boolean;
 }
 
 const {
@@ -19,6 +20,7 @@ const {
   currentPath = '',
   ogImage,
   noindex = false,
+  firstVisitAssembly = false,
 } = Astro.props;
 
 const fullTitle = title === 'Studio Wievien' ? title : `${title} — Studio Wievien`;
@@ -28,7 +30,7 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
 ---
 
 <!DOCTYPE html>
-<html lang={lang}>
+<html lang={lang} data-assembly-enabled={firstVisitAssembly ? 'true' : undefined}>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -51,7 +53,29 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
   <meta name="twitter:description" content={description} />
   {ogImageURL && <meta name="twitter:image" content={ogImageURL} />}
 
-  <!-- Prototype font delivery. Self-host before launch. -->
+  <script is:inline>
+    (() => {
+      const root = document.documentElement;
+      if (root.dataset.assemblyEnabled !== 'true') return;
+
+      const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) return;
+
+      const forceReplay = new URLSearchParams(window.location.search).get('intro') === '1';
+      let hasSeenIntro = false;
+
+      try {
+        hasSeenIntro = sessionStorage.getItem('studio-wievien-assembly-seen') === '1';
+      } catch {
+        // Storage can be unavailable in strict privacy modes; the intro still works.
+      }
+
+      if (!hasSeenIntro || forceReplay) {
+        root.dataset.assembly = 'pending';
+      }
+    })();
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -70,5 +94,72 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
   </main>
 
   <Footer lang={lang} />
+
+  <script is:inline>
+    (() => {
+      const root = document.documentElement;
+      if (root.dataset.assembly !== 'pending') return;
+
+      let fallbackTimer = 0;
+      let finished = false;
+
+      const rememberIntro = () => {
+        try {
+          sessionStorage.setItem('studio-wievien-assembly-seen', '1');
+        } catch {
+          // The experience never depends on storage being available.
+        }
+      };
+
+      const finish = () => {
+        if (finished) return;
+        finished = true;
+        window.clearTimeout(fallbackTimer);
+        root.dataset.assembly = 'done';
+        window.setTimeout(() => root.removeAttribute('data-assembly'), 100);
+      };
+
+      const prepareIntroFonts = async () => {
+        if (!document.fonts?.load) return true;
+
+        try {
+          return await Promise.race([
+            Promise.all([
+              document.fonts.load('400 1em "Newsreader"'),
+              document.fonts.load('400 1em "Manrope"'),
+              document.fonts.load('600 1em "Manrope"'),
+            ]).then((fontGroups) => fontGroups.every((faces) => faces.length > 0)),
+            new Promise((resolve) => window.setTimeout(() => resolve(false), 1100)),
+          ]);
+        } catch {
+          return false;
+        }
+      };
+
+      const play = async () => {
+        const introFontsReady = await prepareIntroFonts();
+
+        if (!introFontsReady) {
+          rememberIntro();
+          finish();
+          return;
+        }
+
+        window.addEventListener('wievien:intro-complete', finish, { once: true });
+
+        requestAnimationFrame(() => {
+          root.dataset.assembly = 'playing';
+          rememberIntro();
+          fallbackTimer = window.setTimeout(finish, 12000);
+        });
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', play, { once: true });
+      } else {
+        play();
+      }
+    })();
+  </script>
 </body>
 </html>

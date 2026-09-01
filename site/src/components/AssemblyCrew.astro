@@ -1,0 +1,73 @@
+---
+import '@/styles/title-entrance.css';
+---
+
+<div class="title-entrance" aria-hidden="true"></div>
+
+<style is:global>
+  .title-motion-layer {
+    user-select: none;
+    -webkit-user-select: none;
+  }
+</style>
+
+<script>
+  const root = document.documentElement;
+  const state = root.dataset.assembly;
+
+  if (state === 'pending' || state === 'playing') {
+    const initialViewport = {
+      width: window.innerWidth,
+      height: window.innerHeight,
+    };
+
+    const resizeGuard = (event) => {
+      const widthShift = Math.abs(window.innerWidth - initialViewport.width);
+      const heightShift = Math.abs(window.innerHeight - initialViewport.height);
+      const meaningfulWidthShift = widthShift > Math.max(24, initialViewport.width * 0.04);
+      const meaningfulHeightShift = heightShift > Math.max(100, initialViewport.height * 0.15);
+
+      if (!meaningfulWidthShift && !meaningfulHeightShift) {
+        event.stopImmediatePropagation();
+      }
+    };
+
+    window.addEventListener('resize', resizeGuard, { capture: true });
+
+    const hideClonedTitle = (node) => {
+      if (!(node instanceof HTMLElement)) return;
+
+      if (node.matches('.title-motion-layer')) {
+        node.setAttribute('aria-hidden', 'true');
+        node.setAttribute('role', 'presentation');
+      }
+
+      node.querySelectorAll?.('.title-motion-layer').forEach((layer) => {
+        layer.setAttribute('aria-hidden', 'true');
+        layer.setAttribute('role', 'presentation');
+      });
+    };
+
+    const layerObserver = new MutationObserver((records) => {
+      records.forEach((record) => record.addedNodes.forEach(hideClonedTitle));
+    });
+
+    const cleanUp = () => {
+      layerObserver.disconnect();
+      window.removeEventListener('resize', resizeGuard, { capture: true });
+    };
+
+    layerObserver.observe(document.body, { childList: true, subtree: true });
+    window.addEventListener('wievien:intro-complete', cleanUp, { once: true });
+
+    import('@/scripts/title-entrance.js').catch(() => {
+      cleanUp();
+
+      document.querySelectorAll('[data-assemble="studio"], [data-assemble="wievien"]').forEach((element) => {
+        if (element instanceof HTMLElement) element.dataset.titleEntrance = 'complete';
+      });
+
+      window.dispatchEvent(new CustomEvent('wievien:intro-complete'));
+    });
+  }
+</script>

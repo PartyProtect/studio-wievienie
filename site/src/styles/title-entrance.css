@@ -1,0 +1,271 @@
+html[data-assembly='pending'],
+html[data-assembly='playing'] {
+  overflow-x: clip;
+}
+
+/* Construction guides are intro-only decoration. Keeping their negative inset
+   alive on the static mobile page adds 4px to the document scroll width even
+   at opacity zero. Remove them from layout once there is no intro to perform. */
+html:not([data-assembly='pending']):not([data-assembly='playing']) .assembly-guides {
+  display: none;
+}
+
+/* Studio is the fixed anchor from frame one. Wievien alone performs, while its
+   authored source remains semantic and leaves a crisp destination underneath. */
+html[data-assembly='pending'] [data-assemble='studio'],
+html[data-assembly='playing'] [data-assemble='studio'] {
+  visibility: visible !important;
+  opacity: 1 !important;
+  color: var(--ink) !important;
+  text-shadow: 0 .03em .022em rgb(23 23 22 / 0.095) !important;
+  animation: none !important;
+  transform: none !important;
+}
+
+html[data-assembly='pending'] [data-assemble='wievien']:not([data-title-entrance='complete']),
+html[data-assembly='playing'] [data-assemble='wievien']:not([data-title-entrance='complete']) {
+  visibility: visible !important;
+  opacity: 1 !important;
+  color: transparent !important;
+  text-shadow: 0 .032em .018em rgb(23 23 22 / 0.078) !important;
+  animation: none !important;
+  transform: none !important;
+}
+
+html[data-assembly='playing'] [data-assemble='wievien'][data-title-entrance='complete'] {
+  visibility: visible !important;
+  color: var(--ink) !important;
+}
+
+[data-assemble='studio'],
+[data-assemble='wievien'] {
+  text-shadow: 0 .03em .022em rgb(23 23 22 / 0.095);
+}
+
+.title-motion-layer {
+  position: fixed;
+  z-index: 42;
+  overflow: visible;
+  pointer-events: none;
+  contain: layout style;
+}
+
+.title-motion-shadow-plane,
+.title-motion-glyph-plane {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.title-motion-shadow-plane {
+  z-index: 1;
+}
+
+.title-motion-glyph-plane {
+  z-index: 2;
+}
+
+.title-motion-glyph {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  will-change: transform, opacity;
+}
+
+.title-motion-ink {
+  position: absolute;
+  inset: 0;
+  display: block;
+  color: var(--ink);
+  white-space: nowrap;
+  font: inherit;
+  letter-spacing: inherit;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  will-change: transform, opacity;
+}
+
+/* One measured W waits above the empty first-letter slot, turns just enough to
+   feel intentional, and drops last. The legacy class names stay stable so the
+   motion layer does not need another structural rewrite. */
+.title-ww-monogram {
+  position: absolute;
+  z-index: 4;
+  overflow: visible;
+  pointer-events: none;
+  transform-style: preserve-3d;
+  transform-origin: 31% 78%;
+  will-change: transform, opacity;
+}
+
+.title-ww-letter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  color: var(--ink);
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  white-space: nowrap;
+  transform-style: preserve-3d;
+  transform-origin: 48% 80%;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  will-change: transform, opacity;
+}
+
+.title-ww-front {
+  z-index: 2;
+}
+
+.title-ww-contact {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  height: 2px;
+  border-radius: 50%;
+  background: rgb(23 23 22 / 0.2);
+  filter: blur(1.4px);
+  transform-origin: center;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+/* No projected silhouettes or smeared ghost copies. Depth comes from restrained
+   contact shadows plus the final W's small 3D turn. */
+.title-motion-cast,
+.title-motion-shadow-ink,
+.title-target-shadow-plane {
+  display: none !important;
+}
+
+.title-motion-contact {
+  position: absolute;
+  height: 2px;
+  border-radius: 50%;
+  background: rgb(23 23 22 / 0.22);
+  filter: blur(1.45px);
+  transform-origin: center;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* The small location line joins once the word is building. */
+html[data-assembly='playing'] [data-assemble='eyebrow'] {
+  animation: assembly-small-settle 500ms 820ms var(--ease) both !important;
+}
+
+html[data-assembly='pending'] .header-inner > *,
+html[data-assembly='playing'] .header-inner > * {
+  opacity: 0;
+  transform: translateY(-0.35rem);
+  animation: none !important;
+}
+
+/* Header is deliberately late. The eye gets word -> final W -> portrait first. */
+html[data-assembly='playing'] .header-inner > * {
+  animation: assembly-small-settle 600ms 2700ms var(--ease) both !important;
+}
+
+html[data-assembly='pending'] [data-assemble='image'] .hero-image-frame,
+html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame {
+  visibility: hidden;
+  opacity: 0;
+}
+
+/* The portrait starts opening beneath the final keys, from its visual centre so
+   the mask becomes visible immediately instead of revealing empty edge first. */
+html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame {
+  animation: piano-image-frame-in 1220ms 1460ms cubic-bezier(.2,.78,.18,1) forwards !important;
+}
+
+html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame img {
+  animation: piano-image-content-in 1360ms 1460ms cubic-bezier(.2,.78,.18,1) forwards !important;
+}
+
+@keyframes piano-image-frame-in {
+  0% {
+    visibility: visible;
+    opacity: 0;
+    clip-path: inset(3% 47% 3% 47%);
+    transform: translateY(.35rem) scale(.992);
+  }
+
+  27% {
+    opacity: .94;
+    clip-path: inset(2.5% 34% 2.5% 34%);
+  }
+
+  68% {
+    opacity: 1;
+    clip-path: inset(1% 10% 1% 10%);
+    transform: translateY(.08rem) scale(.998);
+  }
+
+  100% {
+    visibility: visible;
+    opacity: 1;
+    clip-path: inset(0);
+    transform: none;
+  }
+}
+
+@keyframes piano-image-content-in {
+  0% {
+    transform: scale(1.04);
+  }
+
+  68% {
+    transform: scale(1.008);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Construction marks begin after the portrait has announced itself, staggered
+   enough to feel drawn rather than switched on. */
+html[data-assembly='playing'] [data-assemble='guides'] { animation-delay: 1640ms !important; }
+html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-top { animation-delay: 1700ms !important; }
+html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-right { animation-delay: 1810ms !important; }
+html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-cross { animation-delay: 1930ms !important; }
+
+/* Copy arrives during the title's completion beat, not after the performance. */
+html[data-assembly='playing'] [data-assemble='fields'] { animation-delay: 2380ms !important; }
+html[data-assembly='playing'] [data-assemble='caption'] { animation-delay: 2420ms !important; }
+html[data-assembly='playing'] [data-assemble='cta'] { animation-delay: 2530ms !important; }
+
+@media (max-width: 720px) {
+  .title-motion-contact,
+  .title-ww-contact {
+    height: 2px;
+    filter: blur(1.2px);
+  }
+
+  .title-ww-monogram {
+    transform-origin: 30% 80%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .title-motion-layer,
+  .title-ww-monogram,
+  .title-ww-contact {
+    display: none !important;
+  }
+
+  [data-assemble='studio'],
+  [data-assemble='wievien'] {
+    visibility: visible !important;
+    color: var(--ink) !important;
+  }
+
+  [data-assemble='image'] .hero-image-frame {
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}

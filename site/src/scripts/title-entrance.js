@@ -1,24 +1,79 @@
 (() => {
   const root = document.documentElement;
   const studioSource = document.querySelector('[data-assemble="studio"]');
-  const wievienSource = document.querySelector('[data-assemble="wievien"]');
+  const nameSource = document.querySelector('[data-assemble="wievien"]');
 
-  if (!(studioSource instanceof HTMLElement) || !(wievienSource instanceof HTMLElement)) return;
+  if (!(studioSource instanceof HTMLElement) || !(nameSource instanceof HTMLElement)) return;
 
   let started = false;
-  let finished = false;
-  let stage;
-  const timers = [];
+  let completed = false;
+  let completionTimer = 0;
+  const activeAnimations = [];
+  const cleanupListeners = [];
+  const layers = [];
 
-  const later = (callback, delay) => {
-    const timer = window.setTimeout(callback, delay);
-    timers.push(timer);
-    return timer;
+  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+  const px = (value) => `${Math.round(value * 1000) / 1000}px`;
+
+  const dispatchComplete = () => {
+    window.dispatchEvent(new CustomEvent('wievien:intro-complete'));
   };
 
-  const copyType = (source, target) => {
-    const computed = getComputedStyle(source);
-    Object.assign(target.style, {
+  const showFinalTitle = () => {
+    studioSource.dataset.titleEntrance = 'complete';
+    nameSource.dataset.titleEntrance = 'complete';
+  };
+
+  const finish = (instant = false) => {
+    if (completed) return;
+    completed = true;
+    window.clearTimeout(completionTimer);
+
+    activeAnimations.forEach((animation) => {
+      try {
+        if (instant) animation.cancel();
+        else animation.finish();
+      } catch {
+        // An animation may already have completed or been removed.
+      }
+    });
+
+    showFinalTitle();
+
+    layers.forEach((layer) => {
+      if (!(layer instanceof HTMLElement)) return;
+      if (instant) {
+        layer.remove();
+        return;
+      }
+
+      const fade = layer.animate(
+        [{ opacity: 1 }, { opacity: 0 }],
+        { duration: 160, easing: 'ease-out', fill: 'forwards' },
+      );
+      fade.finished.finally(() => layer.remove());
+    });
+
+    cleanupListeners.forEach((remove) => remove());
+    dispatchComplete();
+  };
+
+  const listenOnceToIntent = () => {
+    const skip = () => finish(true);
+    const events = ['wheel', 'touchstart', 'pointerdown', 'keydown'];
+
+    events.forEach((type) => {
+      window.addEventListener(type, skip, { once: true, passive: true, capture: true });
+      cleanupListeners.push(() => window.removeEventListener(type, skip, { capture: true }));
+    });
+
+    const resize = () => finish(true);
+    window.addEventListener('resize', resize, { once: true });
+    cleanupListeners.push(() => window.removeEventListener('resize', resize));
+  };
+
+  const applyTypography = (element, computed) => {
+    Object.assign(element.style, {
       fontFamily: computed.fontFamily,
       fontSize: computed.fontSize,
       fontWeight: computed.fontWeight,
@@ -30,452 +85,407 @@
       fontVariationSettings: computed.fontVariationSettings,
       lineHeight: computed.lineHeight,
       letterSpacing: computed.letterSpacing,
-      textTransform: computed.textTransform,
     });
   };
 
-  const finish = () => {
-    if (finished) return;
-    finished = true;
-    timers.forEach((timer) => window.clearTimeout(timer));
-    studioSource.dataset.titleEntrance = 'complete';
-    wievienSource.dataset.letterEntrance = 'complete';
-    stage?.remove();
-    window.removeEventListener('resize', finish);
-    window.removeEventListener('orientationchange', finish);
+  const createLayer = (source, extraClass = '') => {
+    const rect = source.getBoundingClientRect();
+    const layer = document.createElement('div');
+    layer.className = `title-motion-layer ${extraClass}`.trim();
+    Object.assign(layer.style, {
+      left: px(rect.left),
+      top: px(rect.top),
+      width: px(rect.width),
+      height: px(rect.height),
+    });
+    document.body.appendChild(layer);
+    layers.push(layer);
+    return { layer, rect, computed: getComputedStyle(source) };
   };
 
-  const animate = (element, keyframes, options) => element.animate(keyframes, {
-    fill: 'both',
-    ...options,
-  });
+  const createWholeWordScene = (source) => {
+    const { layer, rect, computed } = createLayer(source, 'title-motion-studio');
+    applyTypography(layer, computed);
 
-  const waitForPlay = () => {
-    if (root.dataset.assembly === 'playing') {
-      start();
-      return;
+    const shadowPlane = document.createElement('div');
+    shadowPlane.className = 'title-motion-shadow-plane';
+    const glyphPlane = document.createElement('div');
+    glyphPlane.className = 'title-motion-glyph-plane';
+
+    const cast = document.createElement('div');
+    cast.className = 'title-motion-cast';
+    cast.style.transformOrigin = `${rect.width / 2}px ${rect.height}px`;
+    const castInk = document.createElement('span');
+    castInk.className = 'title-motion-shadow-ink';
+    castInk.textContent = source.textContent || '';
+    applyTypography(castInk, computed);
+    cast.appendChild(castInk);
+
+    const contact = document.createElement('div');
+    contact.className = 'title-motion-contact';
+    Object.assign(contact.style, {
+      left: px(rect.width * 0.04),
+      top: px(rect.height - 5),
+      width: px(rect.width * 0.92),
+    });
+
+    const glyph = document.createElement('div');
+    glyph.className = 'title-motion-glyph';
+    glyph.style.transformOrigin = `${rect.width / 2}px ${rect.height}px`;
+    const ink = document.createElement('span');
+    ink.className = 'title-motion-ink';
+    ink.textContent = source.textContent || '';
+    applyTypography(ink, computed);
+    glyph.appendChild(ink);
+
+    shadowPlane.append(cast, contact);
+    glyphPlane.appendChild(glyph);
+    layer.append(shadowPlane, glyphPlane);
+
+    return { layer, rect, glyph, cast, contact, glyphPlane, shadowPlane };
+  };
+
+  const createLetterScene = (source) => {
+    const textNode = Array.from(source.childNodes).find((node) => node.nodeType === Node.TEXT_NODE);
+    const word = source.textContent?.trim() || '';
+    if (!textNode || word !== 'Wievien') throw new Error('Unexpected title content');
+
+    const { layer, rect: sourceRect, computed } = createLayer(source, 'title-motion-wievien');
+    applyTypography(layer, computed);
+
+    const shadowPlane = document.createElement('div');
+    shadowPlane.className = 'title-motion-shadow-plane';
+    const glyphPlane = document.createElement('div');
+    glyphPlane.className = 'title-motion-glyph-plane';
+    const glyphs = [];
+    const casts = [];
+    const contacts = [];
+    const metrics = [];
+
+    for (let index = 0; index < word.length; index += 1) {
+      const range = document.createRange();
+      range.setStart(textNode, index);
+      range.setEnd(textNode, index + 1);
+      const rect = range.getBoundingClientRect();
+      range.detach?.();
+
+      const left = rect.left - sourceRect.left;
+      const top = rect.top - sourceRect.top;
+      const right = sourceRect.right - rect.right;
+      const bottom = sourceRect.bottom - rect.bottom;
+      const bleed = 3;
+      const clip = `inset(${Math.max(0, top - bleed)}px ${Math.max(0, right - bleed)}px ${Math.max(0, bottom - bleed)}px ${Math.max(0, left - bleed)}px)`;
+      const origin = `${left + rect.width / 2}px ${top + rect.height}px`;
+
+      const cast = document.createElement('div');
+      cast.className = `title-motion-cast title-motion-cast-${index}`;
+      cast.style.transformOrigin = origin;
+      const castInk = document.createElement('span');
+      castInk.className = 'title-motion-shadow-ink';
+      castInk.textContent = word;
+      castInk.style.clipPath = clip;
+      applyTypography(castInk, computed);
+      cast.appendChild(castInk);
+
+      const contact = document.createElement('div');
+      contact.className = `title-motion-contact title-motion-contact-${index}`;
+      Object.assign(contact.style, {
+        left: px(left + rect.width * 0.08),
+        top: px(Math.min(sourceRect.height - 3, top + rect.height - 4)),
+        width: px(Math.max(7, rect.width * 0.84)),
+      });
+
+      const glyph = document.createElement('div');
+      glyph.className = `title-motion-glyph title-motion-glyph-${index}`;
+      glyph.style.transformOrigin = origin;
+      const ink = document.createElement('span');
+      ink.className = 'title-motion-ink';
+      ink.textContent = word;
+      ink.style.clipPath = clip;
+      applyTypography(ink, computed);
+      glyph.appendChild(ink);
+
+      shadowPlane.append(cast, contact);
+      glyphPlane.appendChild(glyph);
+      glyphs.push(glyph);
+      casts.push(cast);
+      contacts.push(contact);
+      metrics.push({ left, top, width: rect.width, height: rect.height, originY: top + rect.height });
     }
 
-    const observer = new MutationObserver(() => {
-      if (root.dataset.assembly === 'playing') {
-        observer.disconnect();
-        start();
+    layer.append(shadowPlane, glyphPlane);
+    return { layer, sourceRect, glyphPlane, shadowPlane, glyphs, casts, contacts, metrics };
+  };
+
+  const point = (offset, x, y, z, rotation, scaleX = 1, scaleY = 1, stretch = 0, originX = 0.5) => ({
+    offset, x, y, z, rotation, scaleX, scaleY, stretch, originX,
+  });
+
+  const makeGlyphFrames = (path, metric) => path.map((frame) => ({
+    offset: frame.offset,
+    transform: `translate(${px(frame.x)}, ${px(frame.y)}) rotate(${frame.rotation}deg) scale(${frame.scaleX}, ${frame.scaleY})`,
+    transformOrigin: `${px(metric.left + metric.width * frame.originX)} ${px(metric.originY)}`,
+  }));
+
+  const makeShadowFrames = (path, metric, kind) => {
+    const maxAltitude = Math.max(window.innerHeight * 0.78, 1);
+
+    return path.map((frame) => {
+      const altitude = Math.max(0, frame.z);
+      const distance = clamp(altitude / maxAltitude, 0, 1);
+      const impact = frame.scaleY < 0.92 ? 1 : 0;
+      const projectedX = frame.x + altitude * 0.065 + 5;
+      const opacity = clamp(0.055 + (1 - distance) * 0.15 + impact * 0.055, 0.025, 0.28);
+
+      if (kind === 'cast') {
+        const scaleX = frame.scaleX * (1 - distance * 0.38) * (1 + frame.stretch * 0.5 + impact * 0.18);
+        const scaleY = 0.22 * (1 - distance * 0.32) * (impact ? 0.72 : 1);
+        return {
+          offset: frame.offset,
+          transform: `translate(${px(projectedX)}, 7px) skewX(-29deg) rotate(${frame.rotation * 0.12}deg) scale(${scaleX}, ${scaleY})`,
+          transformOrigin: `${px(metric.left + metric.width * frame.originX)} ${px(metric.originY)}`,
+          opacity,
+        };
       }
+
+      const scaleX = (1 - distance * 0.7) * (1 + frame.stretch + impact * 0.35);
+      const scaleY = (0.42 + (1 - distance) * 0.58) * (impact ? 0.55 : 1);
+      return {
+        offset: frame.offset,
+        transform: `translateX(${px(projectedX)}) scale(${scaleX}, ${scaleY})`,
+        opacity: opacity + 0.015,
+      };
+    });
+  };
+
+  const playPath = (scene, index, path, options) => {
+    const metric = scene.metrics[index];
+    const glyph = scene.glyphs[index];
+    const cast = scene.casts[index];
+    const contact = scene.contacts[index];
+    const shadowDelay = Math.max(0, options.delay - (options.shadowLead || 0));
+
+    const glyphAnimation = glyph.animate(makeGlyphFrames(path, metric), {
+      duration: options.duration,
+      delay: options.delay,
+      easing: options.easing,
+      fill: 'both',
     });
 
-    observer.observe(root, { attributes: true, attributeFilter: ['data-assembly'] });
+    const castAnimation = cast.animate(makeShadowFrames(path, metric, 'cast'), {
+      duration: options.duration + (options.shadowLead || 0),
+      delay: shadowDelay,
+      easing: options.easing,
+      fill: 'both',
+    });
+
+    const contactAnimation = contact.animate(makeShadowFrames(path, metric, 'contact'), {
+      duration: options.duration + (options.shadowLead || 0),
+      delay: shadowDelay,
+      easing: options.easing,
+      fill: 'both',
+    });
+
+    activeAnimations.push(glyphAnimation, castAnimation, contactAnimation);
+  };
+
+  const playStudio = (scene, vw, vh) => {
+    const path = [
+      point(0, -67 * vw, 0.8 * vh, 0, -7, 0.97, 1, 1.45),
+      point(0.56, 1.9 * vw, 0.15 * vh, 0, 1.8, 1.025, 0.93, 0.55),
+      point(0.72, -0.85 * vw, -0.08 * vh, 0, -0.9, 0.992, 1.025, 0.2),
+      point(0.86, 0.28 * vw, 0.03 * vh, 0, 0.32, 1.004, 0.99, 0.08),
+      point(1, 0, 0, 0, 0, 1, 1, 0),
+    ];
+    const metric = { left: 0, width: scene.rect.width, originY: scene.rect.height };
+    const options = { delay: 180, duration: 1160, easing: 'cubic-bezier(.16,.78,.2,1)' };
+
+    activeAnimations.push(
+      scene.glyph.animate(makeGlyphFrames(path, metric), { ...options, fill: 'both' }),
+      scene.cast.animate(makeShadowFrames(path, metric, 'cast'), { ...options, fill: 'both' }),
+      scene.contact.animate(makeShadowFrames(path, metric, 'contact'), { ...options, fill: 'both' }),
+    );
+
+    window.setTimeout(() => {
+      studioSource.dataset.titleEntrance = 'complete';
+      const fade = scene.layer.animate([{ opacity: 1 }, { opacity: 0 }], {
+        duration: 150,
+        easing: 'ease-out',
+        fill: 'forwards',
+      });
+      fade.finished.finally(() => scene.layer.remove());
+    }, 1430);
+  };
+
+  const playName = (scene, vw, vh) => {
+    const paths = [
+      [
+        point(0, -54 * vw, 0.4 * vh, 0, -11, 0.95, 1, 1.25, 0.22),
+        point(0.16, -44 * vw, -0.9 * vh, 1.2 * vh, 6, 0.97, 0.98, 0.95, 0.24),
+        point(0.31, -34 * vw, 0.3 * vh, 0, -6.5, 0.98, 0.97, 0.82, 0.76),
+        point(0.46, -24 * vw, -0.75 * vh, 1 * vh, 5.5, 0.985, 0.985, 0.66, 0.24),
+        point(0.61, -14 * vw, 0.2 * vh, 0, -4.5, 0.992, 0.975, 0.45, 0.76),
+        point(0.76, -6 * vw, -0.45 * vh, 0.6 * vh, 3.2, 0.998, 0.99, 0.25, 0.24),
+        point(0.9, -1.1 * vw, 0, 0, -1, 1.018, 0.93, 0.18, 0.76),
+        point(1, 0, 0, 0, 0, 1, 1, 0, 0.5),
+      ],
+      [
+        point(0, -15 * vw, -45 * vh, 45 * vh, -185, 0.7, 0.7, 0.2),
+        point(0.58, 1.9 * vw, -3.6 * vh, 4 * vh, 17, 1.05, 1.04, 0.3),
+        point(0.78, 1.1 * vw, 0.3 * vh, 0, 5.5, 1.13, 0.84, 0.1),
+        point(1, 0, 0, 0, 0, 1, 1, 0),
+      ],
+      [
+        point(0, -35 * vw, 0, 0, -560, 0.84, 0.84, 1.2),
+        point(0.4, -18 * vw, -7 * vh, 8 * vh, -330, 0.92, 0.92, 0.75),
+        point(0.72, -3.2 * vw, -3.5 * vh, 4 * vh, -62, 1, 1, 0.35),
+        point(0.88, 0.72 * vw, 0.35 * vh, 0, 12, 1.05, 0.92, 0.12),
+        point(1, 0, 0, 0, 0, 1, 1, 0),
+      ],
+      [
+        point(0, 0, -72 * vh, 72 * vh, 26, 0.86, 0.86, 0),
+        point(0.62, 0, 1.3 * vh, 0, -5, 1.08, 0.72, 0.15),
+        point(0.78, 0, -5.6 * vh, 6 * vh, 2, 0.98, 1.06, 0),
+        point(0.9, 0, 0.25 * vh, 0, -1, 1.03, 0.91, 0.08),
+        point(1, 0, 0, 0, 0, 1, 1, 0),
+      ],
+      [
+        point(0, 9 * vw, 39 * vh, 34 * vh, 188, 0.72, 0.72, 0.25),
+        point(0.6, -0.9 * vw, -5.2 * vh, 6 * vh, -18, 1.05, 1.04, 0.12),
+        point(0.82, 0.38 * vw, 0.28 * vh, 0, 5, 1.09, 0.87, 0.08),
+        point(1, 0, 0, 0, 0, 1, 1, 0),
+      ],
+      [
+        point(0, 25 * vw, -31 * vh, 34 * vh, 122, 0.82, 0.82, 0.3),
+        point(0.4, 13 * vw, -19 * vh, 22 * vh, 60, 0.94, 0.94, 0.2),
+        point(0.72, 2.2 * vw, -3.2 * vh, 4 * vh, 10, 1.01, 1.01, 0.1),
+        point(0.88, -0.58 * vw, 0.32 * vh, 0, -7, 1.05, 0.92, 0.08),
+        point(1, 0, 0, 0, 0, 1, 1, 0),
+      ],
+      [
+        point(0, 61 * vw, 0, 0, 8, 1.06, 0.98, 2.1),
+        point(0.56, -2.5 * vw, 0, 0, -2, 1.05, 0.95, 1.8),
+        point(0.74, 1.55 * vw, 0, 0, 0.8, 1.01, 1, 0.9),
+        point(0.9, -0.38 * vw, 0, 0, -0.3, 1, 1, 0.25),
+        point(1, 0, 0, 0, 0, 1, 1, 0),
+      ],
+    ];
+
+    const sequences = [
+      { delay: 1720, duration: 1580, easing: 'cubic-bezier(.18,.74,.2,1)', shadowLead: 0 },
+      { delay: 3050, duration: 820, easing: 'cubic-bezier(.16,.88,.22,1)', shadowLead: 170 },
+      { delay: 3370, duration: 1040, easing: 'cubic-bezier(.2,.72,.18,1)', shadowLead: 80 },
+      { delay: 4700, duration: 1040, easing: 'cubic-bezier(.14,.84,.22,1)', shadowLead: 260 },
+      { delay: 5620, duration: 660, easing: 'cubic-bezier(.17,.86,.25,1)', shadowLead: 120 },
+      { delay: 5800, duration: 900, easing: 'cubic-bezier(.2,.78,.2,1)', shadowLead: 160 },
+      { delay: 6460, duration: 910, easing: 'cubic-bezier(.1,.76,.18,1)', shadowLead: 130 },
+    ];
+
+    paths.forEach((path, index) => playPath(scene, index, path, sequences[index]));
+
+    /* The V lands hard enough to disturb the letters already on the line. */
+    window.setTimeout(() => {
+      [2, 1, 0].forEach((index, order) => {
+        const direction = index % 2 === 0 ? -1 : 1;
+        const animation = scene.glyphs[index].animate([
+          { transform: 'none' },
+          { offset: 0.34, transform: `translate(${direction * (4 - order)}px, -1px) rotate(${direction * 0.7}deg)` },
+          { offset: 0.68, transform: `translate(${direction * -1.5}px, 0) rotate(${direction * -0.25}deg)` },
+          { transform: 'none' },
+        ], {
+          duration: 320,
+          delay: order * 28,
+          easing: 'cubic-bezier(.2,.8,.2,1)',
+        });
+        activeAnimations.push(animation);
+      });
+    }, 5350);
+
+    /* N is the closer: its collision ripples right-to-left through the word. */
+    window.setTimeout(() => {
+      [5, 4, 3, 2, 1, 0].forEach((index, order) => {
+        const force = Math.max(1.2, 7 - order * 0.9);
+        const animation = scene.glyphs[index].animate([
+          { transform: 'none' },
+          { offset: 0.28, transform: `translateX(${-force}px) rotate(${-force * 0.09}deg)` },
+          { offset: 0.62, transform: `translateX(${force * 0.28}px) rotate(${force * 0.025}deg)` },
+          { transform: 'none' },
+        ], {
+          duration: 330,
+          delay: order * 34,
+          easing: 'cubic-bezier(.18,.8,.22,1)',
+        });
+        activeAnimations.push(animation);
+      });
+    }, 7010);
+
+    window.setTimeout(() => {
+      const glyphPulse = scene.glyphPlane.animate([
+        { transform: 'translateY(0)' },
+        { offset: 0.5, transform: 'translateY(-1.5px)' },
+        { transform: 'translateY(0)' },
+      ], { duration: 210, easing: 'cubic-bezier(.2,.8,.2,1)' });
+
+      const shadowSettle = scene.shadowPlane.animate([
+        { opacity: 1, transform: 'scaleX(1.015)' },
+        { opacity: 0.9, transform: 'scaleX(1)' },
+      ], { duration: 230, easing: 'ease-out', fill: 'forwards' });
+
+      activeAnimations.push(glyphPulse, shadowSettle);
+    }, 7410);
+
+    window.setTimeout(() => {
+      nameSource.dataset.titleEntrance = 'complete';
+      nameSource.animate([
+        { transform: 'translateY(-1.5px)', textShadow: '0.025em 0.08em 0.12em rgb(23 23 22 / 0.22)' },
+        { transform: 'translateY(0)', textShadow: '0.02em 0.055em 0.08em rgb(23 23 22 / 0.15)' },
+      ], { duration: 230, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'both' });
+
+      const fade = scene.layer.animate([{ opacity: 1 }, { opacity: 0 }], {
+        duration: 180,
+        easing: 'ease-out',
+        fill: 'forwards',
+      });
+      fade.finished.finally(() => scene.layer.remove());
+    }, 7640);
   };
 
   const start = async () => {
-    if (started) return;
+    if (started || completed) return;
     started = true;
 
     try {
+      if (!Element.prototype.animate) throw new Error('Web Animations API unavailable');
+      if (document.fonts?.ready) await document.fonts.ready;
       if (root.dataset.assembly !== 'playing') return;
 
-      const studioRect = studioSource.getBoundingClientRect();
-      const wordRect = wievienSource.getBoundingClientRect();
-      const wordTextNode = Array.from(wievienSource.childNodes).find((node) => node.nodeType === Node.TEXT_NODE);
-      const word = wievienSource.textContent?.trim() || '';
+      const studioScene = createWholeWordScene(studioSource);
+      const nameScene = createLetterScene(nameSource);
+      const vw = window.innerWidth / 100;
+      const vh = window.innerHeight / 100;
 
-      if (!wordTextNode || word !== 'Wievien' || !studioRect.width || !wordRect.width) {
-        finish();
-        return;
-      }
+      listenOnceToIntent();
+      playStudio(studioScene, vw, vh);
+      playName(nameScene, vw, vh);
 
-      stage = document.createElement('div');
-      stage.className = 'kinetic-title-stage';
-      document.body.appendChild(stage);
-
-      window.addEventListener('resize', finish, { once: true });
-      window.addEventListener('orientationchange', finish, { once: true });
-
-      const studioLayer = document.createElement('div');
-      studioLayer.className = 'kinetic-studio-layer';
-      Object.assign(studioLayer.style, {
-        left: `${studioRect.left + window.scrollX}px`,
-        top: `${studioRect.top + window.scrollY}px`,
-        width: `${studioRect.width}px`,
-        height: `${studioRect.height}px`,
-      });
-
-      const studioShadow = document.createElement('div');
-      studioShadow.className = 'kinetic-studio-shadow';
-      Object.assign(studioShadow.style, {
-        left: `${studioRect.width * 0.06}px`,
-        top: `${Math.max(0, studioRect.height - 5)}px`,
-        width: `${studioRect.width * 0.88}px`,
-      });
-
-      const studioInk = document.createElement('span');
-      studioInk.className = 'kinetic-studio-ink';
-      studioInk.textContent = studioSource.textContent?.trim() || 'Studio';
-      copyType(studioSource, studioInk);
-
-      studioLayer.append(studioShadow, studioInk);
-      stage.appendChild(studioLayer);
-
-      animate(studioInk, [
-        { offset: 0, transform: 'translateX(-72vw) translateY(.04em) rotate(-2.6deg) skewX(-10deg) scale(.97)', opacity: 1 },
-        { offset: .58, transform: 'translateX(2.2vw) translateY(-.015em) rotate(.65deg) skewX(1.4deg) scale(1.012,.985)', opacity: 1 },
-        { offset: .73, transform: 'translateX(-.68vw) translateY(.008em) rotate(-.48deg) skewX(-.35deg)' },
-        { offset: .86, transform: 'translateX(.24vw) rotate(.18deg)' },
-        { offset: 1, transform: 'none', opacity: 1 },
-      ], {
-        duration: 1080,
-        delay: 70,
-        easing: 'cubic-bezier(.16,.82,.18,1)',
-      });
-
-      animate(studioShadow, [
-        { offset: 0, transform: 'translateX(-72vw) scale(2.7,.34)', opacity: .075 },
-        { offset: .58, transform: 'translateX(2.2vw) scale(1.48,.48)', opacity: .24 },
-        { offset: .73, transform: 'translateX(-.68vw) scale(1.22,.58)', opacity: .21 },
-        { offset: .86, transform: 'translateX(.24vw) scale(1.08,.72)', opacity: .18 },
-        { offset: 1, transform: 'none', opacity: .15 },
-      ], {
-        duration: 1080,
-        delay: 70,
-        easing: 'cubic-bezier(.16,.82,.18,1)',
-      });
-
-      later(() => {
-        studioSource.dataset.titleEntrance = 'complete';
-        studioLayer.animate([{ opacity: 1 }, { opacity: 0 }], {
-          duration: 150,
-          easing: 'ease-out',
-          fill: 'forwards',
-        }).finished.then(() => studioLayer.remove()).catch(() => studioLayer.remove());
-      }, 1170);
-
-      const wordLayer = document.createElement('div');
-      wordLayer.className = 'kinetic-word-layer';
-      Object.assign(wordLayer.style, {
-        left: `${wordRect.left + window.scrollX}px`,
-        top: `${wordRect.top + window.scrollY}px`,
-        width: `${wordRect.width}px`,
-        height: `${wordRect.height}px`,
-      });
-      stage.appendChild(wordLayer);
-
-      const glyphs = [];
-      const shadows = [];
-
-      for (let index = 0; index < word.length; index += 1) {
-        const range = document.createRange();
-        range.setStart(wordTextNode, index);
-        range.setEnd(wordTextNode, index + 1);
-        const rect = range.getBoundingClientRect();
-        range.detach?.();
-
-        const left = rect.left - wordRect.left;
-        const top = rect.top - wordRect.top;
-        const right = wordRect.right - rect.right;
-        const bottom = wordRect.bottom - rect.bottom;
-
-        const glyph = document.createElement('div');
-        glyph.className = `kinetic-glyph kinetic-glyph-${index}`;
-        glyph.style.clipPath = `inset(${Math.max(0, top - 1)}px ${Math.max(0, right - 1)}px ${Math.max(0, bottom - 1)}px ${Math.max(0, left - 1)}px)`;
-        glyph.style.transformOrigin = `${left + rect.width / 2}px ${top + rect.height}px`;
-        glyph.style.zIndex = `${10 + index}`;
-
-        const ink = document.createElement('span');
-        ink.className = 'kinetic-glyph-ink';
-        ink.textContent = word;
-        copyType(wievienSource, ink);
-        glyph.appendChild(ink);
-
-        const shadow = document.createElement('div');
-        shadow.className = `kinetic-glyph-shadow kinetic-glyph-shadow-${index}`;
-        Object.assign(shadow.style, {
-          left: `${left + rect.width * 0.14}px`,
-          top: `${Math.min(wordRect.height - 3, top + rect.height - 4)}px`,
-          width: `${Math.max(7, rect.width * 0.8)}px`,
-          zIndex: '1',
-        });
-
-        wordLayer.append(shadow, glyph);
-        glyphs.push(glyph);
-        shadows.push(shadow);
-      }
-
-      const sequences = [
-        {
-          delay: 1410,
-          duration: 1480,
-          easing: 'cubic-bezier(.18,.72,.16,1)',
-          frames: [
-            { offset: 0, transform: 'translate(-66vw, .2vh) rotate(-13deg) scale(.95)' },
-            { offset: .14, transform: 'translate(-53vw, -1.1vh) rotate(8deg) scale(.97)' },
-            { offset: .28, transform: 'translate(-41vw, .45vh) rotate(-8deg) scale(.975)' },
-            { offset: .43, transform: 'translate(-29vw, -1vh) rotate(7deg) scale(.985)' },
-            { offset: .58, transform: 'translate(-18vw, .35vh) rotate(-5deg) scale(.99)' },
-            { offset: .73, transform: 'translate(-8vw, -.55vh) rotate(3.8deg) scale(.997)' },
-            { offset: .88, transform: 'translate(-1.3vw, .08vh) rotate(-1.1deg) scale(1.035,.91)' },
-            { offset: 1, transform: 'none' },
-          ],
-          shadowDelay: 1410,
-          shadowDuration: 1480,
-          shadow: [
-            { offset: 0, transform: 'translateX(-66vw) scale(1.9,.4)', opacity: .1 },
-            { offset: .14, transform: 'translateX(-53vw) scale(.88,.7)', opacity: .15 },
-            { offset: .28, transform: 'translateX(-41vw) scale(1.45,.46)', opacity: .21 },
-            { offset: .43, transform: 'translateX(-29vw) scale(.88,.7)', opacity: .15 },
-            { offset: .58, transform: 'translateX(-18vw) scale(1.35,.5)', opacity: .22 },
-            { offset: .73, transform: 'translateX(-8vw) scale(.92,.68)', opacity: .17 },
-            { offset: .88, transform: 'translateX(-1.3vw) scale(1.52,.38)', opacity: .31 },
-            { offset: 1, transform: 'none', opacity: .17 },
-          ],
-        },
-        {
-          delay: 2500,
-          duration: 650,
-          easing: 'cubic-bezier(.12,.88,.18,1)',
-          frames: [
-            { offset: 0, transform: 'translate(-16vw, -54vh) rotate(-205deg) scale(.66)' },
-            { offset: .58, transform: 'translate(2.1vw, -3.2vh) rotate(22deg) scale(1.06)' },
-            { offset: .78, transform: 'translate(1.15vw, .25vh) rotate(7deg) scale(1.13,.84)' },
-            { offset: .9, transform: 'translate(-.35vw, -.15vh) rotate(-2deg)' },
-            { offset: 1, transform: 'none' },
-          ],
-          shadowDelay: 2500,
-          shadowDuration: 650,
-          shadow: [
-            { offset: 0, transform: 'translateX(-16vw) translateX(8px) scale(.2,.36)', opacity: .025 },
-            { offset: .58, transform: 'translateX(2.1vw) scale(.5,.58)', opacity: .1 },
-            { offset: .78, transform: 'translateX(1.15vw) scale(1.42,.38)', opacity: .3 },
-            { offset: .9, transform: 'translateX(-.35vw) scale(.9,.65)', opacity: .18 },
-            { offset: 1, transform: 'none', opacity: .17 },
-          ],
-        },
-        {
-          delay: 2760,
-          duration: 860,
-          easing: 'cubic-bezier(.18,.74,.18,1)',
-          frames: [
-            { offset: 0, transform: 'translate(-36vw, 7vh) rotate(-620deg) scale(.8)' },
-            { offset: .42, transform: 'translate(-19vw, -8vh) rotate(-360deg) scale(.91)' },
-            { offset: .72, transform: 'translate(-3.2vw, -3vh) rotate(-78deg) scale(1)' },
-            { offset: .88, transform: 'translate(.7vw, .35vh) rotate(13deg) scale(1.05,.92)' },
-            { offset: 1, transform: 'none' },
-          ],
-          shadowDelay: 2760,
-          shadowDuration: 860,
-          shadow: [
-            { offset: 0, transform: 'translateX(-36vw) scale(1.55,.38)', opacity: .12 },
-            { offset: .42, transform: 'translateX(-19vw) scale(.42,.5)', opacity: .065 },
-            { offset: .72, transform: 'translateX(-3.2vw) scale(.72,.62)', opacity: .14 },
-            { offset: .88, transform: 'translateX(.7vw) scale(1.35,.4)', opacity: .29 },
-            { offset: 1, transform: 'none', opacity: .17 },
-          ],
-        },
-        {
-          delay: 3700,
-          duration: 960,
-          easing: 'cubic-bezier(.12,.84,.22,1)',
-          frames: [
-            { offset: 0, transform: 'translate(1vw, -74vh) rotate(34deg) scale(.84)' },
-            { offset: .62, transform: 'translate(0, 1.3vh) rotate(-5deg) scale(1.07,.72)' },
-            { offset: .77, transform: 'translate(0, -6.2vh) rotate(2.2deg) scale(.97,1.07)' },
-            { offset: .9, transform: 'translate(0, .3vh) rotate(-1deg) scale(1.03,.9)' },
-            { offset: 1, transform: 'none' },
-          ],
-          shadowDelay: 3370,
-          shadowDuration: 1290,
-          shadow: [
-            { offset: 0, transform: 'translateX(9px) scale(.1,.22)', opacity: .018 },
-            { offset: .25, transform: 'translateX(7px) scale(.16,.3)', opacity: .035 },
-            { offset: .5, transform: 'translateX(4px) scale(.34,.44)', opacity: .07 },
-            { offset: .72, transform: 'scale(.65,.58)', opacity: .14 },
-            { offset: .82, transform: 'scale(1.68,.34)', opacity: .34 },
-            { offset: .93, transform: 'scale(.62,.65)', opacity: .13 },
-            { offset: 1, transform: 'none', opacity: .17 },
-          ],
-        },
-        {
-          delay: 4570,
-          duration: 570,
-          easing: 'cubic-bezier(.13,.88,.2,1)',
-          frames: [
-            { offset: 0, transform: 'translate(8vw, 42vh) rotate(190deg) scale(.7)' },
-            { offset: .62, transform: 'translate(-.9vw, -5.5vh) rotate(-19deg) scale(1.05)' },
-            { offset: .83, transform: 'translate(.38vw, .3vh) rotate(5deg) scale(1.1,.86)' },
-            { offset: 1, transform: 'none' },
-          ],
-          shadowDelay: 4500,
-          shadowDuration: 640,
-          shadow: [
-            { offset: 0, transform: 'translateX(8vw) scale(1.6,.35)', opacity: .12 },
-            { offset: .5, transform: 'translateX(-.9vw) scale(.42,.5)', opacity: .07 },
-            { offset: .82, transform: 'translateX(.38vw) scale(1.48,.35)', opacity: .31 },
-            { offset: 1, transform: 'none', opacity: .17 },
-          ],
-        },
-        {
-          delay: 4790,
-          duration: 780,
-          easing: 'cubic-bezier(.18,.8,.2,1)',
-          frames: [
-            { offset: 0, transform: 'translate(28vw, -34vh) rotate(138deg) scale(.8)' },
-            { offset: .42, transform: 'translate(14vw, -21vh) rotate(68deg) scale(.93)' },
-            { offset: .72, transform: 'translate(2.2vw, -3.5vh) rotate(12deg) scale(1.01)' },
-            { offset: .88, transform: 'translate(-.6vw, .35vh) rotate(-7deg) scale(1.05,.92)' },
-            { offset: 1, transform: 'none' },
-          ],
-          shadowDelay: 4790,
-          shadowDuration: 780,
-          shadow: [
-            { offset: 0, transform: 'translateX(28vw) translateX(8px) scale(.28,.4)', opacity: .035 },
-            { offset: .42, transform: 'translateX(14vw) translateX(6px) scale(.38,.48)', opacity: .06 },
-            { offset: .72, transform: 'translateX(2.2vw) scale(.72,.62)', opacity: .14 },
-            { offset: .88, transform: 'translateX(-.6vw) scale(1.34,.39)', opacity: .29 },
-            { offset: 1, transform: 'none', opacity: .17 },
-          ],
-        },
-        {
-          delay: 5260,
-          duration: 1010,
-          easing: 'cubic-bezier(.08,.76,.16,1)',
-          frames: [
-            { offset: 0, transform: 'translate(66vw, -3vh) rotate(11deg) skewX(-10deg) scale(1.06)' },
-            { offset: .52, transform: 'translate(-2.8vw, .05vh) rotate(-2.6deg) skewX(2deg) scale(1.07,.91)' },
-            { offset: .68, transform: 'translate(1.55vw, 0) rotate(.9deg) skewX(-1deg)' },
-            { offset: .84, transform: 'translate(-.42vw, 0) rotate(-.34deg)' },
-            { offset: 1, transform: 'none' },
-          ],
-          shadowDelay: 5120,
-          shadowDuration: 1150,
-          shadow: [
-            { offset: 0, transform: 'translateX(70vw) scale(2.9,.28)', opacity: .075 },
-            { offset: .48, transform: 'translateX(-2.8vw) scale(2.35,.3)', opacity: .31 },
-            { offset: .64, transform: 'translateX(1.55vw) scale(1.7,.4)', opacity: .27 },
-            { offset: .82, transform: 'translateX(-.42vw) scale(1.2,.55)', opacity: .21 },
-            { offset: 1, transform: 'none', opacity: .17 },
-          ],
-        },
-      ];
-
-      sequences.forEach((sequence, index) => {
-        animate(glyphs[index], sequence.frames, {
-          duration: sequence.duration,
-          delay: sequence.delay,
-          easing: sequence.easing,
-        });
-
-        animate(shadows[index], sequence.shadow, {
-          duration: sequence.shadowDuration ?? sequence.duration,
-          delay: sequence.shadowDelay ?? sequence.delay,
-          easing: sequence.easing,
-        });
-      });
-
-      [2, 1, 0].forEach((index, order) => {
-        animate(glyphs[index], [
-          { transform: 'none' },
-          { offset: .34, transform: `translateX(${-4 + order}px) translateY(${-2 + order * .35}px) rotate(${-0.45 + order * .12}deg) scale(1.01,.98)` },
-          { offset: .7, transform: 'translateX(1px) translateY(.5px) rotate(.12deg)' },
-          { transform: 'none' },
-        ], {
-          duration: 330,
-          delay: 4300 + order * 34,
-          fill: 'forwards',
-          easing: 'cubic-bezier(.18,.8,.2,1)',
-        });
-
-        animate(shadows[index], [
-          { transform: 'none', opacity: .17 },
-          { offset: .35, transform: 'translateX(-3px) scale(1.16,.55)', opacity: .24 },
-          { transform: 'none', opacity: .17 },
-        ], {
-          duration: 330,
-          delay: 4300 + order * 34,
-          fill: 'forwards',
-          easing: 'cubic-bezier(.18,.8,.2,1)',
-        });
-      });
-
-      [5, 4, 3, 2, 1, 0].forEach((index, order) => {
-        const strength = 1 - order * 0.1;
-        animate(glyphs[index], [
-          { transform: 'none' },
-          { offset: .28, transform: `translateX(${-7 * strength}px) rotate(${-0.6 * strength}deg) scale(${1 + .018 * strength},${1 - .028 * strength})` },
-          { offset: .62, transform: `translateX(${2.2 * strength}px) rotate(${.22 * strength}deg)` },
-          { transform: 'none' },
-        ], {
-          duration: 390,
-          delay: 5790 + order * 48,
-          fill: 'forwards',
-          easing: 'cubic-bezier(.16,.78,.2,1)',
-        });
-
-        animate(shadows[index], [
-          { transform: 'none', opacity: .17 },
-          { offset: .3, transform: `translateX(${-5 * strength}px) scale(${1.35 + .2 * strength},.38)`, opacity: .28 },
-          { transform: 'none', opacity: .17 },
-        ], {
-          duration: 390,
-          delay: 5790 + order * 48,
-          fill: 'forwards',
-          easing: 'cubic-bezier(.16,.78,.2,1)',
-        });
-      });
-
-      glyphs.forEach((glyph, index) => {
-        animate(glyph, [
-          { transform: `translate(${(index - 3) * .22}px, -1.2px) rotate(${(index % 2 ? 1 : -1) * .16}deg)` },
-          { offset: .45, transform: 'translate(0, .35px) rotate(0)' },
-          { transform: 'none' },
-        ], {
-          duration: 360,
-          delay: 6430,
-          fill: 'forwards',
-          easing: 'cubic-bezier(.2,.8,.2,1)',
-        });
-
-        animate(shadows[index], [
-          { transform: 'scale(1.08,.52)', opacity: .23 },
-          { transform: 'none', opacity: .17 },
-        ], {
-          duration: 360,
-          delay: 6430,
-          fill: 'forwards',
-          easing: 'cubic-bezier(.2,.8,.2,1)',
-        });
-      });
-
-      later(() => {
-        wievienSource.dataset.letterEntrance = 'complete';
-        wievienSource.animate([
-          {
-            transform: 'translateY(-1.5px)',
-            textShadow: '0.022em 0.035em 0 rgb(23 23 22 / 0.16), 0.02em 0.085em 0.15em rgb(23 23 22 / 0.18)',
-          },
-          {
-            transform: 'translateY(0)',
-            textShadow: '0.018em 0.026em 0 rgb(23 23 22 / 0.11), 0.015em 0.065em 0.11em rgb(23 23 22 / 0.12)',
-          },
-        ], {
-          duration: 260,
-          easing: 'cubic-bezier(.2,.8,.2,1)',
-          fill: 'both',
-        });
-
-        wordLayer.animate([{ opacity: 1 }, { opacity: 0 }], {
-          duration: 190,
-          easing: 'ease-out',
-          fill: 'forwards',
-        }).finished.then(() => wordLayer.remove()).catch(() => wordLayer.remove());
-      }, 6830);
-
-      later(() => {
-        stage?.remove();
-        window.removeEventListener('resize', finish);
-        window.removeEventListener('orientationchange', finish);
-      }, 7100);
+      completionTimer = window.setTimeout(() => finish(false), 10700);
     } catch {
-      finish();
+      showFinalTitle();
+      finish(true);
     }
   };
 
-  waitForPlay();
+  if (root.dataset.assembly === 'playing') {
+    start();
+    return;
+  }
+
+  const observer = new MutationObserver(() => {
+    if (root.dataset.assembly === 'playing') {
+      observer.disconnect();
+      start();
+    }
+  });
+
+  observer.observe(root, { attributes: true, attributeFilter: ['data-assembly'] });
 })();

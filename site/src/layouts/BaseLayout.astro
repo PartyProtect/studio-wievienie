@@ -10,6 +10,8 @@ interface Props {
   currentPath?: string;
   ogImage?: string;
   noindex?: boolean;
+  hideChrome?: boolean;
+  themeColor?: string;
 }
 
 const {
@@ -19,6 +21,8 @@ const {
   currentPath = '',
   ogImage,
   noindex = false,
+  hideChrome = false,
+  themeColor = '#f6f4ef',
 } = Astro.props;
 
 const fullTitle = title === 'Studio Wievien' ? title : `${title} — Studio Wievien`;
@@ -32,7 +36,7 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#f6f4ef" />
+  <meta name="theme-color" content={themeColor} />
   <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
   <title>{fullTitle}</title>
   <meta name="description" content={description} />
@@ -55,10 +59,11 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
     try {
       const fancyArrivalKey = 'studio-wievien:fancy-arrival';
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const normalizePath = (path) => path.replace(/\/+$/, '') || '/';
 
       if (
         !reducedMotion &&
-        window.location.hash === '#fancy-boogers' &&
+        normalizePath(window.location.pathname) === '/fancy-boogers' &&
         sessionStorage.getItem(fancyArrivalKey) === '1'
       ) {
         document.documentElement.classList.add('fancy-arrival-pending');
@@ -80,13 +85,13 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
   <a class="skip-link" href="#main-content">{skipLabel}</a>
 
   <div data-page-shell>
-    <Header lang={lang} currentPath={currentPath} />
+    {!hideChrome && <Header lang={lang} currentPath={currentPath} />}
 
     <main id="main-content">
       <slot />
     </main>
 
-    <Footer lang={lang} />
+    {!hideChrome && <Footer lang={lang} />}
   </div>
 
   <div class="fancy-transition-overlay" data-fancy-transition-overlay aria-hidden="true"></div>
@@ -96,12 +101,12 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
       const root = document.documentElement;
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
       const fancyArrivalKey = 'studio-wievien:fancy-arrival';
-      const pullDuration = 380;
-      const revealDuration = 450;
+      const fancyPath = '/fancy-boogers';
+      const pullDuration = 430;
+      const revealDuration = 560;
       let busy = false;
 
       const normalizePath = (path) => path.replace(/\/+$/, '') || '/';
-      const getTarget = () => document.getElementById('fancy-boogers');
 
       const closeMobileMenu = () => {
         document.querySelectorAll('.mobile-menu[open]').forEach((menu) => {
@@ -109,14 +114,7 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
         });
       };
 
-      const jumpToTarget = (target) => {
-        const previousScrollBehavior = root.style.scrollBehavior;
-        root.style.scrollBehavior = 'auto';
-        target.scrollIntoView({ behavior: 'auto', block: 'start' });
-        root.style.scrollBehavior = previousScrollBehavior;
-      };
-
-      const cleanup = (target) => {
+      const cleanup = () => {
         root.classList.remove(
           'fancy-arrival-pending',
           'is-fancy-transitioning',
@@ -124,53 +122,19 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
           'is-fancy-covered',
           'is-fancy-revealing'
         );
-        target?.classList.remove('is-fancy-arrival-target');
         busy = false;
-      };
-
-      const revealFancy = (target, updateHistory = false) => {
-        root.classList.add('is-fancy-covered');
-        root.classList.remove('is-fancy-pulling');
-        jumpToTarget(target);
-
-        if (updateHistory && window.location.hash !== '#fancy-boogers') {
-          history.pushState(null, '', `${window.location.pathname}${window.location.search}#fancy-boogers`);
-        }
-
-        target.classList.add('is-fancy-arrival-target');
-
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            root.classList.remove('fancy-arrival-pending');
-            root.classList.add('is-fancy-revealing');
-          });
-        });
-
-        window.setTimeout(() => cleanup(target), revealDuration + 170);
       };
 
       const startTransition = (url) => {
         if (busy || reducedMotion.matches) return;
         busy = true;
         closeMobileMenu();
-
-        const sameDocument =
-          url.origin === window.location.origin &&
-          normalizePath(url.pathname) === normalizePath(window.location.pathname);
-        const target = sameDocument ? getTarget() : null;
-
         root.classList.add('is-fancy-transitioning', 'is-fancy-pulling');
 
         window.setTimeout(() => {
-          if (target) {
-            revealFancy(target, true);
-            return;
-          }
-
           try {
             sessionStorage.setItem(fancyArrivalKey, '1');
           } catch {}
-
           window.location.assign(url.href);
         }, pullDuration);
       };
@@ -196,8 +160,9 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
           return;
         }
 
-        if (url.origin !== window.location.origin || url.hash !== '#fancy-boogers') return;
-
+        if (url.origin !== window.location.origin) return;
+        if (normalizePath(url.pathname) !== fancyPath) return;
+        if (normalizePath(window.location.pathname) === fancyPath) return;
         if (reducedMotion.matches) return;
 
         event.preventDefault();
@@ -210,13 +175,16 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
           sessionStorage.removeItem(fancyArrivalKey);
         } catch {}
 
-        const target = getTarget();
-        if (target) {
-          root.classList.add('is-fancy-transitioning');
-          revealFancy(target, false);
-        } else {
-          cleanup(null);
-        }
+        root.classList.add('is-fancy-transitioning', 'is-fancy-covered');
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            root.classList.remove('fancy-arrival-pending');
+            root.classList.add('is-fancy-revealing');
+          });
+        });
+
+        window.setTimeout(cleanup, revealDuration + 180);
       }
     })();
   </script>

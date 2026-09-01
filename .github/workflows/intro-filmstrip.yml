@@ -70,7 +70,7 @@ jobs:
 
           const marks = [50, 500, 1000, 1500, 2200, 2900, 3600, 4300, 5000, 5700, 6300, 6900, 7600, 8400];
           const browser = await chromium.launch({ headless: true });
-          const metrics = {};
+          const report = {};
 
           try {
             for (const viewport of viewports) {
@@ -82,6 +82,14 @@ jobs:
                 reducedMotion: 'no-preference',
               });
               const page = await context.newPage();
+              const errors = [];
+              page.on('pageerror', (error) => errors.push(`pageerror: ${error.message}`));
+              page.on('console', (message) => {
+                if (message.type() === 'error' || message.type() === 'warning') {
+                  errors.push(`${message.type()}: ${message.text()}`);
+                }
+              });
+
               await page.goto(`http://127.0.0.1:4321/?intro=1&film=${viewport.name}`, {
                 waitUntil: 'domcontentloaded',
               });
@@ -91,22 +99,23 @@ jobs:
                 { timeout: 6000 },
               );
 
-              metrics[viewport.name] = [];
+              report[viewport.name] = { frames: [], errors };
               let elapsed = 0;
               for (const mark of marks) {
                 await page.waitForTimeout(Math.max(0, mark - elapsed));
                 elapsed = mark;
 
-                metrics[viewport.name].push(await page.evaluate((timestamp) => ({
+                report[viewport.name].frames.push(await page.evaluate((timestamp) => ({
                   timestamp,
                   assembly: document.documentElement.dataset.assembly ?? null,
-                  titleStage: Boolean(document.querySelector('.kinetic-title-stage')),
+                  titleLayers: document.querySelectorAll('.title-motion-layer').length,
                   studioComplete: document.querySelector('[data-assemble="studio"]')?.getAttribute('data-title-entrance'),
-                  wordComplete: document.querySelector('[data-assemble="wievien"]')?.getAttribute('data-letter-entrance'),
-                  visibleGlyphs: [...document.querySelectorAll('.kinetic-glyph')].filter((element) => {
+                  wordComplete: document.querySelector('[data-assemble="wievien"]')?.getAttribute('data-title-entrance'),
+                  visibleGlyphs: [...document.querySelectorAll('.title-motion-wievien .title-motion-glyph')].filter((element) => {
                     const style = getComputedStyle(element);
                     return style.visibility !== 'hidden' && Number(style.opacity) > 0.01;
                   }).length,
+                  visibleCasts: [...document.querySelectorAll('.title-motion-wievien .title-motion-cast')].filter((element) => Number(getComputedStyle(element).opacity) > 0.01).length,
                 }), mark));
 
                 await page.screenshot({
@@ -122,7 +131,7 @@ jobs:
             await browser.close();
           }
 
-          await writeFile(`${output}/metrics.json`, JSON.stringify(metrics, null, 2));
+          await writeFile(`${output}/report.json`, JSON.stringify(report, null, 2));
           JS
 
           node .capture-intro.mjs

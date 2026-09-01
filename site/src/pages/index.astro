@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import AssemblyCrew from '@/components/AssemblyCrew.astro';
 import { heroWork, homepageProjects, homepageWork } from '@/data/content';
 
 const sections = [
@@ -23,10 +24,13 @@ const [juunamWork, carnivalWork] = homepageWork;
   <section class="hero shell" aria-labelledby="hero-title">
     <div class="hero-copy">
       <p class="eyebrow" data-assemble="eyebrow">Wievien Alberts · Maastricht</p>
-      <h1 id="hero-title">
-        <span class="hero-word hero-word-studio" data-assemble="studio">Studio</span>
-        <span class="hero-word hero-word-wievien" data-assemble="wievien">Wievien</span>
-      </h1>
+      <div class="hero-title-stage">
+        <h1 id="hero-title">
+          <span class="hero-word hero-word-studio" data-assemble="studio">Studio</span>
+          <span class="hero-word hero-word-wievien" data-assemble="wievien">Wievien</span>
+        </h1>
+        <AssemblyCrew />
+      </div>
       <p class="hero-fields" data-assemble="fields">Mode · textiel · objecten · workshops</p>
       <a class="quiet-link" href="/werk/" data-assemble="cta">Werk <span aria-hidden="true">→</span></a>
     </div>
@@ -208,6 +212,12 @@ const [juunamWork, carnivalWork] = homepageWork;
 
   .hero-copy {
     max-width: 610px;
+  }
+
+  .hero-title-stage {
+    position: relative;
+    width: fit-content;
+    max-width: 100%;
   }
 
   .hero h1 {

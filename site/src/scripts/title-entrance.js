@@ -202,14 +202,35 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
 
     later(() => {
       nameSource.dataset.titleEntrance = 'complete';
-      nameSource.animate([
-        { transform: 'translateY(-1px)', textShadow: '0 0.045em 0.07em rgb(23 23 22 / 0.14)' },
-        { transform: 'translateY(0)', textShadow: '0 0.035em 0.055em rgb(23 23 22 / 0.105)' },
+
+      /* Ta-da: the real word takes over, rises into a proud pose, holds there,
+         then relaxes exactly as the rest of the homepage begins to bloom. */
+      track(nameSource.animate([
+        {
+          offset: 0,
+          transform: 'translateY(-1px) scale(1.004)',
+          textShadow: '0 0.04em 0.06em rgb(23 23 22 / 0.125)',
+        },
+        {
+          offset: .2,
+          transform: 'translateY(-2.8px) scale(1.016,1.008)',
+          textShadow: '0 0.055em 0.075em rgb(23 23 22 / 0.15)',
+        },
+        {
+          offset: .78,
+          transform: 'translateY(-2.8px) scale(1.016,1.008)',
+          textShadow: '0 0.055em 0.075em rgb(23 23 22 / 0.15)',
+        },
+        {
+          offset: 1,
+          transform: 'none',
+          textShadow: '0 0.035em 0.055em rgb(23 23 22 / 0.105)',
+        },
       ], {
-        duration: 180,
+        duration: 690,
         easing: 'cubic-bezier(.2,.8,.2,1)',
         fill: 'both',
-      });
+      }));
 
       const glyphFade = scene.glyphPlane.animate(
         [{ opacity: 1 }, { opacity: 0 }],
@@ -238,7 +259,7 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
       listenOnceToIntent();
       playStudio(studioScene);
       playName(nameScene);
-      setCompletionTimer(4350);
+      setCompletionTimer(4650);
     } catch {
       showFinalTitle();
       finish(true);

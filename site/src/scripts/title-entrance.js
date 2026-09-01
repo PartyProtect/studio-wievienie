@@ -25,8 +25,8 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
   };
 
   const playStudio = (scene) => {
-    const duration = 790;
-    const delay = 35;
+    const duration = 860;
+    const delay = 45;
 
     track(
       scene.glyph.animate([
@@ -43,10 +43,10 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
         fill: 'both',
       }),
       scene.contact.animate([
-        { offset: 0, opacity: .04, transform: 'translateX(-46vw) scale(2.2,.42)' },
-        { offset: .56, opacity: .15, transform: 'translateX(1.35vw) scale(1.42,.55)' },
-        { offset: .76, opacity: .19, transform: 'translateX(-.48vw) scale(1.18,.72)' },
-        { offset: 1, opacity: .14, transform: 'none' },
+        { offset: 0, opacity: .035, transform: 'translateX(-46vw) scale(2.05,.42)' },
+        { offset: .56, opacity: .12, transform: 'translateX(1.35vw) scale(1.34,.6)' },
+        { offset: .76, opacity: .16, transform: 'translateX(-.48vw) scale(1.12,.76)' },
+        { offset: 1, opacity: .11, transform: 'none' },
       ], {
         duration,
         delay,
@@ -64,7 +64,7 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
       );
       const shadowFade = scene.shadowPlane.animate(
         [{ opacity: 1 }, { opacity: 0 }],
-        { duration: 150, easing: 'ease-out', fill: 'forwards' },
+        { duration: 145, easing: 'ease-out', fill: 'forwards' },
       );
 
       Promise.allSettled([inkFade.finished, shadowFade.finished]).then(() => scene.layer.remove());
@@ -72,14 +72,18 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
   };
 
   const keyProfile = [
-    { height: 36, x: -10, rotation: -7.5, duration: 530, weight: 1.18 },
-    { height: 29, x: 5, rotation: 5.2, duration: 430, weight: .92 },
-    { height: 33, x: -6, rotation: -5.4, duration: 455, weight: 1 },
-    { height: 41, x: 2, rotation: 6.4, duration: 510, weight: 1.12 },
-    { height: 29, x: 5, rotation: 4.8, duration: 425, weight: .9 },
-    { height: 33, x: -5, rotation: -4.8, duration: 450, weight: .98 },
-    { height: 37, x: 10, rotation: 6.8, duration: 500, weight: 1.08 },
+    { height: 36, x: -10, rotation: -7.5, duration: 560, weight: 1.18 },
+    { height: 29, x: 5, rotation: 5.2, duration: 470, weight: .92 },
+    { height: 33, x: -6, rotation: -5.4, duration: 500, weight: 1 },
+    { height: 41, x: 2, rotation: 6.4, duration: 545, weight: 1.12 },
+    { height: 29, x: 5, rotation: 4.8, duration: 460, weight: .9 },
+    { height: 33, x: -5, rotation: -4.8, duration: 490, weight: .98 },
+    { height: 37, x: 10, rotation: 6.8, duration: 535, weight: 1.08 },
   ];
+
+  /* The starts stay quick and ordered, but the gaps are deliberately uneven.
+     It should feel played rather than scheduled: a short run of piano keys. */
+  const keyOffsets = [0, 118, 222, 350, 458, 586, 718];
 
   const playKey = (scene, index, delay, viewportHeight) => {
     const profile = keyProfile[index];
@@ -130,37 +134,37 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
       contact.animate([
         {
           offset: 0,
-          opacity: .035,
-          transform: 'scale(.28,.66)',
+          opacity: .025,
+          transform: 'scale(.28,.7)',
         },
         {
           offset: .46,
-          opacity: .075,
-          transform: 'scale(.48,.78)',
+          opacity: .055,
+          transform: 'scale(.48,.82)',
         },
         {
           offset: .67,
-          opacity: .14,
-          transform: 'scale(.76,.9)',
+          opacity: .1,
+          transform: 'scale(.76,.92)',
         },
         {
           offset: .76,
-          opacity: .26,
-          transform: `scale(${1.26 + .13 * profile.weight},.54)`,
+          opacity: .2,
+          transform: `scale(${1.22 + .11 * profile.weight},.6)`,
         },
         {
           offset: .88,
-          opacity: .17,
-          transform: 'scale(.9,.84)',
+          opacity: .12,
+          transform: 'scale(.9,.88)',
         },
         {
           offset: 1,
-          opacity: .14,
+          opacity: .1,
           transform: 'none',
         },
       ], {
         duration: profile.duration,
-        delay: Math.max(0, delay - 35),
+        delay: Math.max(0, delay - 30),
         easing: 'cubic-bezier(.16,.84,.22,1)',
         fill: 'both',
       }),
@@ -168,81 +172,80 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
   };
 
   const playName = (scene) => {
-    const baseDelay = 1030;
-    const stagger = 108;
+    const baseDelay = 1110;
 
     keyProfile.forEach((profile, index) => {
-      playKey(scene, index, baseDelay + index * stagger, window.innerHeight);
+      playKey(scene, index, baseDelay + keyOffsets[index], window.innerHeight);
     });
 
     const lastIndex = keyProfile.length - 1;
-    const lastLanding = baseDelay + lastIndex * stagger + keyProfile[lastIndex].duration;
+    const lastLanding = baseDelay + keyOffsets[lastIndex] + keyProfile[lastIndex].duration;
 
     later(() => {
       track(
         scene.glyphPlane.animate([
           { transform: 'translateY(0)' },
-          { offset: .42, transform: 'translateY(-1.3px)' },
+          { offset: .42, transform: 'translateY(-1.15px)' },
           { transform: 'translateY(0)' },
         ], {
-          duration: 190,
+          duration: 205,
           easing: 'cubic-bezier(.2,.8,.2,1)',
           fill: 'both',
         }),
         scene.shadowPlane.animate([
-          { opacity: 1, transform: 'scaleX(1.018)' },
-          { opacity: .94, transform: 'scaleX(1)' },
+          { opacity: 1, transform: 'scaleX(1.012)' },
+          { opacity: .96, transform: 'scaleX(1)' },
         ], {
-          duration: 190,
+          duration: 205,
           easing: 'ease-out',
           fill: 'forwards',
         }),
       );
-    }, lastLanding - 35);
+    }, lastLanding - 30);
 
     later(() => {
       nameSource.dataset.titleEntrance = 'complete';
 
-      /* Ta-da: the real word takes over, rises into a proud pose, holds there,
-         then relaxes exactly as the rest of the homepage begins to bloom. */
+      /* The real word takes over while the photograph is still unfolding.
+         It rises, holds its finished pose for a beat, then relaxes into the page. */
       track(nameSource.animate([
         {
           offset: 0,
-          transform: 'translateY(-1px) scale(1.004)',
-          textShadow: '0 0.04em 0.06em rgb(23 23 22 / 0.125)',
+          transform: 'translateY(-.8px) scale(1.003)',
+          textShadow: '0 .035em .025em rgb(23 23 22 / 0.11)',
         },
         {
-          offset: .2,
-          transform: 'translateY(-2.8px) scale(1.016,1.008)',
-          textShadow: '0 0.055em 0.075em rgb(23 23 22 / 0.15)',
+          offset: .18,
+          transform: 'translateY(-2.7px) scale(1.015,1.007)',
+          textShadow: '0 .045em .03em rgb(23 23 22 / 0.14)',
         },
         {
-          offset: .78,
-          transform: 'translateY(-2.8px) scale(1.016,1.008)',
-          textShadow: '0 0.055em 0.075em rgb(23 23 22 / 0.15)',
+          offset: .76,
+          transform: 'translateY(-2.7px) scale(1.015,1.007)',
+          textShadow: '0 .045em .03em rgb(23 23 22 / 0.14)',
         },
         {
           offset: 1,
           transform: 'none',
-          textShadow: '0 0.035em 0.055em rgb(23 23 22 / 0.105)',
+          textShadow: '0 .03em .022em rgb(23 23 22 / 0.095)',
         },
       ], {
-        duration: 690,
+        duration: 800,
         easing: 'cubic-bezier(.2,.8,.2,1)',
         fill: 'both',
       }));
 
       const glyphFade = scene.glyphPlane.animate(
         [{ opacity: 1 }, { opacity: 0 }],
-        { duration: 90, easing: 'ease-out', fill: 'forwards' },
+        { duration: 100, easing: 'ease-out', fill: 'forwards' },
       );
       const shadowFade = scene.shadowPlane.animate(
         [{ opacity: 1 }, { opacity: 0 }],
-        { duration: 160, easing: 'ease-out', fill: 'forwards' },
+        { duration: 150, easing: 'ease-out', fill: 'forwards' },
       );
 
       Promise.allSettled([glyphFade.finished, shadowFade.finished]).then(() => scene.layer.remove());
-    }, lastLanding + 155);
+    }, lastLanding + 120);
   };
 
   const start = () => {
@@ -259,7 +262,7 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
       listenOnceToIntent();
       playStudio(studioScene);
       playName(nameScene);
-      setCompletionTimer(4650);
+      setCompletionTimer(4250);
     } catch {
       showFinalTitle();
       finish(true);

@@ -239,14 +239,6 @@ html[data-assembly='playing'] [data-assemble='fields'] { animation-delay: 2380ms
 html[data-assembly='playing'] [data-assemble='caption'] { animation-delay: 2420ms !important; }
 html[data-assembly='playing'] [data-assemble='cta'] { animation-delay: 2530ms !important; }
 
-/* The old section-index timing remains harmless while that redundant visual
-   index is suppressed by the resting homepage refinement stylesheet. */
-html[data-assembly='playing'] [data-assemble='index'] { animation-delay: 2850ms !important; }
-html[data-assembly='playing'] [data-assemble='door']:nth-child(1),
-html[data-assembly='playing'] [data-assemble='door']:nth-child(2) { animation-delay: 2930ms !important; }
-html[data-assembly='playing'] [data-assemble='door']:nth-child(3),
-html[data-assembly='playing'] [data-assemble='door']:nth-child(4) { animation-delay: 3050ms !important; }
-
 @media (max-width: 720px) {
   .title-motion-contact,
   .title-ww-contact {

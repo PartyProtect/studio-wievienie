@@ -86,8 +86,9 @@ html[data-assembly='playing'] [data-assemble='wievien'][data-title-entrance='com
   will-change: transform, opacity;
 }
 
-/* The opening emblem is deliberately typographic rather than a separate logo.
-   It begins readable and partly turned, then resolves into the measured first W. */
+/* One measured W waits above the empty first-letter slot, turns just enough to
+   feel intentional, and drops last. The legacy class names are kept stable so
+   the motion layer does not need another structural rewrite. */
 .title-ww-monogram {
   position: absolute;
   z-index: 4;
@@ -119,11 +120,6 @@ html[data-assembly='playing'] [data-assemble='wievien'][data-title-entrance='com
   z-index: 2;
 }
 
-.title-ww-rear {
-  z-index: 1;
-  opacity: .68;
-}
-
 .title-ww-contact {
   position: absolute;
   z-index: 1;
@@ -139,7 +135,7 @@ html[data-assembly='playing'] [data-assemble='wievien'][data-title-entrance='com
 }
 
 /* No projected silhouettes or smeared ghost copies. Depth comes from restrained
-   contact shadows, plus the WW's actual 3D turn. */
+   contact shadows plus the final W's small 3D turn. */
 .title-motion-cast,
 .title-motion-shadow-ink,
 .title-target-shadow-plane {
@@ -157,7 +153,7 @@ html[data-assembly='playing'] [data-assemble='wievien'][data-title-entrance='com
   will-change: transform, opacity;
 }
 
-/* The small location line joins once the WW is resolving into the word. */
+/* The small location line joins once the word is building. */
 html[data-assembly='playing'] [data-assemble='eyebrow'] {
   animation: assembly-small-settle 500ms 820ms var(--ease) both !important;
 }
@@ -169,7 +165,7 @@ html[data-assembly='playing'] .header-inner > * {
   animation: none !important;
 }
 
-/* Header is deliberately late. The eye gets WW -> word -> portrait first. */
+/* Header is deliberately late. The eye gets word -> final W -> portrait first. */
 html[data-assembly='playing'] .header-inner > * {
   animation: assembly-small-settle 600ms 2700ms var(--ease) both !important;
 }
@@ -238,7 +234,7 @@ html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-top { ani
 html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-right { animation-delay: 1810ms !important; }
 html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-cross { animation-delay: 1930ms !important; }
 
-/* Copy arrives during the title's proud hold, not after the performance. */
+/* Copy arrives during the title's completion beat, not after the performance. */
 html[data-assembly='playing'] [data-assemble='fields'] { animation-delay: 2380ms !important; }
 html[data-assembly='playing'] [data-assemble='caption'] { animation-delay: 2420ms !important; }
 html[data-assembly='playing'] [data-assemble='cta'] { animation-delay: 2530ms !important; }

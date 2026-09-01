@@ -26,43 +26,87 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
 
   const reactToImpact = (scene, indexes, strengthFor, duration, delayStep) => {
     indexes.forEach((index, order) => {
+      const direction = -1;
       const force = strengthFor(index, order);
       const delay = order * delayStep;
-      const direction = -1;
+      const lift = Math.min(7.5, 1.4 + force * 0.28);
+      const squeezeX = 1 + force * 0.0065;
+      const squeezeY = Math.max(0.82, 1 - force * 0.0105);
 
       activeAnimations.push(
-        scene.glyphs[index].animate([
-          { transform: 'none' },
-          { offset: 0.28, transform: `translate(${direction * force}px, ${-Math.min(3.4, 0.8 + force * 0.18)}px) rotate(${direction * force * 0.085}deg) scale(${1 + force * 0.004}, ${1 - force * 0.006})` },
-          { offset: 0.66, transform: `translate(${direction * -force * 0.24}px, 0.6px) rotate(${direction * -force * 0.026}deg) scale(.996, 1.006)` },
-          { transform: 'none' },
-        ], { duration, delay, easing: 'cubic-bezier(.18,.8,.22,1)' }),
-        scene.casts[index].animate([
-          { translate: '0 0', scale: '1' },
-          { offset: 0.3, translate: `${direction * force * 0.72}px 0`, scale: `${1 + force * 0.025} .9` },
-          { offset: 0.64, translate: `${direction * -force * 0.18}px 0`, scale: '1.02 .97' },
-          { translate: '0 0', scale: '1' },
-        ], { duration, delay, easing: 'cubic-bezier(.18,.8,.22,1)' }),
-        scene.contacts[index].animate([
-          { translate: '0 0', scale: '1' },
-          { offset: 0.3, translate: `${direction * force * 0.55}px 0`, scale: `${1.12 + force * 0.025} .58` },
-          { offset: 0.64, translate: `${direction * -force * 0.14}px 0`, scale: '1.04 .82' },
-          { translate: '0 0', scale: '1' },
-        ], { duration, delay, easing: 'cubic-bezier(.18,.8,.22,1)' }),
+        scene.glyphs[index].animate(
+          [
+            { transform: 'none' },
+            {
+              offset: 0.22,
+              transform: `translate(${direction * force}px, ${-lift}px) rotate(${direction * force * 0.09}deg) scale(${squeezeX}, ${squeezeY})`,
+            },
+            {
+              offset: 0.48,
+              transform: `translate(${direction * force * 0.55}px, ${lift * 0.24}px) rotate(${direction * force * 0.045}deg) scale(.985, 1.03)`,
+            },
+            {
+              offset: 0.72,
+              transform: `translate(${direction * -force * 0.22}px, -0.4px) rotate(${direction * -force * 0.022}deg) scale(1.006, .992)`,
+            },
+            { transform: 'none' },
+          ],
+          { duration, delay, easing: 'cubic-bezier(.14,.8,.18,1)', fill: 'both' },
+        ),
+      );
+
+      activeAnimations.push(
+        scene.casts[index].animate(
+          [
+            { transform: 'none', opacity: 0.18 },
+            {
+              offset: 0.22,
+              transform: `translate(${direction * force * 1.35}px, 3px) skewX(${direction * 12}deg) scale(1.24, .63)`,
+              opacity: 0.36,
+            },
+            {
+              offset: 0.52,
+              transform: `translate(${direction * force * 0.5}px, 1px) skewX(${direction * 4}deg) scale(.92, 1.04)`,
+              opacity: 0.21,
+            },
+            { transform: 'none', opacity: 0.18 },
+          ],
+          { duration, delay, easing: 'cubic-bezier(.14,.8,.18,1)', fill: 'both' },
+        ),
+      );
+
+      activeAnimations.push(
+        scene.contacts[index].animate(
+          [
+            { transform: 'none', opacity: 0.18 },
+            {
+              offset: 0.2,
+              transform: `translateX(${direction * force * 0.72}px) scaleX(${1.55 + force * 0.025}) scaleY(.43)`,
+              opacity: 0.46,
+            },
+            {
+              offset: 0.5,
+              transform: `translateX(${direction * force * 0.22}px) scaleX(.88) scaleY(.92)`,
+              opacity: 0.2,
+            },
+            { transform: 'none', opacity: 0.18 },
+          ],
+          { duration, delay, easing: 'ease-out', fill: 'both' },
+        ),
       );
     });
   };
 
   const playStudio = (scene, vw, vh) => {
     const path = [
-      point(0, -46 * vw, 0.45 * vh, 0, -5.5, 0.975, 1, 1.2),
-      point(0.54, 1.55 * vw, 0.12 * vh, 0, 1.45, 1.022, 0.94, 0.48),
-      point(0.72, -0.68 * vw, -0.06 * vh, 0, -0.72, 0.994, 1.02, 0.18),
-      point(0.87, 0.22 * vw, 0.02 * vh, 0, 0.24, 1.003, 0.992, 0.06),
+      point(0, -39 * vw, 0.32 * vh, 0, -4.8, 0.978, 1, 1.08),
+      point(0.54, 1.35 * vw, 0.1 * vh, 0, 1.2, 1.018, 0.95, 0.42),
+      point(0.72, -0.58 * vw, -0.05 * vh, 0, -0.62, 0.995, 1.017, 0.15),
+      point(0.87, 0.19 * vw, 0.015 * vh, 0, 0.2, 1.002, 0.994, 0.05),
       point(1, 0, 0, 0, 0, 1, 1, 0),
     ];
     const metric = { left: 0, width: scene.rect.width, originY: scene.rect.height };
-    const options = { delay: 70, duration: 980, easing: 'cubic-bezier(.14,.82,.18,1)' };
+    const options = { delay: 60, duration: 900, easing: 'cubic-bezier(.14,.82,.18,1)' };
 
     activeAnimations.push(
       scene.glyph.animate(makeGlyphFrames(path, metric), { ...options, fill: 'both' }),
@@ -81,19 +125,19 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
         { duration: 230, easing: 'ease-out', fill: 'forwards' },
       );
       Promise.allSettled([inkFade.finished, shadowFade.finished]).then(() => scene.layer.remove());
-    }, 1110);
+    }, 1010);
   };
 
   const playName = (scene, vw, vh) => {
     const paths = [
       [
-        point(0, -38 * vw, 0.35 * vh, 0, -12, 0.95, 1, 1.25, 0.22),
-        point(0.16, -30 * vw, -0.9 * vh, 1.2 * vh, 7, 0.97, 0.98, 0.95, 0.24),
-        point(0.31, -22 * vw, 0.3 * vh, 0, -7, 0.98, 0.97, 0.82, 0.76),
-        point(0.46, -14 * vw, -0.75 * vh, 1 * vh, 6, 0.985, 0.985, 0.66, 0.24),
-        point(0.61, -7 * vw, 0.2 * vh, 0, -4.8, 0.992, 0.975, 0.45, 0.76),
-        point(0.76, -2.4 * vw, -0.45 * vh, 0.6 * vh, 3.4, 0.998, 0.99, 0.25, 0.24),
-        point(0.9, -0.45 * vw, 0, 0, -1.1, 1.025, 0.91, 0.2, 0.76),
+        point(0, -28 * vw, 0.25 * vh, 0, -12, 0.95, 1, 1.18, 0.22),
+        point(0.16, -22 * vw, -0.9 * vh, 1.2 * vh, 7.5, 0.97, 0.98, 0.9, 0.24),
+        point(0.31, -16 * vw, 0.3 * vh, 0, -7.5, 0.98, 0.97, 0.75, 0.76),
+        point(0.46, -10 * vw, -0.75 * vh, 1 * vh, 6.5, 0.985, 0.985, 0.58, 0.24),
+        point(0.61, -5 * vw, 0.2 * vh, 0, -5.2, 0.992, 0.975, 0.38, 0.76),
+        point(0.76, -1.55 * vw, -0.45 * vh, 0.6 * vh, 3.7, 0.998, 0.99, 0.2, 0.24),
+        point(0.9, -0.28 * vw, 0, 0, -1.2, 1.03, 0.9, 0.17, 0.76),
         point(1, 0, 0, 0, 0, 1, 1, 0, 0.5),
       ],
       [
@@ -139,24 +183,24 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
     ];
 
     const sequences = [
-      { delay: 1320, duration: 1380, easing: 'linear', shadowLead: 0 },
-      { delay: 2780, duration: 700, easing: 'cubic-bezier(.16,.88,.22,1)', shadowLead: 150 },
-      { delay: 3100, duration: 900, easing: 'cubic-bezier(.2,.72,.18,1)', shadowLead: 90 },
-      { delay: 4140, duration: 1020, easing: 'cubic-bezier(.14,.84,.22,1)', shadowLead: 300 },
-      { delay: 5120, duration: 620, easing: 'cubic-bezier(.17,.86,.25,1)', shadowLead: 120 },
-      { delay: 5340, duration: 820, easing: 'cubic-bezier(.2,.78,.2,1)', shadowLead: 150 },
-      { delay: 5960, duration: 900, easing: 'cubic-bezier(.1,.76,.18,1)', shadowLead: 180 },
+      { delay: 1160, duration: 1320, easing: 'linear', shadowLead: 0 },
+      { delay: 2600, duration: 680, easing: 'cubic-bezier(.16,.88,.22,1)', shadowLead: 150 },
+      { delay: 2890, duration: 880, easing: 'cubic-bezier(.2,.72,.18,1)', shadowLead: 90 },
+      { delay: 3890, duration: 1020, easing: 'cubic-bezier(.14,.84,.22,1)', shadowLead: 320 },
+      { delay: 4890, duration: 610, easing: 'cubic-bezier(.17,.86,.25,1)', shadowLead: 120 },
+      { delay: 5100, duration: 810, easing: 'cubic-bezier(.2,.78,.2,1)', shadowLead: 150 },
+      { delay: 5700, duration: 920, easing: 'cubic-bezier(.1,.76,.18,1)', shadowLead: 210 },
     ];
 
     paths.forEach((path, index) => playPath(scene, index, path, sequences[index]));
 
     later(() => {
-      reactToImpact(scene, [2, 1, 0], (index, order) => 9 - order * 1.7, 430, 42);
-    }, 4770);
+      reactToImpact(scene, [2, 1, 0], (index, order) => 17 - order * 3.2, 540, 48);
+    }, 4510);
 
     later(() => {
-      reactToImpact(scene, [5, 4, 3, 2, 1, 0], (index, order) => Math.max(3, 12.5 - order * 1.65), 460, 40);
-    }, 6470);
+      reactToImpact(scene, [5, 4, 3, 2, 1, 0], (index, order) => Math.max(5, 21 - order * 3.1), 560, 46);
+    }, 6200);
 
     later(() => {
       activeAnimations.push(
@@ -170,7 +214,7 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
           { opacity: 0.9, transform: 'scaleX(1)' },
         ], { duration: 230, easing: 'ease-out', fill: 'forwards' }),
       );
-    }, 7130);
+    }, 7000);
 
     later(() => {
       nameSource.dataset.titleEntrance = 'complete';
@@ -187,7 +231,7 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
         { duration: 520, easing: 'ease-out', fill: 'forwards' },
       );
       Promise.allSettled([glyphFade.finished, shadowFade.finished]).then(() => scene.layer.remove());
-    }, 7470);
+    }, 7410);
   };
 
   const start = () => {
@@ -206,7 +250,7 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
       listenOnceToIntent();
       playStudio(studioScene, vw, vh);
       playName(nameScene, vw, vh);
-      setCompletionTimer(9400);
+      setCompletionTimer(9300);
     } catch {
       showFinalTitle();
       finish(true);

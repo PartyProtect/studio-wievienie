@@ -65,9 +65,13 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
     const firstGlyph = scene.glyphs[0];
     const firstContact = scene.contacts[0];
     const lift = Math.max(24, metric.height * .34);
-    const turnEnd = 660;
     const dropDuration = 330;
     const dropStart = wLanding - dropDuration;
+
+    /* The measured first-W clone must remain absent until the final impact.
+       Other letter animations hide themselves via backwards fill; this one is
+       scheduled later, so pin its pre-impact state explicitly. */
+    firstGlyph.style.opacity = '0';
 
     /* WW is readable immediately, but it lives above the empty first-letter slot.
        It turns in place, then waits there while ievien plays below. */

@@ -3,10 +3,14 @@ html[data-assembly='playing'] {
   overflow-x: clip;
 }
 
-html[data-assembly='pending'] [data-assemble='studio'],
-html[data-assembly='playing'] [data-assemble='studio'] {
-  visibility: hidden !important;
+/* Keep the authored heading in the accessibility tree while the decorative
+   Studio clone performs. Only its ink is transparent during the handoff. */
+html[data-assembly='pending'] [data-assemble='studio']:not([data-title-entrance='complete']),
+html[data-assembly='playing'] [data-assemble='studio']:not([data-title-entrance='complete']) {
+  visibility: visible !important;
   opacity: 1 !important;
+  color: transparent !important;
+  text-shadow: none !important;
   animation: none !important;
   transform: none !important;
 }

@@ -4,22 +4,22 @@ interface Props {
   currentPath?: string;
 }
 
-const { lang = 'nl' } = Astro.props;
+const { lang = 'nl', currentPath = '' } = Astro.props;
 
 const nav = lang === 'nl'
   ? [
-      { href: '/#werk', label: 'Werk' },
+      { href: '/werk/', label: 'Werk' },
       { href: '/#fancy-boogers', label: 'Fancy Boogers' },
       { href: '/#borduurwerk', label: 'Borduurwerk' },
       { href: '/#workshops', label: 'Workshops' },
       { href: '/#over', label: 'Over' },
     ]
   : [
-      { href: '/#work', label: 'Work' },
+      { href: '/werk/', label: 'Work' },
       { href: '/#fancy-boogers', label: 'Fancy Boogers' },
-      { href: '/#embroidery', label: 'Embroidery' },
+      { href: '/#borduurwerk', label: 'Embroidery' },
       { href: '/#workshops', label: 'Workshops' },
-      { href: '/#about', label: 'About' },
+      { href: '/#over', label: 'About' },
     ];
 ---
 
@@ -28,7 +28,9 @@ const nav = lang === 'nl'
     <a href="/" class="brand" aria-label="Studio Wievien home">Studio Wievien</a>
 
     <nav class="desktop-nav" aria-label={lang === 'nl' ? 'Hoofdnavigatie' : 'Main navigation'}>
-      {nav.map(({ href, label }) => <a href={href}>{label}</a>)}
+      {nav.map(({ href, label }) => (
+        <a href={href} aria-current={currentPath.startsWith(href) ? 'page' : undefined}>{label}</a>
+      ))}
     </nav>
 
     <a
@@ -42,7 +44,9 @@ const nav = lang === 'nl'
       <summary>Menu</summary>
       <div class="mobile-panel">
         <nav aria-label={lang === 'nl' ? 'Mobiele navigatie' : 'Mobile navigation'}>
-          {nav.map(({ href, label }) => <a href={href}>{label}</a>)}
+          {nav.map(({ href, label }) => (
+            <a href={href} aria-current={currentPath.startsWith(href) ? 'page' : undefined}>{label}</a>
+          ))}
           <a
             href="https://www.instagram.com/studio_wievien/"
             rel="noopener noreferrer"
@@ -101,8 +105,15 @@ const nav = lang === 'nl'
   .desktop-nav a:hover,
   .desktop-nav a:focus-visible,
   .instagram:hover,
-  .instagram:focus-visible {
+  .instagram:focus-visible,
+  .desktop-nav a[aria-current='page'] {
     color: var(--ink);
+  }
+
+  .desktop-nav a[aria-current='page'] {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.35em;
   }
 
   .mobile-menu {
@@ -144,6 +155,10 @@ const nav = lang === 'nl'
     line-height: 1;
     letter-spacing: -0.03em;
     text-decoration: none;
+  }
+
+  .mobile-panel a[aria-current='page'] {
+    font-style: italic;
   }
 
   .mobile-panel a:last-child {

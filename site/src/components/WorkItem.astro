@@ -1,0 +1,95 @@
+---
+interface Props {
+  image: string;
+  alt: string;
+  category: string;
+  title: string;
+  year?: string;
+  context?: string;
+  credit?: string;
+  href?: string;
+}
+
+const { image, alt, category, title, year, context, credit, href } = Astro.props;
+const Tag = href ? 'a' : 'div';
+---
+
+<article class="work-item">
+  <Tag class="work-media" {...(href ? { href } : {})}>
+    <img src={image} alt={alt} loading="lazy" decoding="async" />
+  </Tag>
+
+  <div class="work-caption">
+    <p class="work-category">{category}</p>
+    <h2>{title}</h2>
+    <div class="work-meta">
+      {year && <span>{year}</span>}
+      {context && <span>{context}</span>}
+    </div>
+    {credit && <p class="work-credit">{credit}</p>}
+  </div>
+</article>
+
+<style>
+  .work-item {
+    min-width: 0;
+  }
+
+  .work-media {
+    display: block;
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    background: var(--surface);
+    border: 1px solid color-mix(in srgb, var(--line) 68%, transparent);
+    text-decoration: none;
+  }
+
+  .work-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 520ms var(--ease);
+  }
+
+  a.work-media:hover img,
+  a.work-media:focus-visible img,
+  .work-item:hover .work-media img {
+    transform: scale(1.006);
+  }
+
+  .work-caption {
+    padding-top: 0.72rem;
+  }
+
+  .work-category,
+  .work-meta,
+  .work-credit {
+    color: var(--ink-faint);
+    font-size: 0.62rem;
+  }
+
+  .work-category {
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+  }
+
+  h2 {
+    margin-top: 0.3rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 2vw, 1.75rem);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .work-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.8rem;
+    margin-top: 0.55rem;
+  }
+
+  .work-credit {
+    margin-top: 0.18rem;
+  }
+</style>

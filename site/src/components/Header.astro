@@ -4,61 +4,53 @@ interface Props {
   currentPath?: string;
 }
 
-const { lang = 'nl', currentPath = '' } = Astro.props;
+const { lang = 'nl' } = Astro.props;
 
-const navNL = [
-  { href: '/nl/werk/', label: 'Werk' },
-  { href: '/nl/fancy-boogers/', label: 'Fancy Boogers' },
-  { href: '/nl/borduurwerk/', label: 'Borduurwerk' },
-  { href: '/nl/workshops/', label: 'Workshops' },
-  { href: '/nl/winkel/', label: 'Winkel' },
-  { href: '/nl/over-wievien/', label: 'Over' },
-  { href: '/nl/contact/', label: 'Contact' },
-];
-
-const navEN = [
-  { href: '/en/work/', label: 'Work' },
-  { href: '/en/fancy-boogers/', label: 'Fancy Boogers' },
-  { href: '/en/embroidery/', label: 'Embroidery' },
-  { href: '/en/workshops/', label: 'Workshops' },
-  { href: '/en/shop/', label: 'Shop' },
-  { href: '/en/about/', label: 'About' },
-  { href: '/en/contact/', label: 'Contact' },
-];
-
-const nav = lang === 'nl' ? navNL : navEN;
-const langSwitchHref = lang === 'nl' ? '/en/work/' : '/nl/werk/';
-const langSwitchLabel = lang === 'nl' ? 'EN' : 'NL';
+const nav = lang === 'nl'
+  ? [
+      { href: '/#werk', label: 'Werk' },
+      { href: '/#fancy-boogers', label: 'Fancy Boogers' },
+      { href: '/#borduurwerk', label: 'Borduurwerk' },
+      { href: '/#workshops', label: 'Workshops' },
+      { href: '/#over', label: 'Over' },
+    ]
+  : [
+      { href: '/#work', label: 'Work' },
+      { href: '/#fancy-boogers', label: 'Fancy Boogers' },
+      { href: '/#embroidery', label: 'Embroidery' },
+      { href: '/#workshops', label: 'Workshops' },
+      { href: '/#about', label: 'About' },
+    ];
 ---
 
 <header class="site-header">
-  <div class="header-inner">
-    <a href={lang === 'nl' ? '/' : '/en/work/'} class="logo">
-      Studio Wievien
-    </a>
+  <div class="shell header-inner">
+    <a href="/" class="brand" aria-label="Studio Wievien home">Studio Wievien</a>
 
-    <nav class="main-nav" aria-label={lang === 'nl' ? 'Hoofdnavigatie' : 'Main navigation'}>
-      <ul>
-        {nav.map(({ href, label }) => (
-          <li>
-            <a
-              href={href}
-              class:list={[{ active: currentPath.startsWith(href) }]}
-            >
-              {label}
-            </a>
-          </li>
-        ))}
-      </ul>
+    <nav class="desktop-nav" aria-label={lang === 'nl' ? 'Hoofdnavigatie' : 'Main navigation'}>
+      {nav.map(({ href, label }) => <a href={href}>{label}</a>)}
     </nav>
 
-    <a href={langSwitchHref} class="lang-switch" aria-label={lang === 'nl' ? 'Switch to English' : 'Schakel naar Nederlands'}>
-      {langSwitchLabel}
-    </a>
+    <a
+      class="instagram desktop-instagram"
+      href="https://www.instagram.com/studio_wievien/"
+      rel="noopener noreferrer"
+      target="_blank"
+    >Instagram ↗</a>
 
-    <button class="menu-toggle" aria-label={lang === 'nl' ? 'Menu openen' : 'Open menu'} aria-expanded="false">
-      <span class="menu-icon"></span>
-    </button>
+    <details class="mobile-menu">
+      <summary>Menu</summary>
+      <div class="mobile-panel">
+        <nav aria-label={lang === 'nl' ? 'Mobiele navigatie' : 'Mobile navigation'}>
+          {nav.map(({ href, label }) => <a href={href}>{label}</a>)}
+          <a
+            href="https://www.instagram.com/studio_wievien/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >Instagram ↗</a>
+        </nav>
+      </div>
+    </details>
   </div>
 </header>
 
@@ -66,146 +58,111 @@ const langSwitchLabel = lang === 'nl' ? 'EN' : 'NL';
   .site-header {
     position: sticky;
     top: 0;
-    z-index: 100;
-    background: color-mix(in srgb, var(--bg) 80%, transparent);
-    backdrop-filter: blur(16px) saturate(1.2);
-    -webkit-backdrop-filter: blur(16px) saturate(1.2);
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
-  }
-
-  /* Scroll-driven: header solidifies as you scroll */
-  @supports (animation-timeline: scroll()) {
-    .site-header {
-      animation: headerSolidify linear both;
-      animation-timeline: scroll();
-      animation-range: 0px 120px;
-    }
-  }
-
-  @keyframes headerSolidify {
-    from {
-      background: color-mix(in srgb, var(--bg) 60%, transparent);
-      border-bottom-color: transparent;
-      box-shadow: none;
-    }
-    to {
-      background: color-mix(in srgb, var(--bg) 96%, transparent);
-      border-bottom-color: var(--border);
-      box-shadow: 0 1px 0 var(--border);
-    }
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg) 96%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--line) 82%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 
   .header-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 1.1rem 1.5rem;
-    display: flex;
+    min-height: 64px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
-    justify-content: space-between;
     gap: 2rem;
   }
 
-  .logo {
-    font-family: var(--font-heading);
-    font-size: clamp(1.3rem, 2.5vw, 1.6rem);
-    font-weight: 600;
-    letter-spacing: 0.01em;
-    color: var(--text);
+  .brand {
+    font-family: var(--font-display);
+    font-size: 1.13rem;
+    letter-spacing: -0.03em;
+    line-height: 1;
     text-decoration: none;
     white-space: nowrap;
-    transition: opacity 0.3s var(--ease-out);
   }
 
-  .logo:hover {
-    opacity: 0.6;
-    color: var(--text);
-  }
-
-  .main-nav ul {
+  .desktop-nav {
     display: flex;
-    list-style: none;
-    gap: 0.1rem;
+    justify-content: center;
+    gap: clamp(1rem, 2.2vw, 2rem);
   }
 
-  .main-nav a {
-    display: block;
-    padding: 0.35rem 0.65rem;
-    font-size: 0.8125rem;
-    font-weight: 500;
-    color: var(--text-mid);
-    text-decoration: none;
-    letter-spacing: 0.02em;
-    transition: color 0.25s var(--ease-out);
-  }
-
-  .main-nav a:hover {
-    color: var(--text);
-  }
-
-  .main-nav a.active {
-    color: var(--text);
+  .desktop-nav a,
+  .instagram {
+    color: var(--ink-soft);
+    font-size: 0.68rem;
     font-weight: 600;
-  }
-
-  .lang-switch {
-    font-size: 0.6875rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-light);
-    padding: 0.25rem 0.55rem;
-    border: 1px solid var(--border);
-    border-radius: 4px;
+    letter-spacing: 0.015em;
     text-decoration: none;
-    transition: all 0.25s var(--ease-out);
+    transition: color 160ms var(--ease);
   }
 
-  .lang-switch:hover {
-    color: var(--text);
-    border-color: var(--text-mid);
+  .desktop-nav a:hover,
+  .desktop-nav a:focus-visible,
+  .instagram:hover,
+  .instagram:focus-visible {
+    color: var(--ink);
   }
 
-  .menu-toggle {
+  .mobile-menu {
     display: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.5rem;
-  }
-
-  .menu-icon {
-    display: block;
-    width: 22px;
-    height: 1.5px;
-    background-color: var(--text);
     position: relative;
   }
 
-  .menu-icon::before,
-  .menu-icon::after {
-    content: '';
-    position: absolute;
-    width: 22px;
-    height: 1.5px;
-    background-color: var(--text);
-    left: 0;
+  .mobile-menu summary {
+    list-style: none;
+    cursor: pointer;
+    color: var(--ink-soft);
+    font-size: 0.7rem;
+    font-weight: 600;
   }
 
-  .menu-icon::before { top: -6px; }
-  .menu-icon::after { top: 6px; }
+  .mobile-menu summary::-webkit-details-marker {
+    display: none;
+  }
 
-  @media (max-width: 768px) {
-    .main-nav {
+  .mobile-panel {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line-strong);
+    padding: 0.75rem var(--gutter) 1.25rem;
+  }
+
+  .mobile-panel nav {
+    display: grid;
+  }
+
+  .mobile-panel a {
+    padding: 0.95rem 0;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-display);
+    font-size: 1.55rem;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-decoration: none;
+  }
+
+  .mobile-panel a:last-child {
+    border-bottom: 0;
+  }
+
+  @media (max-width: 850px) {
+    .header-inner {
+      grid-template-columns: 1fr auto;
+      min-height: 60px;
+    }
+
+    .desktop-nav,
+    .desktop-instagram {
       display: none;
     }
 
-    .menu-toggle {
+    .mobile-menu {
       display: block;
-    }
-
-    .header-inner {
-      padding: 0.85rem 1rem;
     }
   }
 </style>

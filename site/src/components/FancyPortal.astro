@@ -1,5 +1,9 @@
 ---
-const previewImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8026f5a085d80/92c0dc63-a0bc-4686-81b0-d0bcc698c06b/Unknown.jpeg';
+const images = {
+  hero: '/images/fancy-boogers/slime-stripe.jpg',
+  toile: '/images/fancy-boogers/toile-terror.jpg',
+  blazer: '/images/fancy-boogers/boogie-blazer.jpg',
+};
 ---
 
 <section class="portal-section shell" id="fancy-boogers" aria-labelledby="fancy-portal-title">
@@ -11,50 +15,40 @@ const previewImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
     <p class="portal-hint">Een eigen wereld binnen Studio Wievien. Klik om binnen te gaan.</p>
   </header>
 
-  <a
-    class="portal-link"
-    href="/fancy-boogers/"
-    aria-label="Ga naar Fancy Boogers"
-    data-fancy-portal
-  >
+  <a class="portal-link" href="/fancy-boogers/" aria-label="Ga naar Fancy Boogers" data-fancy-portal>
     <div class="preview-stage" data-fancy-preview aria-hidden="true">
       <div class="preview-store">
         <div class="preview-topbar">
-          <div class="preview-brand">
-            <span class="preview-nose"><i></i><i></i></span>
-            <span>Fancy<br />Boogers</span>
-          </div>
+          <div class="preview-brand"><span class="preview-nose"><i></i><i></i></span><span>Fancy<br />Boogers</span></div>
           <span class="preview-bag">Bag <b>0</b></span>
         </div>
 
-        <div class="preview-ticker">
-          <div class="preview-ticker-track">
-            <span>HANDMADE · MADE TO ORDER · 1 OF 1 · SS26 DROP · </span>
-            <span>HANDMADE · MADE TO ORDER · 1 OF 1 · SS26 DROP · </span>
-          </div>
-        </div>
+        <div class="preview-ticker"><div class="preview-ticker-track">
+          <span>HANDMADE · MADE TO ORDER · 1 OF 1 · SS26 DROP · </span>
+          <span>HANDMADE · MADE TO ORDER · 1 OF 1 · SS26 DROP · </span>
+        </div></div>
 
         <div class="preview-scroll">
-          <div class="preview-image">
-            <img src={previewImage} alt="" loading="lazy" decoding="async" />
-            <span>SS26 campaign image slot</span>
-          </div>
+          <div class="preview-image"><img src={images.hero} alt="" loading="lazy" decoding="async" /></div>
           <p class="preview-kicker">SS26 · LOOKBOOK</p>
           <strong class="preview-title">Fancy<br />Boogers</strong>
           <p class="preview-copy">Noses, knitted by hand.</p>
           <span class="preview-cta">Shop the drop</span>
 
           <div class="preview-products">
-            <div><span>TOPS · DESIGNER FABRIC</span><b>Toile Terror Shirt</b><em>€345</em></div>
-            <div><span>OUTERWEAR · 1 OF 1</span><b>The Boogie Blazer</b><em>€245</em></div>
+            <div class="preview-product">
+              <img src={images.toile} alt="" loading="lazy" decoding="async" />
+              <span>TOPS · DESIGNER FABRIC</span><b>Toile Terror Shirt</b><em>€345</em>
+            </div>
+            <div class="preview-product">
+              <img src={images.blazer} alt="" loading="lazy" decoding="async" />
+              <span>OUTERWEAR · 1 OF 1</span><b>The Boogie Blazer</b><em>€245</em>
+            </div>
           </div>
         </div>
 
-        <div class="preview-nav">
-          <b>Home</b><span>Shop</span><span>About</span>
-        </div>
+        <div class="preview-nav"><b>Home</b><span>Shop</span><span>About</span></div>
       </div>
-
       <span class="portal-enter">Enter Fancy Boogers <b>↗</b></span>
     </div>
   </a>
@@ -62,44 +56,24 @@ const previewImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
 
 <script>
   const portal = document.querySelector('[data-fancy-portal]');
-
   if (portal instanceof HTMLAnchorElement && !portal.dataset.portalReady) {
     portal.dataset.portalReady = 'true';
     const preview = portal.querySelector('[data-fancy-preview]');
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
     portal.addEventListener('click', async (event) => {
-      if (
-        event.defaultPrevented ||
-        event.button !== 0 ||
-        event.metaKey ||
-        event.ctrlKey ||
-        event.shiftKey ||
-        event.altKey ||
-        reduceMotion.matches ||
-        !(preview instanceof HTMLElement) ||
-        typeof preview.animate !== 'function'
-      ) return;
-
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || reduceMotion.matches || !(preview instanceof HTMLElement) || typeof preview.animate !== 'function') return;
       event.preventDefault();
 
       const rect = preview.getBoundingClientRect();
-      if (!rect.width || !rect.height) {
-        window.location.href = portal.href;
-        return;
-      }
-
+      if (!rect.width || !rect.height) { window.location.href = portal.href; return; }
       const clone = preview.cloneNode(true);
-      if (!(clone instanceof HTMLElement)) {
-        window.location.href = portal.href;
-        return;
-      }
+      if (!(clone instanceof HTMLElement)) { window.location.href = portal.href; return; }
 
       clone.removeAttribute('data-fancy-preview');
       clone.classList.add('portal-flight');
       clone.setAttribute('aria-hidden', 'true');
       document.body.appendChild(clone);
-
       const previousOverflow = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
       preview.style.opacity = '0';
@@ -108,39 +82,19 @@ const previewImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
       const scaleY = rect.height / window.innerHeight;
       const sourceRadius = getComputedStyle(preview).borderRadius;
       let navigated = false;
-
-      const navigate = () => {
-        if (navigated) return;
-        navigated = true;
-        window.location.href = portal.href;
-      };
-
-      const safety = window.setTimeout(navigate, 950);
+      const navigate = () => { if (!navigated) { navigated = true; window.location.href = portal.href; } };
+      const safety = window.setTimeout(navigate, 1000);
 
       try {
         const animation = clone.animate([
-          {
-            transform: `translate(${rect.left}px, ${rect.top}px) scale(${scaleX}, ${scaleY})`,
-            borderRadius: sourceRadius,
-          },
-          {
-            transform: 'translate(0px, 0px) scale(1, 1)',
-            borderRadius: '0px',
-          },
-        ], {
-          duration: 720,
-          easing: 'cubic-bezier(.2,.78,.16,1)',
-          fill: 'forwards',
-        });
-
+          { transform: `translate(${rect.left}px, ${rect.top}px) scale(${scaleX}, ${scaleY})`, borderRadius: sourceRadius },
+          { transform: 'translate(0, 0) scale(1, 1)', borderRadius: '0px' },
+        ], { duration: 720, easing: 'cubic-bezier(.2,.78,.16,1)', fill: 'forwards' });
         await animation.finished;
-      } catch {
-        // Normal navigation below is the fallback.
-      }
+      } catch {}
 
       window.clearTimeout(safety);
       navigate();
-
       window.addEventListener('pageshow', () => {
         document.body.style.overflow = previousOverflow;
         preview.style.opacity = '';
@@ -150,420 +104,64 @@ const previewImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
 
     if ('IntersectionObserver' in window && preview instanceof HTMLElement) {
       const observer = new IntersectionObserver(([entry]) => {
-        preview.classList.toggle('is-awake', Boolean(entry?.isIntersecting && entry.intersectionRatio > 0.52));
-      }, { threshold: [0, 0.52, 0.72] });
+        preview.classList.toggle('is-awake', Boolean(entry?.isIntersecting && entry.intersectionRatio > .5));
+      }, { threshold: [0, .5, .72] });
       observer.observe(preview);
     }
   }
 </script>
 
 <style>
-  .portal-section {
-    padding-block: clamp(5rem, 9vw, 9rem);
-  }
-
-  .portal-intro {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(14rem, 22rem);
-    align-items: end;
-    gap: 2rem;
-    margin-bottom: clamp(1.4rem, 2.8vw, 2.5rem);
-  }
-
-  .portal-eyebrow,
-  .portal-hint {
-    margin: 0;
-    font-family: var(--font-sans);
-  }
-
-  .portal-eyebrow {
-    margin-bottom: .55rem;
-    color: var(--ink-soft);
-    font-size: .72rem;
-    font-weight: 650;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-  }
-
-  .portal-intro h2 {
-    margin: 0;
-    font-family: var(--font-display);
-    font-size: clamp(3rem, 7vw, 7.4rem);
-    font-weight: 400;
-    letter-spacing: -.055em;
-    line-height: .88;
-  }
-
-  .portal-hint {
-    color: var(--ink-soft);
-    font-size: .82rem;
-    line-height: 1.55;
-  }
-
-  .portal-link {
-    display: block;
-    color: inherit;
-    text-decoration: none;
-  }
+  .portal-section { padding-block: clamp(5rem, 9vw, 9rem); }
+  .portal-intro { display:grid; grid-template-columns:minmax(0,1fr) minmax(14rem,22rem); align-items:end; gap:2rem; margin-bottom:clamp(1.4rem,2.8vw,2.5rem); }
+  .portal-eyebrow,.portal-hint { margin:0; font-family:var(--font-body); }
+  .portal-eyebrow { margin-bottom:.55rem; color:var(--ink-soft); font-size:.72rem; font-weight:650; letter-spacing:.08em; text-transform:uppercase; }
+  .portal-intro h2 { margin:0; font-family:var(--font-display); font-size:clamp(3rem,7vw,7.4rem); font-weight:400; letter-spacing:-.055em; line-height:.88; }
+  .portal-hint { color:var(--ink-soft); font-size:.82rem; line-height:1.55; }
+  .portal-link { display:block; color:inherit; text-decoration:none; }
 
   .preview-stage {
-    --fb-bg: #17111f;
-    --fb-panel: #201731;
-    --fb-line: #342a48;
-    --fb-ink: #f3edfb;
-    --fb-muted: #a79bc8;
-    --fb-purple: #5a1fb0;
-    --fb-acid: #8fe01e;
-    --fb-pink: #f2a7bd;
-    position: relative;
-    height: clamp(34rem, 62vw, 46rem);
-    overflow: hidden;
-    border-radius: clamp(1rem, 2.4vw, 2rem);
-    background: radial-gradient(120% 95% at 50% 0%, #a92ee0 0%, #7a1fce 52%, #5915aa 100%);
-    isolation: isolate;
-    transform: translateZ(0);
-    transition: transform 420ms cubic-bezier(.2,.75,.18,1), border-radius 420ms ease;
+    --fb-bg:#17111f; --fb-panel:#201731; --fb-line:#342a48; --fb-ink:#f3edfb; --fb-muted:#a79bc8; --fb-purple:#5a1fb0; --fb-acid:#8fe01e; --fb-pink:#f2a7bd;
+    position:relative; height:clamp(34rem,62vw,46rem); overflow:hidden; border-radius:clamp(1rem,2.4vw,2rem);
+    background:radial-gradient(120% 95% at 50% 0%,#a92ee0 0%,#7a1fce 52%,#5915aa 100%); isolation:isolate; transform:translateZ(0);
   }
+  .preview-store { position:absolute; top:6%; left:50%; width:min(25rem,41%); height:88%; display:flex; flex-direction:column; overflow:hidden; color:var(--fb-ink); background:var(--fb-bg); border:1px solid rgb(255 255 255/.09); border-radius:2.35rem; box-shadow:0 2rem 5rem rgb(22 6 38/.34),0 0 0 .45rem rgb(20 12 28/.62); transform:translateX(-50%); }
+  .preview-topbar { min-height:4.55rem; display:flex; align-items:flex-end; justify-content:space-between; padding:.9rem 1rem .72rem; border-bottom:1px solid var(--fb-line); }
+  .preview-brand { display:flex; align-items:center; gap:.55rem; font-family:Arial,sans-serif; font-size:.78rem; font-weight:900; line-height:.86; text-transform:uppercase; }
+  .preview-nose { width:1.45rem; height:2.05rem; position:relative; display:inline-block; flex:none; border-radius:54% 54% 46% 46%/60% 60% 40% 40%; background:var(--fb-pink); box-shadow:inset 0 -.3rem .7rem rgb(154 74 102/.24); transition:transform 420ms cubic-bezier(.2,.8,.2,1); }
+  .preview-nose i { position:absolute; bottom:.32rem; width:.31rem; height:.42rem; border-radius:50%; background:#c76f89; }
+  .preview-nose i:first-child{left:.28rem}.preview-nose i:last-child{right:.28rem}
+  .preview-bag { padding:.35rem .5rem; border:1px solid var(--fb-line); border-radius:999px; color:var(--fb-muted); font: .6rem ui-monospace,monospace; }
+  .preview-bag b { display:inline-grid; width:1rem; height:1rem; place-items:center; margin-left:.25rem; border-radius:50%; color:#22300a; background:var(--fb-acid); }
+  .preview-ticker { flex:none; overflow:hidden; padding:.4rem 0; color:#22300a; background:var(--fb-acid); font:700 .56rem ui-monospace,monospace; white-space:nowrap; }
+  .preview-ticker-track { width:max-content; animation:portalTicker 11s linear infinite; animation-play-state:paused; }
+  .preview-scroll { min-height:0; flex:1; overflow:hidden; padding:.85rem; }
+  .preview-image { height:43%; min-height:10rem; overflow:hidden; border:1px solid var(--fb-line); border-radius:1rem; background:var(--fb-panel); }
+  .preview-image img,.preview-product img { width:100%; height:100%; display:block; object-fit:cover; }
+  .preview-kicker { margin:.72rem 0 .16rem; color:var(--fb-muted); font:.54rem ui-monospace,monospace; letter-spacing:.08em; }
+  .preview-title { display:block; font:900 clamp(2rem,3.6vw,3.15rem)/.78 Arial,sans-serif; letter-spacing:-.055em; }
+  .preview-copy { margin:.4rem 0 .7rem; color:var(--fb-pink); font-size:.68rem; font-weight:700; }
+  .preview-cta { display:inline-block; padding:.52rem .8rem; border-radius:.7rem; background:var(--fb-purple); font-size:.63rem; font-weight:700; }
+  .preview-products { display:grid; grid-template-columns:1fr 1fr; gap:.5rem; margin-top:.75rem; }
+  .preview-product { min-width:0; overflow:hidden; border:1px solid var(--fb-line); border-radius:.65rem; background:var(--fb-panel); }
+  .preview-product img { height:4.2rem; }
+  .preview-product span,.preview-product b,.preview-product em { display:block; padding-inline:.48rem; }
+  .preview-product span { margin-top:.4rem; overflow:hidden; color:var(--fb-muted); font:.42rem ui-monospace,monospace; text-overflow:ellipsis; white-space:nowrap; }
+  .preview-product b { margin-top:.22rem; overflow:hidden; font-size:.56rem; text-overflow:ellipsis; white-space:nowrap; }
+  .preview-product em { padding-bottom:.48rem; margin-top:.16rem; color:var(--fb-acid); font-size:.53rem; font-style:normal; }
+  .preview-nav { min-height:3.65rem; display:grid; grid-template-columns:repeat(3,1fr); align-items:center; border-top:1px solid var(--fb-line); color:var(--fb-muted); font-size:.56rem; text-align:center; }
+  .preview-nav b{color:var(--fb-acid)}
+  .portal-enter { position:absolute; right:clamp(1rem,2vw,2rem); bottom:clamp(1rem,2vw,2rem); z-index:3; display:inline-flex; gap:.55rem; padding:.72rem .9rem; border:1px solid rgb(255 255 255/.28); border-radius:999px; color:white; background:rgb(23 17 31/.64); backdrop-filter:blur(10px); font:.7rem var(--font-body); }
+  .portal-enter b{color:var(--fb-acid)}
+  .preview-stage.is-awake .preview-ticker-track{animation-play-state:running}
+  .preview-stage.is-awake .preview-nose{transform:rotate(7deg) translateY(-2px)}
+  .portal-flight { position:fixed!important; top:0!important; left:0!important; width:100vw!important; height:100vh!important; z-index:9999!important; margin:0!important; transform-origin:top left!important; pointer-events:none!important; }
+  @keyframes portalTicker{to{transform:translateX(-50%)}}
 
-  .preview-stage::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(180deg, transparent 65%, rgb(31 7 54 / .2));
+  @media (hover:hover) and (pointer:fine){ .portal-link:hover .preview-stage{transform:translateY(-4px) scale(1.004)} }
+  @media (max-width:760px){
+    .portal-intro{grid-template-columns:1fr;gap:.8rem}.portal-hint{max-width:28rem}.preview-stage{height:38rem}.preview-store{width:min(22rem,78%)}.portal-enter{right:.8rem;bottom:.8rem}
   }
-
-  .preview-store {
-    position: absolute;
-    top: 6%;
-    left: 50%;
-    width: min(25rem, 41%);
-    height: 88%;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    color: var(--fb-ink);
-    background: var(--fb-bg);
-    border: 1px solid rgb(255 255 255 / .09);
-    border-radius: 2.35rem;
-    box-shadow: 0 2rem 5rem rgb(22 6 38 / .34), 0 0 0 .45rem rgb(20 12 28 / .62);
-    transform: translateX(-50%);
-  }
-
-  .preview-topbar {
-    min-height: 4.55rem;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    padding: .9rem 1rem .72rem;
-    border-bottom: 1px solid var(--fb-line);
-  }
-
-  .preview-brand {
-    display: flex;
-    align-items: center;
-    gap: .55rem;
-    font-family: Arial, sans-serif;
-    font-size: .78rem;
-    font-weight: 900;
-    line-height: .86;
-    text-transform: uppercase;
-  }
-
-  .preview-nose {
-    width: 1.45rem;
-    height: 2.05rem;
-    position: relative;
-    display: inline-block;
-    flex: none;
-    border-radius: 54% 54% 46% 46% / 60% 60% 40% 40%;
-    background: var(--fb-pink);
-    box-shadow: inset 0 -.3rem .7rem rgb(154 74 102 / .24);
-    transition: transform 420ms cubic-bezier(.2,.8,.2,1);
-  }
-
-  .preview-nose i {
-    position: absolute;
-    bottom: .32rem;
-    width: .31rem;
-    height: .42rem;
-    border-radius: 50%;
-    background: #c76f89;
-  }
-
-  .preview-nose i:first-child { left: .28rem; }
-  .preview-nose i:last-child { right: .28rem; }
-
-  .preview-bag {
-    padding: .35rem .5rem;
-    border: 1px solid var(--fb-line);
-    border-radius: 999px;
-    color: var(--fb-muted);
-    font-family: ui-monospace, monospace;
-    font-size: .6rem;
-  }
-
-  .preview-bag b {
-    display: inline-grid;
-    width: 1rem;
-    height: 1rem;
-    place-items: center;
-    margin-left: .25rem;
-    border-radius: 50%;
-    color: #22300a;
-    background: var(--fb-acid);
-  }
-
-  .preview-ticker {
-    flex: none;
-    overflow: hidden;
-    padding: .4rem 0;
-    color: #22300a;
-    background: var(--fb-acid);
-    font-family: ui-monospace, monospace;
-    font-size: .56rem;
-    font-weight: 700;
-    white-space: nowrap;
-  }
-
-  .preview-ticker-track {
-    width: max-content;
-    animation: portalTicker 11s linear infinite;
-    animation-play-state: paused;
-  }
-
-  .preview-scroll {
-    min-height: 0;
-    flex: 1;
-    overflow: hidden;
-    padding: .85rem;
-  }
-
-  .preview-image {
-    position: relative;
-    height: 46%;
-    min-height: 10rem;
-    overflow: hidden;
-    border: 1px solid var(--fb-line);
-    border-radius: 1rem;
-    background: var(--fb-panel);
-  }
-
-  .preview-image img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
-    filter: saturate(.9) contrast(1.02);
-  }
-
-  .preview-image span {
-    position: absolute;
-    left: .55rem;
-    bottom: .55rem;
-    padding: .28rem .42rem;
-    border-radius: .35rem;
-    color: var(--fb-ink);
-    background: rgb(23 17 31 / .78);
-    font-family: ui-monospace, monospace;
-    font-size: .48rem;
-    text-transform: uppercase;
-  }
-
-  .preview-kicker {
-    margin: .82rem 0 .18rem;
-    color: var(--fb-muted);
-    font-family: ui-monospace, monospace;
-    font-size: .54rem;
-    letter-spacing: .08em;
-  }
-
-  .preview-title {
-    display: block;
-    font-family: Arial, sans-serif;
-    font-size: clamp(2rem, 3.6vw, 3.15rem);
-    font-weight: 900;
-    letter-spacing: -.055em;
-    line-height: .78;
-  }
-
-  .preview-copy {
-    margin: .45rem 0 .75rem;
-    color: var(--fb-muted);
-    font-size: .68rem;
-  }
-
-  .preview-cta {
-    display: inline-block;
-    padding: .55rem .8rem;
-    border-radius: .7rem;
-    background: var(--fb-purple);
-    font-size: .63rem;
-    font-weight: 700;
-  }
-
-  .preview-products {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: .5rem;
-    margin-top: .8rem;
-  }
-
-  .preview-products div {
-    min-width: 0;
-    padding: .55rem;
-    border: 1px solid var(--fb-line);
-    border-radius: .65rem;
-    background: var(--fb-panel);
-  }
-
-  .preview-products span,
-  .preview-products b,
-  .preview-products em {
-    display: block;
-  }
-
-  .preview-products span {
-    overflow: hidden;
-    color: var(--fb-muted);
-    font-family: ui-monospace, monospace;
-    font-size: .42rem;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .preview-products b {
-    margin-top: .25rem;
-    overflow: hidden;
-    font-size: .58rem;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .preview-products em {
-    margin-top: .2rem;
-    color: var(--fb-acid);
-    font-size: .54rem;
-    font-style: normal;
-  }
-
-  .preview-nav {
-    min-height: 3.65rem;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    align-items: center;
-    border-top: 1px solid var(--fb-line);
-    color: var(--fb-muted);
-    font-size: .56rem;
-    text-align: center;
-  }
-
-  .preview-nav b { color: var(--fb-acid); }
-
-  .portal-enter {
-    position: absolute;
-    right: clamp(1rem, 2vw, 2rem);
-    bottom: clamp(1rem, 2vw, 2rem);
-    z-index: 3;
-    display: inline-flex;
-    align-items: center;
-    gap: .55rem;
-    padding: .72rem .9rem;
-    border: 1px solid rgb(255 255 255 / .18);
-    border-radius: 999px;
-    color: #f5effa;
-    background: rgb(24 12 36 / .58);
-    backdrop-filter: blur(10px);
-    font-family: var(--font-sans);
-    font-size: .7rem;
-    font-weight: 650;
-  }
-
-  .preview-stage.is-awake .preview-ticker-track,
-  .portal-link:hover .preview-ticker-track,
-  .portal-link:focus-visible .preview-ticker-track {
-    animation-play-state: running;
-  }
-
-  .preview-stage.is-awake .preview-nose,
-  .portal-link:hover .preview-nose,
-  .portal-link:focus-visible .preview-nose {
-    transform: rotate(-5deg) translateY(-.08rem);
-  }
-
-  .portal-link:focus-visible {
-    outline: 2px solid var(--ink);
-    outline-offset: .45rem;
-    border-radius: 2rem;
-  }
-
-  :global(.portal-flight) {
-    position: fixed !important;
-    inset: 0 !important;
-    z-index: 99999 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    margin: 0 !important;
-    pointer-events: none !important;
-    transform-origin: 0 0 !important;
-  }
-
-  :global(.portal-flight .portal-enter) {
-    opacity: 0;
-  }
-
-  @keyframes portalTicker {
-    to { transform: translateX(-50%); }
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .portal-link:hover .preview-stage {
-      transform: scale(.992);
-    }
-  }
-
-  @media (max-width: 720px) {
-    .portal-section {
-      padding-block: 4.5rem;
-    }
-
-    .portal-intro {
-      grid-template-columns: 1fr;
-      align-items: start;
-      gap: 1rem;
-    }
-
-    .portal-hint {
-      max-width: 25rem;
-    }
-
-    .preview-stage {
-      height: 34rem;
-      border-radius: 1.25rem;
-    }
-
-    .preview-store {
-      top: 5%;
-      width: min(18rem, 78%);
-      height: 90%;
-      border-radius: 1.9rem;
-    }
-
-    .portal-enter {
-      right: .8rem;
-      bottom: .8rem;
-      font-size: .62rem;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .preview-stage,
-    .preview-nose {
-      transition: none;
-    }
-
-    .preview-ticker-track {
-      animation: none;
-    }
-  }
+  @media (max-width:480px){ .preview-stage{height:34rem;border-radius:1rem}.preview-store{top:5%;width:82%;height:90%;border-radius:1.7rem}.preview-products{display:none}.preview-image{height:51%} }
+  @media (prefers-reduced-motion:reduce){ .preview-ticker-track{animation:none!important}.preview-stage,.preview-nose{transition:none!important} }
 </style>

@@ -1,0 +1,33 @@
+name: Fix intro contract edge cases
+
+on:
+  push:
+    branches:
+      - feature/first-visit-assembly
+    paths:
+      - 'site/.fix-intro-contract-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out intro branch
+        uses: actions/checkout@v4
+        with:
+          ref: feature/first-visit-assembly
+          fetch-depth: 0
+
+      - name: Apply edge-case fixes
+        run: python3 .github/scripts/fix-intro-contract.py
+
+      - name: Commit fixes
+        run: |
+          git config user.name 'Studio Wievien motion bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git commit -m 'Finish intro cleanly on layout changes'
+          git push origin HEAD:feature/first-visit-assembly

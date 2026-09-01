@@ -1,269 +1,153 @@
 # Project Reference — Studio Wievien
 
-Reference material for project structure, page content specifications, decisions, and TODOs.
+Current structural reference for the Studio Wievien website.
 
-*Last verified: 24 maart 2026.*
+This document describes architecture and technical boundaries. It intentionally does **not** prescribe a palette, font pairing, layout style or motion language for future projects. Read `AGENTS.md` for the working philosophy.
 
----
+## Core model
 
-## Project Structure
+Studio Wievien is one website and one creative practice that can contain visually distinct project worlds.
 
-```
-studio-wievien/
-├── CLAUDE.md                          ← Project brief + content collection schemas
-├── .claude/rules/
-│   └── principles.md                  ← Creative decision-making framework
-│
-├── docs/
-│   ├── visual-design-system.md        ← Design system (colors, typography, imagery, CSS)
-│   ├── seo-strategy.md                ← SEO strategy for portfolio + e-commerce
-│   ├── google-search-central-reference.md ← Google docs extraction
-│   ├── tested-workflows.md            ← Lighthouse, Playwright, image optimization workflows
-│   └── project-reference.md           ← This file
-│
-└── site/                              ← Astro project root (to be created)
-    ├── astro.config.mjs
-    ├── tailwind.config.mjs
-    ├── package.json
-    │
-    ├── public/
-    │   ├── fonts/                     ← Self-hosted WOFF2 fonts
-    │   └── images/                    ← Optimized portfolio/product images
-    │
-    └── src/
-        ├── content.config.ts          ← Content Collection schemas (Zod)
-        ├── content/
-        │   ├── werk/                  ← Portfolio pieces (.md)
-        │   ├── producten/             ← Shop products (.md)
-        │   └── workshops/             ← Workshop listings (.md)
-        │
-        ├── styles/global.css          ← @font-face, CSS custom properties, base resets
-        │
-        ├── layouts/
-        │   ├── BaseLayout.astro       ← HTML shell, meta, OG, fonts, schema, i18n
-        │   ├── WerkLayout.astro       ← Portfolio piece layout (image gallery + details)
-        │   ├── ProductLayout.astro    ← Product page layout (images + buy)
-        │   └── WorkshopLayout.astro   ← Workshop page layout
-        │
-        ├── components/
-        │   ├── Header.astro, Footer.astro
-        │   ├── ImageGallery.astro     ← Responsive image gallery with lightbox
-        │   ├── LanguageSwitcher.astro ← NL/EN toggle
-        │   ├── SchemaMarkup.astro     ← JSON-LD schema generation
-        │   ├── WerkCard.astro         ← Portfolio piece card (grid item)
-        │   ├── ProductCard.astro      ← Shop product card
-        │   └── WorkshopCard.astro     ← Workshop listing card
-        │
-        └── pages/
-            ├── index.astro            ← Homepage
-            ├── nl/                    ← Dutch pages
-            │   ├── werk/
-            │   ├── borduurwerk.astro
-            │   ├── workshops/
-            │   ├── winkel/
-            │   ├── fancy-boogers/
-            │   ├── over-wievien.astro
-            │   └── contact.astro
-            └── en/                    ← English pages
-                ├── work/
-                ├── embroidery.astro
-                ├── workshops/
-                ├── shop/
-                ├── fancy-boogers/
-                ├── about.astro
-                └── contact.astro
+### 1. Parent Studio layer
+
+The parent layer introduces Wievien, provides overview and discovery, and connects the different areas of the practice. Current routes include:
+
+```text
+/                 Studio Wievien homepage
+/werk/            work overview
 ```
 
----
+Future parent-level pages may include workshops, embroidery/services, about and contact when real content warrants them.
 
-## Decisions Already Made
+### 2. Project worlds
 
-| Decision | Choice | Notes |
-|----------|--------|-------|
-| **Site type** | Exhibition + shop | Visually show all work, with ability to buy |
-| **Language** | Bilingual NL/EN | Separate URL paths per language |
-| **Visual direction** | Creative, not minimalist | Not standard fashion-minimal. Lots of images. |
-| **Images** | Central to the design | Photography is the core. Technical optimization essential. |
-| **Tech stack** | Astro + Tailwind CSS | Static with React islands where needed |
-| **Curation/exhibitions** | Part of About page | CV material, not a separate portfolio section |
-| **Hosting** | Netlify (preliminary) | Same as MeisterEnergie |
+A substantial project, collection or recurring label can own a route subtree and a local experience:
 
----
-
-## URL Architecture
-
-### Nederlands
-```
-/                          ← Homepage (uitgelicht werk + laatste toevoegingen)
-/nl/werk/                  ← Portfolio overzicht (alle disciplines)
-/nl/werk/{slug}/           ← Individueel werk (foto's + verhaal)
-/nl/fancy-boogers/         ← Kledinglijn overzicht
-/nl/fancy-boogers/{slug}/  ← Individueel product
-/nl/borduurwerk/           ← Borduurwerk diensten (wat kan, hoe werkt het, tarieven)
-/nl/workshops/             ← Overzicht aankomende workshops
-/nl/workshops/{slug}/      ← Individuele workshop
-/nl/winkel/                ← Shop (alle producten)
-/nl/over-wievien/          ← Over + CV + tentoonstellingen + achtergrond
-/nl/contact/               ← Contact
+```text
+/fancy-boogers/             Fancy Boogers world / shop
+/fancy-boogers/...          future product or collection routes if useful
+/<future-project>/          another project world if the work warrants one
 ```
 
-### English
-```
-/en/work/                  ← Portfolio overview
-/en/work/{slug}/           ← Individual piece
-/en/fancy-boogers/         ← Clothing line
-/en/fancy-boogers/{slug}/  ← Individual product
-/en/embroidery/            ← Embroidery services
-/en/workshops/             ← Workshops overview
-/en/workshops/{slug}/      ← Individual workshop
-/en/shop/                  ← Shop
-/en/about/                 ← About
-/en/contact/               ← Contact
-```
+A project world may have its own layout, navigation, fonts, CSS, motion and client-side behavior. It should still provide an understandable route back to Studio Wievien.
 
----
+Fancy Boogers is the first explicit example because it is both a creative label and a commercial collection. Its shop-like structure is specific to its needs and should not be copied into unrelated projects.
 
-## i18n (Internationalization)
+### 3. Individual work pages
 
-- Separate URL paths: `/nl/werk/` vs `/en/work/`
-- `hreflang` tags linking equivalent pages
-- Content Collections with NL and EN fields (e.g. `beschrijving` + `beschrijvingEN`)
-- Language switcher component on every page
-- Default language: Dutch (homepage `/` redirects to or shows NL)
+Not every work needs a mini-site. Smaller projects can use focused detail pages that present the material clearly. The amount of interface should follow the amount and nature of the work.
 
----
+## Shared technical layer
 
-## Content Per Page
+Share infrastructure where the benefit is functional rather than aesthetic. Good candidates include:
 
-### Homepage
-- Hero: groot beeld van recent/sterkste werk
-- Korte intro: wie is Wievien, wat doet ze (2-3 zinnen max)
-- Uitgelicht werk: 3-6 stuks uit alle disciplines
-- Laatste toevoegingen
-- Link naar Fancy Boogers
-- Link naar borduurwerk/opdrachten
-- Aankomende workshop (als die er is)
+- document metadata, canonical URLs, social metadata and structured data
+- image utilities and responsive image generation
+- accessibility helpers and semantic patterns
+- analytics and consent infrastructure
+- common data types where the information genuinely overlaps
+- simple navigation primitives such as a route back to Studio Wievien
+- testing, build and deployment workflows
 
-### Werk / Portfolio
-- Grid/masonry van al het werk, gefilterd op categorie
-- Categorieen: borduurwerk, Fancy Boogers, workshops, overig
-- Elk item: hoofdfoto + titel + categorie
-- Click → individuele pagina met meerdere foto's + verhaal
+A shared component does not have to impose shared styling. Prefer components that expose composition or project-level styling when visual identity differs.
 
-### Individueel Werk
-- Fotogalerij (meerdere beelden, detail + totaal)
-- Titel + beschrijving (kort)
-- Technieken + materialen
-- Beschikbaarheid / koopoptie als van toepassing
-- Gerelateerd werk
+## Route isolation
 
-### Fancy Boogers (kledinglijn)
-- Lookbook-achtige presentatie
-- Elk kledingstuk als product met meerdere foto's
-- Maten, materiaal, prijs
-- Koop-optie
+Project-specific assets should remain local to their project.
 
-### Borduurwerk (diensten)
-- Wat kan er geborduurd worden (types kleding/items)
-- Hoe werkt het proces (van ontwerp tot aflevering)
-- Voorbeelden van eerder werk
-- Tarieven / prijsindicatie (nog te bepalen)
-- CTA: neem contact op voor een opdracht
+A visitor to `/` should not download Fancy Boogers fonts, shop JavaScript or project-specific motion. A visitor to Fancy Boogers should not automatically receive animation code from the Studio homepage or assets belonging to another project world.
 
-### Workshops
-- Overzicht met aankomende data
-- Per workshop: wat leer je, voor wie, prijs, locatie, aantal plaatsen
-- Inschrijfmogelijkheid of contact-link
+Astro pages and route-specific imports make this the default architecture. Preserve that property as the site grows.
 
-### Winkel / Shop
-- Alle producten (Fancy Boogers + losse borduurwerken te koop)
-- Filter op categorie
-- Product → detail pagina met foto's, beschrijving, prijs, maten, koop-knop
-- **Betaalmethode: nog te bepalen** (Mollie, Stripe, extern, of handmatig)
+## JavaScript
 
-### Over Wievien
-- Wie is Wievien (persoonlijk verhaal)
-- Achtergrond en opleiding
-- Gecureerde tentoonstelling(en) — als CV-items
-- Freelance ervaring
-- Eventueel press/media mentions
+Static HTML and CSS are the default.
 
-### Contact
-- Contactformulier of directe links (email, Instagram, etc.)
-- Voor opdrachten, workshops, samenwerkingen, pers
+Use client-side JavaScript for behavior that actually needs state or runtime interaction: a cart, filtering that benefits from instant response, a lightbox, a deliberate motion sequence, etc. Keep that code local and remove listeners/animation work when it is finished.
 
----
+Do not add a site-wide framework or animation dependency merely because one project needs a sophisticated interaction.
 
-## Build & Development
+## Images
 
-```bash
-cd studio-wievien/site && npm run dev      # localhost:4321
-cd studio-wievien/site && npm run build    # outputs to dist/
-cd studio-wievien/site && npm run preview  # preview production build
-```
+Keep the best available source file and derive web assets from it.
 
----
+For important photography, record or inspect:
 
-## Open Questions
+- pixel dimensions
+- aspect ratio
+- compression quality / visible artifacts
+- whether the file is an original, social-media export, PDF extraction or other derivative
+- crop tolerance and focal area
 
-| Topic | Status |
-|-------|--------|
-| Color palette | Open |
-| Typography selection | Open |
-| Logo / wordmark | Open |
-| Which clothing types suitable for embroidery | Open |
-| Payment method (Mollie, Stripe, external) | Open |
-| Photography style guidelines | Open |
-| Embroidery pricing | Open |
-| Workshop planning (frequency, locations) | Open |
-| Domain name | Open |
-| Analytics (Plausible?) | Open |
-| Newsletter | Open |
-| Instagram integration | Open |
+Generate multiple display sizes rather than sending the largest file everywhere. Prefer modern formats where they provide a meaningful saving, retain a robust fallback where appropriate, and avoid upscaling weak source files into prominent desktop placements.
 
----
+Above-the-fold critical imagery may load eagerly. Work farther down the page should generally load lazily. Reserve dimensions/aspect ratio so images do not cause layout shift.
 
-## TODOs
+## Fonts and CSS
 
-### Phase 1: Documentation
-- [x] CLAUDE.md
-- [x] principles.md
-- [x] visual-design-system.md
-- [x] seo-strategy.md
-- [x] google-search-central-reference.md
-- [x] tested-workflows.md
-- [x] project-reference.md
+Fonts are part of a project world’s payload. Do not load every project’s typefaces globally.
 
-### Phase 2: Design Decisions
-- [ ] Select color palette
-- [ ] Select typography (2 fonts)
-- [ ] Define photography style guidelines
-- [ ] Create/obtain logo or wordmark
+Keep global CSS limited to true site infrastructure and intentionally shared parent-site styling. Project-world CSS should live with that project or in a clearly project-scoped stylesheet.
 
-### Phase 3: Astro Project Setup
-- [ ] Initialize Astro project in `site/`
-- [ ] Configure Tailwind CSS + custom properties
-- [ ] Set up Content Collection schemas (Zod)
-- [ ] Create BaseLayout with i18n, meta, OG, schema
-- [ ] Create component skeletons
-- [ ] Set up image optimization pipeline
-- [ ] Self-host selected fonts
+Do not move a local design token into `:root` unless it has a real cross-site meaning.
 
-### Phase 4: Content & Pages
-- [ ] Build homepage
-- [ ] Build portfolio overview + individual pages
-- [ ] Build Fancy Boogers section
-- [ ] Build borduurwerk services page
-- [ ] Build workshop pages
-- [ ] Build shop
-- [ ] Build about + contact pages
-- [ ] Enter first portfolio content
-- [ ] Enter first products
+## Content and data
 
-### Phase 5: Launch Prep
-- [ ] Decide payment integration
-- [ ] Choose and configure domain
-- [ ] Set up Netlify deployment
-- [ ] Configure analytics
-- [ ] Lighthouse audit all key pages
-- [ ] Submit sitemap to Search Console
+Known Studio Wievien work metadata currently lives in `site/src/data/content.ts`.
+
+This is useful for information shared by the homepage and `/werk/`. As richer project worlds appear, allow them to own separate data modules or content collections when their schema is genuinely different.
+
+For example, Fancy Boogers may need price, size, availability, production status, material and commerce data that ordinary portfolio work does not need.
+
+Do not invent missing fields to satisfy a schema. Change the schema or leave the information absent until the real source exists.
+
+## Navigation
+
+The parent site should make the practice understandable. Project worlds may change navigation internally, but visitors should not become trapped inside them.
+
+At minimum, a major project world needs an obvious conceptual or literal route back to Studio Wievien. The appearance of that control can belong to the project.
+
+## Responsive design
+
+Desktop and mobile are separate compositions built from the same content and purpose. Recompose rather than merely shrinking.
+
+A desktop project world can use an unusual spatial model while mobile uses a simpler flow. The requirement is continuity of meaning and functionality, not identical geometry.
+
+## Accessibility
+
+Every project world must still provide semantic structure, keyboard access, visible focus, useful alt text, sensible touch targets and reduced-motion handling where motion exists.
+
+Creative independence does not include making essential functions unusable.
+
+## Performance target
+
+Prefer Core Web Vitals in the good range on realistic mobile conditions:
+
+- LCP around or below 2.5 s
+- CLS below 0.1
+- INP around or below 200 ms
+
+These are outcome targets, not permission to damage a project solely to satisfy a synthetic score. Diagnose the actual bottleneck first, especially image weight, font loading and unnecessary client JavaScript.
+
+## Language
+
+Dutch is currently primary. Do not fabricate English copy simply to complete an imagined bilingual architecture. Add translations when real translated content exists and then implement canonical/hreflang relationships correctly.
+
+## Working sequence
+
+For a new project or substantial section:
+
+1. collect and inspect the real material
+2. determine what the visitor needs to understand or do
+3. define content hierarchy, routes, navigation and technical constraints
+4. decide whether this is a normal page or a project world
+5. prototype the visual/interaction language from the material
+6. inspect desktop and mobile renders
+7. keep project-specific assets local
+8. only promote a pattern into shared infrastructure when more than one context genuinely benefits from it
+
+The architecture should create room for design rather than decide the design in advance.
+
+## Historical note
+
+The previous version of this file was a March 2026 plan written before the current Astro implementation existed. It described speculative `/nl/` and `/en/` route trees, a single global shop structure, Tailwind-heavy implementation and phase TODOs that no longer match the repository. That version remains available through Git history for reference.

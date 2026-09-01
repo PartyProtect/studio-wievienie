@@ -1,0 +1,519 @@
+---
+const studioImages = {
+  hero: 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8026f5a085d80/92c0dc63-a0bc-4686-81b0-d0bcc698c06b/Unknown.jpeg',
+  one: 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8026f5a085d80/1767703456320-YMAS5DUHNMV0VR29ZRLF/MVS_20251120_0093_WEB.jpg',
+  two: 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8026f5a085d80/1772014449994-RK7LCIFVZK23UJQJ4WWS/538A4606_JonathanWiddershoven.jpg',
+};
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#17111f" />
+    <title>Fancy Boogers · SS26</title>
+    <meta
+      name="description"
+      content="Fancy Boogers SS26 — noses, knitted by hand. Handmade, made to order and one of one."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <main class="stage">
+      <section class="store" aria-label="Fancy Boogers SS26 prototype">
+        <header class="topbar">
+          <button class="brand" type="button" data-go="home" aria-label="Fancy Boogers home">
+            <span class="nose" aria-hidden="true"><i></i><i></i></span>
+            <span>Fancy<br />Boogers</span>
+          </button>
+          <button class="bag-button" type="button" data-go="cart">
+            Bag <span class="bag-count" data-cart-count>0</span>
+          </button>
+        </header>
+
+        <div class="ticker" aria-hidden="true">
+          <div class="ticker-track">
+            <span>HANDMADE · MADE TO ORDER · 1 OF 1 · SS26 DROP · </span>
+            <span>HANDMADE · MADE TO ORDER · 1 OF 1 · SS26 DROP · </span>
+          </div>
+        </div>
+
+        <div class="viewport" id="fb-scroll">
+          <section class="screen is-active" data-screen="home">
+            <div class="hero">
+              <div class="hero-image reference-photo">
+                <img src={studioImages.hero} alt="Studio Wievien reference image" />
+                <span class="reference-label">image slot · replace with SS26 campaign</span>
+              </div>
+              <p class="kicker">SS26 · LOOKBOOK</p>
+              <h1>Fancy<br />Boogers</h1>
+              <p class="hero-line">Noses, knitted by hand.</p>
+              <button class="primary" type="button" data-go="shop">Shop the drop</button>
+            </div>
+
+            <section class="home-block">
+              <div class="section-title">
+                <span>Featured</span>
+                <button type="button" data-go="shop">See all 11 →</button>
+              </div>
+              <div class="feature-grid">
+                <button class="feature-card" type="button" data-open-product="toile">
+                  <div class="feature-image reference-photo red">
+                    <img src={studioImages.one} alt="Studio Wievien reference image" loading="lazy" />
+                    <span class="reference-label">replace with Toile Terror Shirt</span>
+                  </div>
+                  <small>TOPS · DESIGNER FABRIC</small>
+                  <strong>Toile Terror Shirt</strong>
+                  <b>€345</b>
+                </button>
+                <button class="feature-card" type="button" data-open-product="blazer">
+                  <div class="feature-image reference-photo green">
+                    <img src={studioImages.two} alt="Studio Wievien reference image" loading="lazy" />
+                    <span class="reference-label">replace with Boogie Blazer</span>
+                  </div>
+                  <small>OUTERWEAR · 1 OF 1</small>
+                  <strong>The Boogie Blazer</strong>
+                  <b>€245</b>
+                </button>
+              </div>
+            </section>
+
+            <section class="manifesto">
+              <span class="mono-label">THE STORY</span>
+              <h2>A tiny studio with a runny sense of humour.</h2>
+              <p>Fancy Boogers started with one felted nose and a refusal to take fashion too seriously.</p>
+              <button class="ghost" type="button" data-go="about">Sniff around →</button>
+            </section>
+          </section>
+
+          <section class="screen" data-screen="shop">
+            <div class="screen-pad shop-head">
+              <span class="mono-label">THE COLLECTION</span>
+              <h2>Rummage by category.</h2>
+              <p class="muted" data-shop-count>11 pieces</p>
+            </div>
+            <div class="filters" aria-label="Filter products"></div>
+            <div class="product-grid" data-product-grid></div>
+          </section>
+
+          <section class="screen" data-screen="product">
+            <button class="back" type="button" data-go="shop">← Back to the pile</button>
+            <div class="product-hero" data-product-visual></div>
+            <div class="product-detail">
+              <div class="product-topline">
+                <span class="mono-label" data-product-category></span>
+                <span class="tag" data-product-tag></span>
+              </div>
+              <h2 data-product-name></h2>
+              <div class="price" data-product-price></div>
+              <p class="muted product-copy" data-product-copy></p>
+              <div class="sizes" data-sizes></div>
+              <button class="primary add-button" type="button" data-add>Add to bag</button>
+              <div class="product-notes">
+                <div><span>Made</span><b>By hand</b></div>
+                <div><span>Lead time</span><b>1–3 weeks</b></div>
+                <div><span>Studio</span><b>@studio_wievien</b></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="screen" data-screen="cart">
+            <div class="screen-pad">
+              <span class="mono-label">YOUR BAG</span>
+              <h2>Good snot takes time.</h2>
+              <p class="muted">Each piece is made in the studio. Nothing here comes off a factory line.</p>
+            </div>
+            <div class="cart-lines" data-cart-lines></div>
+            <div class="cart-total">
+              <div><span>Subtotal</span><b data-subtotal>€0</b></div>
+              <div><span>Shipping</span><b data-shipping>€0</b></div>
+              <div class="grand"><span>Total</span><b data-total>€0</b></div>
+              <button class="primary" type="button" data-checkout>Checkout</button>
+            </div>
+          </section>
+
+          <section class="screen" data-screen="confirmed">
+            <div class="confirmed">
+              <span class="nose big" aria-hidden="true"><i></i><i></i></span>
+              <span class="mono-label">ORDER RECEIVED</span>
+              <h2>Nice pick.</h2>
+              <p>Your order is in. Each piece is knitted by hand, so give it 1–3 weeks. Good snot takes time.</p>
+              <div class="order-number" data-order-number>Order FB-0000</div>
+              <button class="primary" type="button" data-go="home">Back to the studio</button>
+            </div>
+          </section>
+
+          <section class="screen" data-screen="about">
+            <div class="about-image reference-photo">
+              <img src={studioImages.two} alt="Studio Wievien reference image" loading="lazy" />
+              <span class="reference-label">image slot · studio / maker photo</span>
+            </div>
+            <div class="screen-pad story">
+              <span class="mono-label">THE STORY</span>
+              <h2>A tiny studio with a runny sense of humour.</h2>
+              <p>Fancy Boogers started with one felted nose and a refusal to take fashion too seriously. Everything is knitted, felted and stitched by hand. No factories, no two exactly alike.</p>
+              <p>Pieces are made to order from natural, deadstock and reworked designer fabrics, so you wear something genuinely one of a kind. Snot for everyone, and that’s the point.</p>
+              <div class="facts">
+                <div><span>Made by hand</span><b>Every single piece</b></div>
+                <div><span>Materials</span><b>Deadstock & reworked</b></div>
+                <div><span>Lead time</span><b>1–3 weeks, to order</b></div>
+                <div><span>Studio</span><b>@studio_wievien</b></div>
+              </div>
+              <button class="primary" type="button" data-go="shop">See what’s in the studio</button>
+            </div>
+          </section>
+        </div>
+
+        <nav class="bottom-nav" aria-label="Fancy Boogers navigation">
+          <button type="button" data-go="home" data-nav="home">
+            <svg viewBox="0 0 22 22" aria-hidden="true"><path d="M3 9l8-6 8 6v9a1 1 0 0 1-1 1h-4v-6H8v6H4a1 1 0 0 1-1-1V9Z" /></svg>
+            <span>Home</span>
+          </button>
+          <button type="button" data-go="shop" data-nav="shop">
+            <svg viewBox="0 0 22 22" aria-hidden="true"><rect x="3.5" y="6" width="15" height="13" rx="1.5" /><path d="M7.5 8V5.5a3.5 3.5 0 0 1 7 0V8" /></svg>
+            <span>Shop</span>
+          </button>
+          <button type="button" data-go="about" data-nav="about">
+            <svg viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="8" /><path d="M11 10v5" /><circle class="fill" cx="11" cy="7" r="1" /></svg>
+            <span>About</span>
+          </button>
+        </nav>
+      </section>
+    </main>
+
+    <script is:inline>
+      const products = [
+        { id:'toile', name:'Toile Terror Shirt', price:345, cat:'Tops', tag:'Designer fabric', sizes:['XS','S','M','L','XL'], tone:'red', image:'one', copy:'Boxy short-sleeve camp shirt cut from reworked designer toile de Jouy fabric, the real deal, monkeys and all. Finished with a hand-embroidered nose. Only a handful will ever exist.' },
+        { id:'blazer', name:'The Boogie Blazer', price:245, cat:'Outerwear', tag:'1 of 1', sizes:['S/M','L/XL'], tone:'green', image:'two', copy:'Reworked oversized vintage suit blazer with a felted nose brooch on the lapel and a hand-embroidered studio_wievien crest across the back. One of one. Snot your dad’s old suit.' },
+        { id:'nose', name:'The Original Booger', price:38, cat:'Accessories', tag:'1 of 1', sizes:['One size'], tone:'pink', copy:'A hand-knit felted nose brooch. Pin it to a lapel, a bag, a beanie, wherever needs a little snot appeal.' },
+        { id:'beanie', name:'Snout Beanie', price:65, cat:'Accessories', sizes:['One size'], tone:'violet', copy:'Ribbed beanie with a tiny knitted nose on the cuff.' },
+        { id:'tee', name:'Tissue Tee', price:55, cat:'Tops', sizes:['XS','S','M','L','XL'], tone:'acid', copy:'Boxy tee with a single embroidered booger. Understated. Slightly deranged. Perfect.' },
+        { id:'hoodie', name:'Big Sniff Hoodie', price:185, cat:'Tops', sizes:['XS','S','M','L','XL'], tone:'purple', copy:'Heavyweight hoodie with a hand-embroidered nose on the chest. Oversized and unisex.' },
+        { id:'scarf', name:'Two-Tone Bogey Scarf', price:90, cat:'Knitwear', tag:'1 of 1', sizes:['One size'], tone:'pink', copy:'Extra-long scarf in two clashing pinks. Wrap it twice and sniff proudly.' },
+        { id:'cardi', name:'Booger Cardigan', price:280, cat:'Knitwear', tag:'Made to order', sizes:['S/M','L/XL'], tone:'green', copy:'Chunky hand-knit cardigan with wooden buttons and a nose patch pocket. Made to order in your colours.' },
+        { id:'dress', name:'Nose-to-Toe Knit Dress', price:340, cat:'Dresses', tag:'1 of 1', sizes:['XS','S','M','L'], tone:'violet', copy:'Floor-grazing rib-knit dress, knitted start to finish by hand. One of one.' },
+        { id:'coat', name:'The Big Blanket Coat', price:460, cat:'Outerwear', tag:'Made to order', sizes:['S/M','L/XL'], tone:'acid', copy:'Enormous hand-knit coat you could practically live inside. Wool blend, patch pockets, absurd warmth.' },
+        { id:'tote', name:'Runny Nose Tote', price:120, cat:'Bags', sizes:['One size'], tone:'purple', copy:'Chunky hand-knit tote with a stitched booger motif. Holds your groceries and your dignity.' },
+      ];
+
+      const imageMap = {
+        one: 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8026f5a085d80/1767703456320-YMAS5DUHNMV0VR29ZRLF/MVS_20251120_0093_WEB.jpg',
+        two: 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8026f5a085d80/1772014449994-RK7LCIFVZK23UJQJ4WWS/538A4606_JonathanWiddershoven.jpg',
+      };
+
+      let screen = 'home';
+      let filter = 'All';
+      let activeProduct = products[0];
+      let selectedSize = activeProduct.sizes[0];
+      let cart = [];
+
+      const qs = (s, root=document) => root.querySelector(s);
+      const qsa = (s, root=document) => [...root.querySelectorAll(s)];
+      const euro = n => `€${n}`;
+
+      function visual(product, compact=false) {
+        if (product.image && imageMap[product.image]) {
+          return `<div class="generated-visual reference-photo ${product.tone}"><img src="${imageMap[product.image]}" alt="Studio Wievien reference image"><span class="reference-label">replace with ${product.name}</span></div>`;
+        }
+        return `<div class="generated-visual ${product.tone}"><span class="nose ${compact ? '' : 'big'}" aria-hidden="true"><i></i><i></i></span><em>PHOTO<br>COMING</em></div>`;
+      }
+
+      function go(next) {
+        screen = next;
+        qsa('[data-screen]').forEach(el => el.classList.toggle('is-active', el.dataset.screen === next));
+        qsa('[data-nav]').forEach(el => el.classList.toggle('is-current', el.dataset.nav === (next === 'product' ? 'shop' : next)));
+        qs('#fb-scroll').scrollTop = 0;
+        if (next === 'shop') renderShop();
+        if (next === 'cart') renderCart();
+      }
+
+      function renderFilters() {
+        const cats = ['All','Tops','Outerwear','Accessories','Knitwear','Dresses','Bags'];
+        qs('.filters').innerHTML = cats.map(cat => `<button type="button" class="filter ${cat === filter ? 'is-on' : ''}" data-filter="${cat}">${cat}</button>`).join('');
+        qsa('[data-filter]').forEach(btn => btn.addEventListener('click', () => { filter = btn.dataset.filter; renderShop(); }));
+      }
+
+      function renderShop() {
+        renderFilters();
+        const list = filter === 'All' ? products : products.filter(p => p.cat === filter);
+        qs('[data-shop-count]').textContent = `${list.length} ${list.length === 1 ? 'piece' : 'pieces'}${filter === 'All' ? '' : ` in ${filter}`}`;
+        qs('[data-product-grid]').innerHTML = list.map(p => `
+          <button class="product-card" type="button" data-product="${p.id}">
+            ${visual(p, true)}
+            <div class="card-row"><span>${p.cat}</span>${p.tag ? `<b>${p.tag}</b>` : ''}</div>
+            <strong>${p.name}</strong><em>${euro(p.price)}</em>
+          </button>`).join('');
+        qsa('[data-product]').forEach(btn => btn.addEventListener('click', () => openProduct(btn.dataset.product)));
+      }
+
+      function openProduct(id) {
+        activeProduct = products.find(p => p.id === id) || products[0];
+        selectedSize = activeProduct.sizes[0];
+        qs('[data-product-visual]').innerHTML = visual(activeProduct);
+        qs('[data-product-category]').textContent = activeProduct.cat;
+        const tag = qs('[data-product-tag]');
+        tag.textContent = activeProduct.tag || '';
+        tag.hidden = !activeProduct.tag;
+        qs('[data-product-name]').textContent = activeProduct.name;
+        qs('[data-product-price]').textContent = euro(activeProduct.price);
+        qs('[data-product-copy]').textContent = activeProduct.copy;
+        qs('[data-sizes]').innerHTML = activeProduct.sizes.map((s,i) => `<button type="button" class="size ${i===0?'is-on':''}" data-size="${s}">${s}</button>`).join('');
+        qsa('[data-size]').forEach(btn => btn.addEventListener('click', () => {
+          selectedSize = btn.dataset.size;
+          qsa('[data-size]').forEach(b => b.classList.toggle('is-on', b === btn));
+        }));
+        qs('[data-add]').textContent = `Add to bag · ${euro(activeProduct.price)}`;
+        go('product');
+      }
+
+      function addToBag() {
+        const found = cart.find(x => x.id === activeProduct.id && x.size === selectedSize);
+        if (found) found.qty += 1;
+        else cart.push({ id: activeProduct.id, size: selectedSize, qty: 1 });
+        updateCount();
+        const btn = qs('[data-add]');
+        btn.textContent = 'Added to bag ✓';
+        btn.classList.add('added');
+        setTimeout(() => { btn.textContent = `Add to bag · ${euro(activeProduct.price)}`; btn.classList.remove('added'); }, 1200);
+      }
+
+      function updateCount() {
+        const count = cart.reduce((n, line) => n + line.qty, 0);
+        qs('[data-cart-count]').textContent = count;
+      }
+
+      function renderCart() {
+        const holder = qs('[data-cart-lines]');
+        if (!cart.length) {
+          holder.innerHTML = `<div class="empty"><span class="nose big"><i></i><i></i></span><h3>Your bag is suspiciously clean.</h3><button class="ghost" type="button" data-empty-shop>Go make it worse →</button></div>`;
+          qs('[data-empty-shop]')?.addEventListener('click', () => go('shop'));
+        } else {
+          holder.innerHTML = cart.map((line, idx) => {
+            const p = products.find(x => x.id === line.id);
+            return `<div class="cart-line">${visual(p,true)}<div><strong>${p.name}</strong><span>${line.size}</span><div class="qty"><button data-dec="${idx}">−</button><b>${line.qty}</b><button data-inc="${idx}">+</button></div></div><em>${euro(p.price * line.qty)}</em></div>`;
+          }).join('');
+          qsa('[data-inc]').forEach(b => b.addEventListener('click', () => { cart[+b.dataset.inc].qty++; updateCount(); renderCart(); }));
+          qsa('[data-dec]').forEach(b => b.addEventListener('click', () => { const i=+b.dataset.dec; cart[i].qty--; if(cart[i].qty<=0) cart.splice(i,1); updateCount(); renderCart(); }));
+        }
+        const subtotal = cart.reduce((n,line) => { const p=products.find(x=>x.id===line.id); return n + p.price*line.qty; },0);
+        const shipping = cart.length ? (subtotal >= 300 ? 0 : 12) : 0;
+        qs('[data-subtotal]').textContent = euro(subtotal);
+        qs('[data-shipping]').textContent = shipping === 0 && cart.length ? 'Free' : euro(shipping);
+        qs('[data-total]').textContent = euro(subtotal + shipping);
+        qs('[data-checkout]').disabled = !cart.length;
+      }
+
+      qsa('[data-go]').forEach(btn => btn.addEventListener('click', () => go(btn.dataset.go)));
+      qsa('[data-open-product]').forEach(btn => btn.addEventListener('click', () => openProduct(btn.dataset.openProduct)));
+      qs('[data-add]').addEventListener('click', addToBag);
+      qs('[data-checkout]').addEventListener('click', () => {
+        if (!cart.length) return;
+        qs('[data-order-number]').textContent = `Order FB-${Math.floor(1000 + Math.random()*9000)}`;
+        cart = [];
+        updateCount();
+        go('confirmed');
+      });
+      renderShop();
+      updateCount();
+      go('home');
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --bg: #17111f;
+    --panel: #201731;
+    --panel-2: #241b36;
+    --line: #342a48;
+    --muted: #a79bc8;
+    --muted-2: #8f84a8;
+    --ink: #f3edfb;
+    --purple: #5a1fb0;
+    --purple-2: #7c2fe0;
+    --acid: #8fe01e;
+    --pink: #f2a7bd;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; background: #6617b9; }
+  body { font-family: 'Instrument Sans', system-ui, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+  button { font: inherit; }
+
+  .stage {
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    padding: 28px 16px;
+    background: radial-gradient(120% 90% at 50% 0%, #a92ee0 0%, #7a1fce 55%, #5a17b0 100%);
+  }
+
+  .store {
+    width: min(402px, calc(100vw - 24px));
+    height: min(874px, calc(100svh - 32px));
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    background: var(--bg);
+    border-radius: 46px;
+    box-shadow: 0 28px 80px rgb(20 8 40 / .38), 0 0 0 8px rgb(20 12 28 / .7);
+  }
+
+  .topbar {
+    min-height: 76px;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    flex: none;
+    padding: 18px 18px 12px;
+    background: rgb(23 17 31 / .94);
+    border-bottom: 1px solid var(--line);
+    backdrop-filter: blur(12px);
+    z-index: 8;
+  }
+
+  .brand, .bag-button, .bottom-nav button, .feature-card, .product-card, .filter, .size, .back, .section-title button {
+    border: 0;
+    color: inherit;
+    background: none;
+    cursor: pointer;
+  }
+
+  .brand { display: flex; align-items: center; gap: 9px; padding: 0; text-align: left; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 15px; line-height: .9; text-transform: uppercase; }
+  .bag-button { padding: 8px 11px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: 12px; }
+  .bag-count { display: inline-grid; place-items: center; min-width: 19px; height: 19px; margin-left: 4px; padding-inline: 4px; background: var(--acid); color: #22300a; border-radius: 999px; font-weight: 700; }
+
+  .nose { width: 27px; height: 39px; display: inline-block; position: relative; flex: none; background: var(--pink); border-radius: 54% 54% 46% 46% / 60% 60% 40% 40%; transform: rotate(2deg); box-shadow: inset 0 -6px 12px rgb(154 74 102 / .24); }
+  .nose::before { content: ''; position: absolute; inset: 2px 6px 10px; background: linear-gradient(135deg, rgb(255 255 255 / .36), transparent); border-radius: 50%; }
+  .nose i { position: absolute; bottom: 6px; width: 6px; height: 8px; border-radius: 50%; background: #c76f89; }
+  .nose i:first-child { left: 5px; } .nose i:last-child { right: 5px; }
+  .nose.big { width: 66px; height: 88px; }
+  .nose.big i { width: 13px; height: 18px; bottom: 13px; } .nose.big i:first-child { left: 14px; } .nose.big i:last-child { right: 14px; }
+
+  .ticker { height: 28px; flex: none; overflow: hidden; border-bottom: 1px solid var(--line); background: var(--panel); }
+  .ticker-track { width: max-content; display: flex; animation: ticker 18s linear infinite; color: var(--acid); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .09em; line-height: 28px; }
+  .ticker-track span { padding-right: 1rem; }
+  @keyframes ticker { to { transform: translateX(-50%); } }
+
+  .viewport { flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: none; }
+  .viewport::-webkit-scrollbar { display: none; }
+  .screen { display: none; min-height: 100%; }
+  .screen.is-active { display: block; animation: reveal .28s ease both; }
+  @keyframes reveal { from { opacity: 0; transform: translateY(5px); } }
+
+  .hero { padding: 18px 18px 30px; text-align: center; }
+  .hero-image { aspect-ratio: 1.2 / 1; border-radius: 18px; margin-bottom: 20px; }
+  .hero .kicker, .mono-label { color: var(--muted-2); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .09em; text-transform: uppercase; }
+  .hero h1, .screen h2, .confirmed h2 { margin: 7px 0 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; letter-spacing: -.04em; }
+  .hero h1 { font-size: clamp(48px, 14vw, 64px); line-height: .82; }
+  .hero-line { margin: 15px 0 0; color: var(--pink); font-size: 17px; font-weight: 700; }
+
+  .primary, .ghost {
+    border: 0;
+    cursor: pointer;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 700;
+  }
+  .primary { width: 100%; margin-top: 20px; padding: 15px 18px; border-radius: 13px; background: var(--purple); color: var(--ink); font-size: 15px; }
+  .primary:hover { background: var(--purple-2); }
+  .primary.added { background: var(--acid); color: #22300a; }
+  .primary:disabled { opacity: .35; cursor: not-allowed; }
+  .ghost { padding: 0; background: none; color: var(--pink); font-size: 14px; }
+
+  .reference-photo { position: relative; overflow: hidden; background: var(--panel); }
+  .reference-photo img { width: 100%; height: 100%; object-fit: cover; opacity: .84; mix-blend-mode: luminosity; }
+  .reference-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(145deg, rgb(90 31 176 / .10), rgb(23 17 31 / .12)); pointer-events: none; }
+  .reference-label { position: absolute; left: 9px; bottom: 9px; z-index: 2; padding: 5px 7px; border-radius: 6px; background: rgb(23 17 31 / .76); color: var(--muted); font: 9px/1.15 'DM Mono', monospace; text-transform: uppercase; }
+  .reference-photo.red { background: #96120d; } .reference-photo.green { background: #34cb35; }
+
+  .home-block, .manifesto { padding: 24px 18px 28px; border-top: 1px solid var(--line); }
+  .section-title { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; }
+  .section-title span { font: 11px 'DM Mono', monospace; color: var(--muted-2); text-transform: uppercase; }
+  .section-title button { color: var(--pink); font-size: 12px; }
+  .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .feature-card { min-width: 0; padding: 0; text-align: left; }
+  .feature-image { aspect-ratio: .82; border-radius: 13px; margin-bottom: 10px; }
+  .feature-card small { display: block; min-height: 24px; color: var(--muted-2); font: 8.5px/1.35 'DM Mono', monospace; text-transform: uppercase; }
+  .feature-card strong { display: block; margin-top: 4px; font: 700 15px/1.05 'Bricolage Grotesque', sans-serif; }
+  .feature-card b { display: block; margin-top: 6px; color: var(--pink); font-size: 12px; }
+
+  .manifesto h2, .story h2, .shop-head h2, .confirmed h2 { font-size: 31px; line-height: .95; }
+  .manifesto p, .story p, .confirmed p { color: #c4bad6; font-size: 14px; line-height: 1.6; }
+  .screen-pad { padding: 24px 20px; }
+  .muted { color: #c4bad6; }
+
+  .shop-head { padding-bottom: 14px; }
+  .filters { display: flex; gap: 7px; overflow-x: auto; padding: 0 20px 15px; scrollbar-width: none; }
+  .filters::-webkit-scrollbar { display:none; }
+  .filter, .size { flex: none; padding: 9px 11px; border: 1px solid #3f3357; border-radius: 9px; background: var(--panel-2); color: var(--ink); font-size: 11px; }
+  .filter.is-on, .size.is-on { border-color: var(--purple); background: var(--purple); }
+  .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 10px; padding: 0 18px 30px; }
+  .product-card { min-width: 0; padding: 0; text-align: left; }
+  .generated-visual { aspect-ratio: .82; display: grid; place-items: center; overflow: hidden; position: relative; margin-bottom: 9px; border: 1px solid var(--line); border-radius: 14px; background: var(--panel-2); }
+  .generated-visual.red { background: #97130f; } .generated-visual.green { background: #35c936; } .generated-visual.pink { background: #da6a9a; } .generated-visual.violet { background: #5523a8; } .generated-visual.acid { background: #78c518; } .generated-visual.purple { background: #351550; }
+  .generated-visual img { width: 100%; height: 100%; object-fit: cover; opacity: .88; }
+  .generated-visual em { position: absolute; right: 8px; bottom: 8px; color: rgb(255 255 255 / .62); font: 9px/1.25 'DM Mono', monospace; text-align: right; }
+  .card-row { display: flex; justify-content: space-between; gap: 4px; color: var(--muted-2); font: 8px 'DM Mono', monospace; text-transform: uppercase; }
+  .card-row b { color: var(--acid); font-weight: 500; }
+  .product-card > strong { display: block; margin-top: 5px; font: 700 15px/1.05 'Bricolage Grotesque', sans-serif; }
+  .product-card > em { display: block; margin-top: 4px; color: var(--pink); font-size: 12px; font-style: normal; }
+
+  .back { padding: 17px 18px 11px; color: var(--muted); font-size: 12px; }
+  .product-hero { padding: 0 18px; }
+  .product-hero .generated-visual { aspect-ratio: 1 / 1.06; margin: 0; }
+  .product-detail { padding: 20px 20px 32px; }
+  .product-topline { min-height: 21px; display: flex; justify-content: space-between; align-items: center; }
+  .tag { padding: 5px 7px; border-radius: 999px; background: var(--acid); color: #22300a; font: 9px 'DM Mono', monospace; text-transform: uppercase; }
+  .product-detail h2 { font-size: 33px; line-height: .95; }
+  .price { margin-top: 7px; font: 600 22px 'Instrument Sans', sans-serif; }
+  .product-copy { font-size: 14px; line-height: 1.6; }
+  .sizes { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 18px; }
+  .product-notes, .facts { margin-top: 22px; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  .product-notes div, .facts div { display: flex; justify-content: space-between; gap: 16px; padding: 13px 14px; background: var(--panel-2); border-bottom: 1px solid var(--line); font-size: 12px; }
+  .product-notes div:last-child, .facts div:last-child { border-bottom: 0; }
+  .product-notes span, .facts span { color: var(--muted); }
+
+  .cart-lines { padding: 0 18px; }
+  .cart-line { display: grid; grid-template-columns: 72px 1fr auto; gap: 11px; align-items: start; padding: 14px 0; border-top: 1px solid var(--line); }
+  .cart-line .generated-visual { width: 72px; margin: 0; border-radius: 10px; }
+  .cart-line strong { display: block; font: 700 15px/1.05 'Bricolage Grotesque', sans-serif; }
+  .cart-line span { display: block; margin-top: 4px; color: var(--muted); font-size: 11px; }
+  .cart-line > em { color: var(--pink); font-size: 12px; font-style: normal; }
+  .qty { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+  .qty button { width: 24px; height: 24px; border: 1px solid var(--line); border-radius: 7px; background: var(--panel-2); color: var(--ink); }
+  .qty b { font-size: 11px; }
+  .cart-total { padding: 20px 18px 32px; }
+  .cart-total > div { display: flex; justify-content: space-between; padding: 7px 0; color: var(--muted); font-size: 12px; }
+  .cart-total .grand { margin-top: 8px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--ink); font-size: 15px; }
+  .empty, .confirmed { min-height: 420px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 38px 24px; text-align: center; }
+  .empty h3 { font: 700 24px/1 'Bricolage Grotesque', sans-serif; }
+  .confirmed .mono-label { margin-top: 22px; }
+  .confirmed .primary { max-width: 260px; }
+  .order-number { margin-top: 18px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 9px; background: var(--panel-2); font: 12px 'DM Mono', monospace; }
+
+  .about-image { aspect-ratio: 1 / .94; margin: 16px 16px 0; border: 1px solid var(--line); border-radius: 18px; }
+  .story { padding-top: 22px; }
+
+  .bottom-nav { flex: none; display: flex; justify-content: space-around; padding: 9px 12px 18px; border-top: 1px solid var(--line); background: rgb(23 17 31 / .96); backdrop-filter: blur(12px); z-index: 8; }
+  .bottom-nav button { width: 30%; display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--muted-2); font-size: 10px; font-weight: 600; }
+  .bottom-nav button.is-current { color: #a56bff; }
+  .bottom-nav svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round; }
+  .bottom-nav svg .fill { fill: currentColor; stroke: none; }
+
+  @media (max-width: 460px) {
+    .stage { display: block; min-height: 100dvh; padding: 0; background: var(--bg); }
+    .store { width: 100vw; height: 100dvh; border-radius: 0; box-shadow: none; }
+    .topbar { padding-top: max(16px, env(safe-area-inset-top)); }
+    .bottom-nav { padding-bottom: max(12px, env(safe-area-inset-bottom)); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-track, .screen.is-active { animation: none; }
+  }
+</style>

@@ -1,0 +1,209 @@
+name: Intro contract
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'site/**'
+      - '.github/workflows/intro-contract.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    if: github.event.pull_request.head.ref == 'feature/first-visit-assembly'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out pull request
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Install and build
+        working-directory: site
+        run: |
+          npm ci
+          npm run build
+
+      - name: Install Chromium
+        working-directory: site
+        run: |
+          npm install --no-save --no-package-lock playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Exercise intro contract
+        working-directory: site
+        run: |
+          npm run preview -- --host 127.0.0.1 --port 4321 > /tmp/wievien-preview.log 2>&1 &
+          PREVIEW_PID=$!
+          trap 'kill $PREVIEW_PID || true' EXIT
+
+          for attempt in {1..60}; do
+            if curl --fail --silent http://127.0.0.1:4321/ > /dev/null; then
+              break
+            fi
+            sleep 0.25
+          done
+          curl --fail --silent http://127.0.0.1:4321/ > /dev/null
+
+          cat > .intro-contract.mjs <<'JS'
+          import { chromium } from 'playwright';
+          import assert from 'node:assert/strict';
+
+          const browser = await chromium.launch({ headless: true });
+          const origin = 'http://127.0.0.1:4321';
+
+          const collectErrors = (page) => {
+            const errors = [];
+            page.on('pageerror', (error) => errors.push(`pageerror: ${error.message}`));
+            page.on('console', (message) => {
+              if (message.type() === 'error') errors.push(`console: ${message.text()}`);
+            });
+            return errors;
+          };
+
+          const assertStaticTitle = async (page) => {
+            const state = await page.evaluate(() => {
+              const studio = document.querySelector('[data-assemble="studio"]');
+              const wievien = document.querySelector('[data-assemble="wievien"]');
+              const heading = document.querySelector('#hero-title');
+              return {
+                headingText: heading?.textContent?.replace(/\s+/g, ' ').trim(),
+                studioVisibility: studio ? getComputedStyle(studio).visibility : null,
+                studioOpacity: studio ? Number(getComputedStyle(studio).opacity) : null,
+                wievienVisibility: wievien ? getComputedStyle(wievien).visibility : null,
+                wievienOpacity: wievien ? Number(getComputedStyle(wievien).opacity) : null,
+                layers: document.querySelectorAll('.title-motion-layer').length,
+                overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+              };
+            });
+            assert.equal(state.headingText, 'Studio Wievien');
+            assert.equal(state.studioVisibility, 'visible');
+            assert.equal(state.wievienVisibility, 'visible');
+            assert.ok(state.studioOpacity > 0.99);
+            assert.ok(state.wievienOpacity > 0.99);
+            assert.equal(state.layers, 0);
+            assert.ok(state.overflow <= 1, `horizontal overflow: ${state.overflow}px`);
+          };
+
+          try {
+            // Forced intro remains semantic, decorative clones stay hidden from assistive tech,
+            // and user intent dismisses the scene immediately.
+            {
+              const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+              const page = await context.newPage();
+              const errors = collectErrors(page);
+              await page.goto(`${origin}/?intro=1&contract=skip`, { waitUntil: 'domcontentloaded' });
+              await page.waitForFunction(() => document.documentElement.dataset.assembly === 'playing');
+              await page.waitForSelector('.title-motion-layer');
+
+              const introState = await page.evaluate(() => {
+                const studio = document.querySelector('[data-assemble="studio"]');
+                const wievien = document.querySelector('[data-assemble="wievien"]');
+                return {
+                  heading: document.querySelector('#hero-title')?.textContent?.replace(/\s+/g, ' ').trim(),
+                  studioVisibility: studio ? getComputedStyle(studio).visibility : null,
+                  wievienVisibility: wievien ? getComputedStyle(wievien).visibility : null,
+                  decorativeLayers: [...document.querySelectorAll('.title-motion-layer')]
+                    .every((element) => element.getAttribute('aria-hidden') === 'true'),
+                };
+              });
+              assert.equal(introState.heading, 'Studio Wievien');
+              assert.equal(introState.studioVisibility, 'visible');
+              assert.equal(introState.wievienVisibility, 'visible');
+              assert.equal(introState.decorativeLayers, true);
+
+              await page.waitForTimeout(1400);
+              await page.mouse.wheel(0, 220);
+              await page.waitForFunction(() => document.documentElement.dataset.assembly !== 'playing');
+              await page.waitForFunction(() => !document.querySelector('.title-motion-layer'));
+              await assertStaticTitle(page);
+              assert.deepEqual(errors, []);
+              await context.close();
+            }
+
+            // A complete performance cleans up every temporary layer.
+            {
+              const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+              const page = await context.newPage();
+              const errors = collectErrors(page);
+              await page.goto(`${origin}/?intro=1&contract=complete`, { waitUntil: 'domcontentloaded' });
+              await page.waitForFunction(() => document.documentElement.dataset.assembly === 'playing');
+              await page.waitForFunction(() => document.documentElement.dataset.assembly !== 'playing', null, { timeout: 13000 });
+              await page.waitForTimeout(250);
+              await assertStaticTitle(page);
+              assert.deepEqual(errors, []);
+
+              // The next page in the same browser session is static.
+              await page.goto(`${origin}/?contract=repeat`, { waitUntil: 'domcontentloaded' });
+              await page.waitForTimeout(450);
+              assert.notEqual(await page.evaluate(() => document.documentElement.dataset.assembly), 'playing');
+              await assertStaticTitle(page);
+              await context.close();
+            }
+
+            // Reduced-motion users never enter the kinetic state, even with the replay parameter.
+            {
+              const context = await browser.newContext({
+                viewport: { width: 390, height: 844 },
+                isMobile: true,
+                hasTouch: true,
+                reducedMotion: 'reduce',
+              });
+              const page = await context.newPage();
+              const errors = collectErrors(page);
+              await page.goto(`${origin}/?intro=1&contract=reduced`, { waitUntil: 'domcontentloaded' });
+              await page.waitForTimeout(500);
+              assert.notEqual(await page.evaluate(() => document.documentElement.dataset.assembly), 'playing');
+              await assertStaticTitle(page);
+              assert.deepEqual(errors, []);
+              await context.close();
+            }
+
+            // Resizing during the performance falls back to the real title instead of drifting.
+            {
+              const context = await browser.newContext({ viewport: { width: 1200, height: 850 } });
+              const page = await context.newPage();
+              const errors = collectErrors(page);
+              await page.goto(`${origin}/?intro=1&contract=resize`, { waitUntil: 'domcontentloaded' });
+              await page.waitForFunction(() => document.documentElement.dataset.assembly === 'playing');
+              await page.waitForSelector('.title-motion-layer');
+              await page.waitForTimeout(900);
+              await page.setViewportSize({ width: 980, height: 760 });
+              await page.waitForFunction(() => !document.querySelector('.title-motion-layer'));
+              const title = await page.evaluate(() => ({
+                studio: Number(getComputedStyle(document.querySelector('[data-assemble="studio"]')).opacity),
+                wievien: Number(getComputedStyle(document.querySelector('[data-assemble="wievien"]')).opacity),
+              }));
+              assert.ok(title.studio > 0.99 && title.wievien > 0.99);
+              assert.deepEqual(errors, []);
+              await context.close();
+            }
+
+            // With JavaScript disabled the authored page is complete and usable.
+            {
+              const context = await browser.newContext({
+                viewport: { width: 390, height: 844 },
+                javaScriptEnabled: false,
+              });
+              const page = await context.newPage();
+              await page.goto(`${origin}/`, { waitUntil: 'domcontentloaded' });
+              await assertStaticTitle(page);
+              assert.equal(await page.locator('a[href="/werk/"]').first().isVisible(), true);
+              await context.close();
+            }
+          } finally {
+            await browser.close();
+          }
+          JS
+
+          node .intro-contract.mjs
+          rm .intro-contract.mjs

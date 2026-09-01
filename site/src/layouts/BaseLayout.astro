@@ -97,38 +97,6 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
 
   <script is:inline>
     (() => {
-      if (new URLSearchParams(window.location.search).get('diagnostic') !== 'reduced') return;
-
-      window.setTimeout(() => {
-        const viewport = document.documentElement.clientWidth;
-        const offenders = [...document.querySelectorAll('body *')]
-          .map((element) => {
-            const rect = element.getBoundingClientRect();
-            return {
-              tag: element.tagName.toLowerCase(),
-              id: element.id || '',
-              className: typeof element.className === 'string' ? element.className : '',
-              text: (element.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 80),
-              left: Number(rect.left.toFixed(2)),
-              right: Number(rect.right.toFixed(2)),
-              width: Number(rect.width.toFixed(2)),
-            };
-          })
-          .filter((element) => element.left < -0.5 || element.right > viewport + 0.5)
-          .sort((a, b) => Math.max(b.right - viewport, -b.left) - Math.max(a.right - viewport, -a.left));
-
-        console.error(`OVERFLOW_DIAGNOSTIC ${JSON.stringify({
-          viewport,
-          scrollWidth: document.documentElement.scrollWidth,
-          bodyScrollWidth: document.body.scrollWidth,
-          offenders,
-        })}`);
-      }, 250);
-    })();
-  </script>
-
-  <script is:inline>
-    (() => {
       const root = document.documentElement;
       if (root.dataset.assembly !== 'pending') return;
 

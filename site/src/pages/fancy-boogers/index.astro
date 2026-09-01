@@ -1,8 +1,8 @@
 ---
 const studioImages = {
-  hero: 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8026f5a085d80/92c0dc63-a0bc-4686-81b0-d0bcc698c06b/Unknown.jpeg',
-  one: 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8026f5a085d80/1767703456320-YMAS5DUHNMV0VR29ZRLF/MVS_20251120_0093_WEB.jpg',
-  two: 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8026f5a085d80/1772014449994-RK7LCIFVZK23UJQJ4WWS/538A4606_JonathanWiddershoven.jpg',
+  hero: '/images/fancy-boogers/slime-stripe.jpg',
+  one: '/images/fancy-boogers/toile-terror.jpg',
+  two: '/images/fancy-boogers/boogie-blazer.jpg',
 };
 ---
 
@@ -47,8 +47,7 @@ const studioImages = {
           <section class="screen is-active" data-screen="home">
             <div class="hero">
               <div class="hero-image reference-photo">
-                <img src={studioImages.hero} alt="Studio Wievien reference image" />
-                <span class="reference-label">image slot · replace with SS26 campaign</span>
+                <img src={studioImages.hero} alt="Slime Stripe SS26 campaign" />
               </div>
               <p class="kicker">SS26 · LOOKBOOK</p>
               <h1>Fancy<br />Boogers</h1>
@@ -64,8 +63,7 @@ const studioImages = {
               <div class="feature-grid">
                 <button class="feature-card" type="button" data-open-product="toile">
                   <div class="feature-image reference-photo red">
-                    <img src={studioImages.one} alt="Studio Wievien reference image" loading="lazy" />
-                    <span class="reference-label">replace with Toile Terror Shirt</span>
+                    <img src={studioImages.one} alt="Toile Terror Shirt" loading="lazy" />
                   </div>
                   <small>TOPS · DESIGNER FABRIC</small>
                   <strong>Toile Terror Shirt</strong>
@@ -73,8 +71,7 @@ const studioImages = {
                 </button>
                 <button class="feature-card" type="button" data-open-product="blazer">
                   <div class="feature-image reference-photo green">
-                    <img src={studioImages.two} alt="Studio Wievien reference image" loading="lazy" />
-                    <span class="reference-label">replace with Boogie Blazer</span>
+                    <img src={studioImages.two} alt="The Boogie Blazer" loading="lazy" />
                   </div>
                   <small>OUTERWEAR · 1 OF 1</small>
                   <strong>The Boogie Blazer</strong>
@@ -150,8 +147,7 @@ const studioImages = {
 
           <section class="screen" data-screen="about">
             <div class="about-image reference-photo">
-              <img src={studioImages.two} alt="Studio Wievien reference image" loading="lazy" />
-              <span class="reference-label">image slot · studio / maker photo</span>
+              <img src={studioImages.two} alt="The Boogie Blazer SS26 campaign" loading="lazy" />
             </div>
             <div class="screen-pad story">
               <span class="mono-label">THE STORY</span>
@@ -202,8 +198,8 @@ const studioImages = {
       ];
 
       const imageMap = {
-        one: 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8026f5a085d80/1767703456320-YMAS5DUHNMV0VR29ZRLF/MVS_20251120_0093_WEB.jpg',
-        two: 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8026f5a085d80/1772014449994-RK7LCIFVZK23UJQJ4WWS/538A4606_JonathanWiddershoven.jpg',
+        one: '/images/fancy-boogers/toile-terror.jpg',
+        two: '/images/fancy-boogers/boogie-blazer.jpg',
       };
 
       let screen = 'home';
@@ -218,7 +214,7 @@ const studioImages = {
 
       function visual(product, compact=false) {
         if (product.image && imageMap[product.image]) {
-          return `<div class="generated-visual reference-photo ${product.tone}"><img src="${imageMap[product.image]}" alt="Studio Wievien reference image"><span class="reference-label">replace with ${product.name}</span></div>`;
+          return `<div class="generated-visual reference-photo ${product.tone}"><img src="${imageMap[product.image]}" alt="${product.name}"></div>`;
         }
         return `<div class="generated-visual ${product.tone}"><span class="nose ${compact ? '' : 'big'}" aria-hidden="true"><i></i><i></i></span><em>PHOTO<br>COMING</em></div>`;
       }
@@ -427,9 +423,8 @@ const studioImages = {
   .ghost { padding: 0; background: none; color: var(--pink); font-size: 14px; }
 
   .reference-photo { position: relative; overflow: hidden; background: var(--panel); }
-  .reference-photo img { width: 100%; height: 100%; object-fit: cover; opacity: .84; mix-blend-mode: luminosity; }
-  .reference-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(145deg, rgb(90 31 176 / .10), rgb(23 17 31 / .12)); pointer-events: none; }
-  .reference-label { position: absolute; left: 9px; bottom: 9px; z-index: 2; padding: 5px 7px; border-radius: 6px; background: rgb(23 17 31 / .76); color: var(--muted); font: 9px/1.15 'DM Mono', monospace; text-transform: uppercase; }
+  .reference-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .reference-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(145deg, rgb(90 31 176 / .035), transparent); pointer-events: none; }
   .reference-photo.red { background: #96120d; } .reference-photo.green { background: #34cb35; }
 
   .home-block, .manifesto { padding: 24px 18px 28px; border-top: 1px solid var(--line); }
@@ -457,7 +452,7 @@ const studioImages = {
   .product-card { min-width: 0; padding: 0; text-align: left; }
   .generated-visual { aspect-ratio: .82; display: grid; place-items: center; overflow: hidden; position: relative; margin-bottom: 9px; border: 1px solid var(--line); border-radius: 14px; background: var(--panel-2); }
   .generated-visual.red { background: #97130f; } .generated-visual.green { background: #35c936; } .generated-visual.pink { background: #da6a9a; } .generated-visual.violet { background: #5523a8; } .generated-visual.acid { background: #78c518; } .generated-visual.purple { background: #351550; }
-  .generated-visual img { width: 100%; height: 100%; object-fit: cover; opacity: .88; }
+  .generated-visual img { width: 100%; height: 100%; object-fit: cover; }
   .generated-visual em { position: absolute; right: 8px; bottom: 8px; color: rgb(255 255 255 / .62); font: 9px/1.25 'DM Mono', monospace; text-align: right; }
   .card-row { display: flex; justify-content: space-between; gap: 4px; color: var(--muted-2); font: 8px 'DM Mono', monospace; text-transform: uppercase; }
   .card-row b { color: var(--acid); font-weight: 500; }

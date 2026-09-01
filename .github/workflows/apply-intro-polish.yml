@@ -1,0 +1,95 @@
+name: Apply intro polish
+
+on:
+  push:
+    branches:
+      - feature/first-visit-assembly
+    paths:
+      - 'site/.intro-polish-patch'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out animation branch
+        uses: actions/checkout@v4
+        with:
+          ref: feature/first-visit-assembly
+          fetch-depth: 0
+
+      - name: Apply verified source edits
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          def replace_once(text: str, old: str, new: str, label: str) -> str:
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{label}: expected one match, found {count}')
+              return text.replace(old, new, 1)
+
+          core_path = Path('site/src/scripts/title-entrance-core.js')
+          core = core_path.read_text()
+          core = replace_once(core, '      const bleedX = 1.25;\n      const bleedY = 3;', '      const bleedX = 0.35;\n      const bleedY = 1.5;', 'glyph clip bleed')
+          core_path.write_text(core)
+
+          title_path = Path('site/src/scripts/title-entrance.js')
+          title = title_path.read_text()
+          title = replace_once(title, '      const direction = index % 2 === 0 ? -1 : 1;', '      const direction = -1;', 'impact direction')
+          title = replace_once(
+              title,
+              "    later(() => {\n      reactToImpact(scene, [2, 1, 0], (index, order) => 4 - order, 320, 28);\n    }, 5350);",
+              "    later(() => {\n      reactToImpact(scene, [2, 1, 0], (index, order) => 9 - order * 1.8, 420, 42);\n    }, 5340);",
+              'v impact',
+          )
+          title = replace_once(
+              title,
+              "    later(() => {\n      reactToImpact(scene, [5, 4, 3, 2, 1, 0], (index, order) => Math.max(1.2, 7 - order * 0.9), 330, 34);\n    }, 7010);",
+              "    later(() => {\n      reactToImpact(scene, [5, 4, 3, 2, 1, 0], (index, order) => Math.max(2.8, 12.5 - order * 1.7), 410, 38);\n    }, 6960);",
+              'n collision wave',
+          )
+          title = replace_once(title, '    }, 7410);', '    }, 7600);', 'collective settle timing')
+          title = replace_once(title, '    }, 7640);', '    }, 7860);', 'title handoff timing')
+          title = replace_once(title, '      setCompletionTimer(10700);', '      setCompletionTimer(9800);', 'intro completion timing')
+          title_path.write_text(title)
+
+          css_path = Path('site/src/styles/title-entrance.css')
+          css = css_path.read_text()
+          replacements = [
+              ('  color: rgb(23 23 22 / 0.11);', '  color: rgb(23 23 22 / 0.12);', 'cast density'),
+              ('  background: rgb(23 23 22 / 0.34);', '  background: rgb(23 23 22 / 0.4);', 'contact density'),
+              ('  filter: blur(5.5px);', '  filter: blur(4.8px);', 'contact sharpness'),
+              ("animation: assembly-small-settle 500ms 7480ms", "animation: assembly-small-settle 500ms 7980ms", 'header reveal'),
+              ("animation: title-image-frame-in 1120ms 7700ms", "animation: title-image-frame-in 1120ms 8060ms", 'image frame reveal'),
+              ("animation: title-image-content-in 1280ms 7700ms", "animation: title-image-content-in 1280ms 8060ms", 'image content reveal'),
+              ("[data-assemble='guides'] { animation-delay: 7500ms", "[data-assemble='guides'] { animation-delay: 7900ms", 'guide reveal'),
+              ("assembly-guide-top { animation-delay: 7540ms", "assembly-guide-top { animation-delay: 7940ms", 'top guide reveal'),
+              ("assembly-guide-right { animation-delay: 7720ms", "assembly-guide-right { animation-delay: 8120ms", 'right guide reveal'),
+              ("assembly-guide-cross { animation-delay: 7900ms", "assembly-guide-cross { animation-delay: 8300ms", 'cross guide reveal'),
+              ("[data-assemble='fields'] { animation-delay: 7880ms", "[data-assemble='fields'] { animation-delay: 8200ms", 'fields reveal'),
+              ("[data-assemble='cta'] { animation-delay: 8120ms", "[data-assemble='cta'] { animation-delay: 8420ms", 'cta reveal'),
+              ("[data-assemble='caption'] { animation-delay: 8160ms", "[data-assemble='caption'] { animation-delay: 8460ms", 'caption reveal'),
+              ("[data-assemble='index'] { animation-delay: 8300ms", "[data-assemble='index'] { animation-delay: 8600ms", 'index reveal'),
+              ("nth-child(1) { animation-delay: 8420ms", "nth-child(1) { animation-delay: 8720ms", 'door one'),
+              ("nth-child(2) { animation-delay: 8550ms", "nth-child(2) { animation-delay: 8850ms", 'door two'),
+              ("nth-child(3) { animation-delay: 8680ms", "nth-child(3) { animation-delay: 8980ms", 'door three'),
+              ("nth-child(4) { animation-delay: 8810ms", "nth-child(4) { animation-delay: 9110ms", 'door four'),
+          ]
+          for old, new, label in replacements:
+              css = replace_once(css, old, new, label)
+          css_path.write_text(css)
+
+          Path('site/.intro-polish-patch').unlink()
+          PY
+
+      - name: Commit polished choreography
+        run: |
+          git config user.name 'Studio Wievien motion bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add site/src/scripts/title-entrance-core.js site/src/scripts/title-entrance.js site/src/styles/title-entrance.css site/.intro-polish-patch
+          git commit -m 'Polish glyph masks, impact waves and shadows'
+          git push origin HEAD:feature/first-visit-assembly

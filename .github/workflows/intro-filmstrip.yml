@@ -1,0 +1,128 @@
+name: Intro filmstrip
+
+on:
+  push:
+    branches:
+      - feature/first-visit-assembly
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Install site dependencies
+        working-directory: site
+        run: npm ci
+
+      - name: Build site
+        working-directory: site
+        run: npm run build
+
+      - name: Install capture browser
+        working-directory: site
+        run: |
+          npm install --no-save --no-package-lock playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Start preview and capture timed frames
+        working-directory: site
+        run: |
+          npm run preview -- --host 127.0.0.1 --port 4321 > /tmp/wievien-preview.log 2>&1 &
+          PREVIEW_PID=$!
+          trap 'kill $PREVIEW_PID || true' EXIT
+
+          for attempt in {1..40}; do
+            if curl --fail --silent http://127.0.0.1:4321/ > /dev/null; then
+              break
+            fi
+            sleep 0.25
+          done
+
+          curl --fail --silent http://127.0.0.1:4321/ > /dev/null
+
+          cat > /tmp/capture-intro.mjs <<'JS'
+          import { chromium } from 'playwright';
+          import { mkdir } from 'node:fs/promises';
+
+          const output = '/tmp/intro-filmstrip';
+          await mkdir(output, { recursive: true });
+
+          const viewports = [
+            { name: 'desktop', width: 1440, height: 1000 },
+            { name: 'mobile', width: 390, height: 844 },
+          ];
+
+          const marks = [
+            { label: '0050', ms: 50 },
+            { label: '0600', ms: 600 },
+            { label: '1150', ms: 1150 },
+            { label: '1800', ms: 1800 },
+            { label: '2800', ms: 2800 },
+            { label: '3700', ms: 3700 },
+            { label: '4500', ms: 4500 },
+            { label: '5400', ms: 5400 },
+            { label: '6200', ms: 6200 },
+            { label: '6900', ms: 6900 },
+            { label: '7900', ms: 7900 },
+          ];
+
+          const browser = await chromium.launch({ headless: true });
+
+          try {
+            for (const viewport of viewports) {
+              const page = await browser.newPage({
+                viewport: { width: viewport.width, height: viewport.height },
+                deviceScaleFactor: 1,
+                reducedMotion: 'no-preference',
+              });
+
+              await page.goto(`http://127.0.0.1:4321/?intro=1&capture=${viewport.name}`, {
+                waitUntil: 'domcontentloaded',
+              });
+
+              await page.waitForFunction(
+                () => document.documentElement.dataset.assembly === 'playing',
+                null,
+                { timeout: 5000 },
+              );
+
+              let elapsed = 0;
+              for (const mark of marks) {
+                await page.waitForTimeout(Math.max(0, mark.ms - elapsed));
+                elapsed = mark.ms;
+                await page.screenshot({
+                  path: `${output}/${viewport.name}-${mark.label}.png`,
+                  fullPage: false,
+                });
+              }
+
+              await page.close();
+            }
+          } finally {
+            await browser.close();
+          }
+          JS
+
+          node /tmp/capture-intro.mjs
+
+      - name: Upload intro filmstrip
+        uses: actions/upload-artifact@v4
+        with:
+          name: intro-filmstrip
+          path: /tmp/intro-filmstrip
+          if-no-files-found: error
+          retention-days: 3

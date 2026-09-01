@@ -4,12 +4,42 @@ import '@/styles/title-entrance.css';
 
 <div class="title-entrance" aria-hidden="true"></div>
 
+<style is:global>
+  .title-motion-layer {
+    user-select: none;
+    -webkit-user-select: none;
+  }
+</style>
+
 <script>
   const root = document.documentElement;
   const state = root.dataset.assembly;
 
   if (state === 'pending' || state === 'playing') {
+    const hideClonedTitle = (node) => {
+      if (!(node instanceof HTMLElement)) return;
+
+      if (node.matches('.title-motion-layer')) {
+        node.setAttribute('aria-hidden', 'true');
+        node.setAttribute('role', 'presentation');
+      }
+
+      node.querySelectorAll?.('.title-motion-layer').forEach((layer) => {
+        layer.setAttribute('aria-hidden', 'true');
+        layer.setAttribute('role', 'presentation');
+      });
+    };
+
+    const layerObserver = new MutationObserver((records) => {
+      records.forEach((record) => record.addedNodes.forEach(hideClonedTitle));
+    });
+
+    layerObserver.observe(document.body, { childList: true, subtree: true });
+    window.addEventListener('wievien:intro-complete', () => layerObserver.disconnect(), { once: true });
+
     import('@/scripts/title-entrance.js').catch(() => {
+      layerObserver.disconnect();
+
       document.querySelectorAll('[data-assemble="studio"], [data-assemble="wievien"]').forEach((element) => {
         if (element instanceof HTMLElement) element.dataset.titleEntrance = 'complete';
       });

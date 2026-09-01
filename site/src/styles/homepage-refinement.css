@@ -63,10 +63,13 @@
    unrelated portfolio images. */
 .practice .practice-row {
   position: relative;
+  isolation: isolate;
+  overflow: hidden;
 }
 
 .practice .practice-row::after {
   position: absolute;
+  z-index: -1;
   right: 0;
   top: 50%;
   transform: translateY(-52%);
@@ -118,6 +121,7 @@
   }
 
   .practice .practice-row::after {
+    z-index: 0;
     top: 2.9rem;
     right: 0.1rem;
     transform: none;

@@ -4,11 +4,21 @@ html[data-assembly='playing'] {
 }
 
 html[data-assembly='pending'] [data-assemble='studio'],
-html[data-assembly='playing'] [data-assemble='studio'],
-html[data-assembly='pending'] [data-assemble='wievien'],
-html[data-assembly='playing'] [data-assemble='wievien'] {
+html[data-assembly='playing'] [data-assemble='studio'] {
   visibility: hidden !important;
   opacity: 1 !important;
+  animation: none !important;
+  transform: none !important;
+}
+
+/* Wievien's destination is present from the opening frame as a faint, crisp
+   contact impression. The live letters arrive on top of it like piano keys. */
+html[data-assembly='pending'] [data-assemble='wievien']:not([data-title-entrance='complete']),
+html[data-assembly='playing'] [data-assemble='wievien']:not([data-title-entrance='complete']) {
+  visibility: visible !important;
+  opacity: 1 !important;
+  color: transparent !important;
+  text-shadow: 0 .032em .018em rgb(23 23 22 / 0.085) !important;
   animation: none !important;
   transform: none !important;
 }
@@ -16,12 +26,13 @@ html[data-assembly='playing'] [data-assemble='wievien'] {
 html[data-assembly='playing'] [data-assemble='studio'][data-title-entrance='complete'],
 html[data-assembly='playing'] [data-assemble='wievien'][data-title-entrance='complete'] {
   visibility: visible !important;
+  color: var(--ink) !important;
 }
 
 /* Finished typography keeps only a restrained contact shadow. */
 [data-assemble='studio'],
 [data-assemble='wievien'] {
-  text-shadow: 0 0.035em 0.055em rgb(23 23 22 / 0.105);
+  text-shadow: 0 .03em .022em rgb(23 23 22 / 0.095);
 }
 
 .title-motion-layer {
@@ -68,7 +79,8 @@ html[data-assembly='playing'] [data-assemble='wievien'][data-title-entrance='com
   will-change: transform, opacity;
 }
 
-/* One clean floor shadow per glyph. No projected silhouettes or ghost word. */
+/* No projected silhouettes or smeared ghost copies. Depth comes from a tiny
+   floor contact only; the target word above supplies the structural shadow. */
 .title-motion-cast,
 .title-motion-shadow-ink,
 .title-target-shadow-plane {
@@ -77,24 +89,24 @@ html[data-assembly='playing'] [data-assemble='wievien'][data-title-entrance='com
 
 .title-motion-contact {
   position: absolute;
-  height: 4px;
+  height: 2px;
   border-radius: 50%;
-  background: rgb(23 23 22 / 0.25);
-  filter: blur(3px);
+  background: rgb(23 23 22 / 0.22);
+  filter: blur(1.45px);
   transform-origin: center;
   opacity: 0;
   will-change: transform, opacity;
 }
 
 .title-motion-studio .title-motion-contact {
-  height: 5px;
-  filter: blur(3.5px);
+  height: 3px;
+  filter: blur(1.8px);
 }
 
-/* Studio owns the opening beat. The eyebrow can join during the piano run so
-   the eventual title hold is not cluttered by another tiny reveal. */
+/* Studio owns the opening beat. The eyebrow joins as the first keys begin so
+   the title itself gets the visual emphasis rather than a queue of reveals. */
 html[data-assembly='playing'] [data-assemble='eyebrow'] {
-  animation: assembly-small-settle 480ms 890ms var(--ease) both !important;
+  animation: assembly-small-settle 500ms 960ms var(--ease) both !important;
 }
 
 html[data-assembly='pending'] .header-inner > *,
@@ -104,10 +116,11 @@ html[data-assembly='playing'] .header-inner > * {
   animation: none !important;
 }
 
-/* After Wievien lands, the title gets a genuine ta-da hold. Then the page opens
-   in families rather than serially: frame + header + construction marks first. */
+/* The photograph starts before Wievien is finished. Its reveal runs underneath
+   the final keys and the proud title hold, creating one crescendo instead of
+   title -> pause -> image -> pause. */
 html[data-assembly='playing'] .header-inner > * {
-  animation: assembly-small-settle 560ms 3070ms var(--ease) both !important;
+  animation: assembly-small-settle 600ms 2860ms var(--ease) both !important;
 }
 
 html[data-assembly='pending'] [data-assemble='image'] .hero-image-frame,
@@ -117,24 +130,30 @@ html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame {
 }
 
 html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame {
-  animation: piano-image-frame-in 980ms 3040ms var(--ease) forwards !important;
+  animation: piano-image-frame-in 1180ms 1780ms cubic-bezier(.2,.78,.18,1) forwards !important;
 }
 
 html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame img {
-  animation: piano-image-content-in 1120ms 3040ms var(--ease) forwards !important;
+  animation: piano-image-content-in 1320ms 1780ms cubic-bezier(.2,.78,.18,1) forwards !important;
 }
 
 @keyframes piano-image-frame-in {
   0% {
     visibility: visible;
     opacity: 0;
-    clip-path: inset(3% 84% 3% 0);
+    clip-path: inset(3% 86% 3% 0);
     transform: translateX(1rem);
   }
 
-  42% {
+  28% {
+    opacity: .92;
+    clip-path: inset(2.5% 62% 2.5% 0);
+  }
+
+  68% {
     opacity: 1;
-    clip-path: inset(2% 34% 2% 0);
+    clip-path: inset(1% 20% 1% 0);
+    transform: translateX(.18rem);
   }
 
   100% {
@@ -146,43 +165,48 @@ html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame img {
 }
 
 @keyframes piano-image-content-in {
-  from {
-    transform: scale(1.035) translateX(0.45%);
+  0% {
+    transform: scale(1.04) translateX(.6%);
   }
 
-  to {
+  68% {
+    transform: scale(1.008) translateX(.1%);
+  }
+
+  100% {
     transform: scale(1) translateX(0);
   }
 }
 
-/* Wave 1: image, construction marks and header all wake together. */
-html[data-assembly='playing'] [data-assemble='guides'] { animation-delay: 3010ms !important; }
-html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-top { animation-delay: 3050ms !important; }
-html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-right { animation-delay: 3140ms !important; }
-html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-cross { animation-delay: 3230ms !important; }
+/* Construction marks start while the image is opening, but not all on the same
+   tick. The little asymmetry keeps the build from feeling metronomic. */
+html[data-assembly='playing'] [data-assemble='guides'] { animation-delay: 1930ms !important; }
+html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-top { animation-delay: 1990ms !important; }
+html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-right { animation-delay: 2110ms !important; }
+html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-cross { animation-delay: 2240ms !important; }
 
-/* Wave 2: supporting information arrives as one cluster while the photograph
-   is still finishing, so the composition feels alive rather than queued. */
-html[data-assembly='playing'] [data-assemble='fields'] { animation-delay: 3260ms !important; }
-html[data-assembly='playing'] [data-assemble='cta'] { animation-delay: 3300ms !important; }
-html[data-assembly='playing'] [data-assemble='caption'] { animation-delay: 3290ms !important; }
+/* Supporting information joins during the proud hold, while the photograph is
+   still settling into its final crop. */
+html[data-assembly='playing'] [data-assemble='fields'] { animation-delay: 2720ms !important; }
+html[data-assembly='playing'] [data-assemble='caption'] { animation-delay: 2760ms !important; }
+html[data-assembly='playing'] [data-assemble='cta'] { animation-delay: 2880ms !important; }
 
-/* Wave 3: navigation resolves in two paired chords instead of four footsteps. */
-html[data-assembly='playing'] [data-assemble='index'] { animation-delay: 3450ms !important; }
+/* The section navigation is the final chord: two paired arrivals, then stillness. */
+html[data-assembly='playing'] [data-assemble='index'] { animation-delay: 3130ms !important; }
 html[data-assembly='playing'] [data-assemble='door']:nth-child(1),
-html[data-assembly='playing'] [data-assemble='door']:nth-child(2) { animation-delay: 3510ms !important; }
+html[data-assembly='playing'] [data-assemble='door']:nth-child(2) { animation-delay: 3200ms !important; }
 html[data-assembly='playing'] [data-assemble='door']:nth-child(3),
-html[data-assembly='playing'] [data-assemble='door']:nth-child(4) { animation-delay: 3620ms !important; }
+html[data-assembly='playing'] [data-assemble='door']:nth-child(4) { animation-delay: 3340ms !important; }
 
 @media (max-width: 720px) {
   .title-motion-contact {
-    height: 3px;
-    filter: blur(2.5px);
+    height: 2px;
+    filter: blur(1.2px);
   }
 
   .title-motion-studio .title-motion-contact {
-    height: 4px;
-    filter: blur(3px);
+    height: 2px;
+    filter: blur(1.5px);
   }
 }
 
@@ -194,6 +218,7 @@ html[data-assembly='playing'] [data-assemble='door']:nth-child(4) { animation-de
   [data-assemble='studio'],
   [data-assemble='wievien'] {
     visibility: visible !important;
+    color: var(--ink) !important;
   }
 
   [data-assemble='image'] .hero-image-frame {

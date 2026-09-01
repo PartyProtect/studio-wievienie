@@ -5,9 +5,16 @@ import '@/styles/title-entrance.css';
 <div class="title-entrance" aria-hidden="true"></div>
 
 <script>
-  const state = document.documentElement.dataset.assembly;
+  const root = document.documentElement;
+  const state = root.dataset.assembly;
 
   if (state === 'pending' || state === 'playing') {
-    import('@/scripts/title-entrance.js');
+    import('@/scripts/title-entrance.js').catch(() => {
+      document.querySelectorAll('[data-assemble="studio"], [data-assemble="wievien"]').forEach((element) => {
+        if (element instanceof HTMLElement) element.dataset.titleEntrance = 'complete';
+      });
+
+      window.dispatchEvent(new CustomEvent('wievien:intro-complete'));
+    });
   }
 </script>

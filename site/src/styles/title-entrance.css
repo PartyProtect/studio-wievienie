@@ -34,12 +34,70 @@ html[data-assembly='playing'] [data-assemble='wievien'][data-title-entrance='com
   contain: layout style;
 }
 
+.title-target-shadow-plane,
 .title-motion-shadow-plane,
 .title-motion-glyph-plane {
   position: absolute;
   inset: 0;
   overflow: visible;
   pointer-events: none;
+}
+
+.title-target-shadow-plane {
+  z-index: 0;
+  opacity: 0;
+  transform-origin: center bottom;
+  mix-blend-mode: multiply;
+  will-change: transform, opacity;
+}
+
+.title-motion-shadow-plane {
+  z-index: 1;
+}
+
+.title-motion-glyph-plane {
+  z-index: 2;
+}
+
+.title-target-word {
+  position: absolute;
+  inset: 0;
+  transform-origin: center bottom;
+  will-change: transform, opacity, filter;
+}
+
+.title-target-word-ink {
+  position: absolute;
+  inset: 0;
+  display: block;
+  color: rgb(23 23 22 / 0.27);
+  font: inherit;
+  letter-spacing: inherit;
+  white-space: nowrap;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+.title-target-contact,
+.title-target-pulse {
+  position: absolute;
+  border-radius: 50%;
+  background: rgb(23 23 22 / 0.34);
+  mix-blend-mode: multiply;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+.title-target-contact {
+  height: 6px;
+  filter: blur(6px);
+  opacity: 0;
+}
+
+.title-target-pulse {
+  height: 5px;
+  filter: blur(4.5px);
+  opacity: 0;
 }
 
 .title-motion-cast,
@@ -108,10 +166,10 @@ html[data-assembly='playing'] .header-inner > * {
 }
 
 html[data-assembly='playing'] .header-inner > * {
-  animation: assembly-small-settle 500ms 7760ms var(--ease) both !important;
+  animation: assembly-small-settle 500ms 8580ms var(--ease) both !important;
 }
 
-/* No pale photograph fragment before the title has finished. */
+/* No photograph fragment before the completed name has had a beat to breathe. */
 html[data-assembly='pending'] [data-assemble='image'] .hero-image-frame,
 html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame {
   visibility: hidden;
@@ -119,11 +177,11 @@ html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame {
 }
 
 html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame {
-  animation: title-image-frame-in 1120ms 7580ms var(--ease) forwards !important;
+  animation: title-image-frame-in 1180ms 8460ms var(--ease) forwards !important;
 }
 
 html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame img {
-  animation: title-image-content-in 1280ms 7580ms var(--ease) forwards !important;
+  animation: title-image-content-in 1360ms 8460ms var(--ease) forwards !important;
 }
 
 @keyframes title-image-frame-in {
@@ -166,21 +224,31 @@ html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame img {
   }
 }
 
-/* The quiet site waits until the name has completed its entrance. */
-html[data-assembly='playing'] [data-assemble='guides'] { animation-delay: 7460ms !important; }
-html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-top { animation-delay: 7500ms !important; }
-html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-right { animation-delay: 7680ms !important; }
-html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-cross { animation-delay: 7860ms !important; }
-html[data-assembly='playing'] [data-assemble='fields'] { animation-delay: 7790ms !important; }
-html[data-assembly='playing'] [data-assemble='cta'] { animation-delay: 8010ms !important; }
-html[data-assembly='playing'] [data-assemble='caption'] { animation-delay: 8050ms !important; }
-html[data-assembly='playing'] [data-assemble='index'] { animation-delay: 8190ms !important; }
-html[data-assembly='playing'] [data-assemble='door']:nth-child(1) { animation-delay: 8310ms !important; }
-html[data-assembly='playing'] [data-assemble='door']:nth-child(2) { animation-delay: 8420ms !important; }
-html[data-assembly='playing'] [data-assemble='door']:nth-child(3) { animation-delay: 8530ms !important; }
-html[data-assembly='playing'] [data-assemble='door']:nth-child(4) { animation-delay: 8640ms !important; }
+/* The quiet site wakes while the prophetic shadow is fading away. */
+html[data-assembly='playing'] [data-assemble='guides'] { animation-delay: 8340ms !important; }
+html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-top { animation-delay: 8380ms !important; }
+html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-right { animation-delay: 8560ms !important; }
+html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-cross { animation-delay: 8740ms !important; }
+html[data-assembly='playing'] [data-assemble='fields'] { animation-delay: 8650ms !important; }
+html[data-assembly='playing'] [data-assemble='cta'] { animation-delay: 8860ms !important; }
+html[data-assembly='playing'] [data-assemble='caption'] { animation-delay: 8900ms !important; }
+html[data-assembly='playing'] [data-assemble='index'] { animation-delay: 9050ms !important; }
+html[data-assembly='playing'] [data-assemble='door']:nth-child(1) { animation-delay: 9180ms !important; }
+html[data-assembly='playing'] [data-assemble='door']:nth-child(2) { animation-delay: 9290ms !important; }
+html[data-assembly='playing'] [data-assemble='door']:nth-child(3) { animation-delay: 9400ms !important; }
+html[data-assembly='playing'] [data-assemble='door']:nth-child(4) { animation-delay: 9510ms !important; }
 
 @media (max-width: 720px) {
+  .title-target-contact {
+    height: 5px;
+    filter: blur(5px);
+  }
+
+  .title-target-pulse {
+    height: 4px;
+    filter: blur(4px);
+  }
+
   .title-motion-contact {
     height: 3px;
     filter: blur(4.5px);

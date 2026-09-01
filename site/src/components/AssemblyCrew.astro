@@ -100,10 +100,36 @@
     display: block;
   }
 
+  /* The rope becomes taut before the word is allowed to move. */
+  :global(html[data-assembly='playing'] [data-assemble='wievien']) {
+    animation: assembly-wievien-crew-haul 2700ms 1680ms linear both !important;
+  }
+
+  /* Nothing downstream gets approved until the supervisor does. */
+  :global(html[data-assembly='playing'] [data-assemble='index']) {
+    animation-delay: 4940ms !important;
+  }
+
+  :global(html[data-assembly='playing'] [data-assemble='door']:nth-child(1)) {
+    animation-delay: 5100ms !important;
+  }
+
+  :global(html[data-assembly='playing'] [data-assemble='door']:nth-child(2)) {
+    animation-delay: 5270ms !important;
+  }
+
+  :global(html[data-assembly='playing'] [data-assemble='door']:nth-child(3)) {
+    animation-delay: 5440ms !important;
+  }
+
+  :global(html[data-assembly='playing'] [data-assemble='door']:nth-child(4)) {
+    animation-delay: 5610ms !important;
+  }
+
   :global(html[data-assembly='playing']) .assembly-crew {
     animation:
       crew-enter 700ms 1120ms var(--ease) both,
-      crew-exit 650ms 5150ms var(--ease) both;
+      crew-exit 650ms 5850ms var(--ease) both;
   }
 
   :global(html[data-assembly='playing']) .crew-ground {
@@ -115,11 +141,11 @@
   }
 
   :global(html[data-assembly='playing']) .crew-supervisor-arm {
-    animation: supervisor-thumb 430ms 4440ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: supervisor-thumb 430ms 4580ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
   :global(html[data-assembly='playing']) .crew-thumb {
-    animation: thumb-appear 220ms 4670ms ease-out both;
+    animation: thumb-appear 220ms 4780ms ease-out both;
   }
 
   :global(html[data-assembly='playing']) .crew-worker-stage {
@@ -144,6 +170,43 @@
 
   :global(html[data-assembly='playing']) .crew-hook {
     animation: hook-set 280ms 1500ms ease-out both;
+  }
+
+  @keyframes assembly-wievien-crew-haul {
+    0% {
+      opacity: 0;
+      transform: translate(0.72em, 0.08em) rotate(6deg) scale(1.025);
+    }
+    9% {
+      opacity: 0.85;
+      transform: translate(0.57em, 0.064em) rotate(4.7deg) scale(1.018);
+    }
+    17% {
+      opacity: 1;
+      transform: translate(0.64em, 0.07em) rotate(5.05deg) scale(1.02);
+    }
+    35% {
+      transform: translate(0.37em, 0.041em) rotate(2.65deg) scale(1.012);
+    }
+    45% {
+      transform: translate(0.44em, 0.049em) rotate(3.05deg) scale(1.014);
+    }
+    64% {
+      transform: translate(0.16em, 0.017em) rotate(1deg) scale(1.005);
+    }
+    73% {
+      transform: translate(0.215em, 0.023em) rotate(1.22deg) scale(1.006);
+    }
+    88% {
+      transform: translate(0.04em, 0.004em) rotate(0.16deg) scale(1.001);
+    }
+    94% {
+      transform: translate(0.012em, 0.001em) rotate(0.04deg) scale(1);
+    }
+    100% {
+      opacity: 1;
+      transform: none;
+    }
   }
 
   @keyframes crew-enter {

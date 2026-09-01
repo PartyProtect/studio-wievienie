@@ -1,3 +1,8 @@
+html[data-assembly='pending'],
+html[data-assembly='playing'] {
+  overflow-x: clip;
+}
+
 html[data-assembly='pending'] [data-assemble='studio'],
 html[data-assembly='playing'] [data-assemble='studio'],
 html[data-assembly='pending'] [data-assemble='wievien'],
@@ -9,63 +14,73 @@ html[data-assembly='playing'] [data-assemble='wievien'] {
 }
 
 html[data-assembly='playing'] [data-assemble='studio'][data-title-entrance='complete'],
-html[data-assembly='playing'] [data-assemble='wievien'][data-letter-entrance='complete'] {
+html[data-assembly='playing'] [data-assemble='wievien'][data-title-entrance='complete'] {
   visibility: visible !important;
 }
 
-[data-assemble='studio'],
-[data-assemble='wievien'] {
-  text-shadow:
-    0.018em 0.026em 0 rgb(23 23 22 / 0.11),
-    0.015em 0.065em 0.11em rgb(23 23 22 / 0.12);
+[data-assemble='studio'] {
+  text-shadow: 0.018em 0.052em 0.075em rgb(23 23 22 / 0.12);
 }
 
-.kinetic-title-stage {
-  position: absolute;
-  inset: 0 0 auto;
+[data-assemble='wievien'] {
+  text-shadow: 0.02em 0.055em 0.08em rgb(23 23 22 / 0.15);
+}
+
+.title-motion-layer {
+  position: fixed;
   z-index: 42;
-  width: 100%;
-  height: 0;
   overflow: visible;
   pointer-events: none;
   contain: layout style;
 }
 
-.kinetic-studio-layer,
-.kinetic-word-layer {
+.title-motion-shadow-plane,
+.title-motion-glyph-plane {
   position: absolute;
+  inset: 0;
   overflow: visible;
   pointer-events: none;
 }
 
-.kinetic-studio-ink,
-.kinetic-glyph-ink {
-  position: absolute;
-  inset: 0;
-  display: block;
-  color: var(--ink);
-  white-space: nowrap;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  text-shadow:
-    0.018em 0.026em 0 rgb(23 23 22 / 0.14),
-    0.018em 0.075em 0.13em rgb(23 23 22 / 0.14);
-  will-change: transform, opacity;
-}
-
-.kinetic-glyph {
+.title-motion-cast,
+.title-motion-glyph {
   position: absolute;
   inset: 0;
   overflow: visible;
-  will-change: transform;
+  will-change: transform, opacity;
 }
 
-.kinetic-studio-shadow,
-.kinetic-glyph-shadow {
+.title-motion-ink,
+.title-motion-shadow-ink {
+  position: absolute;
+  inset: 0;
+  display: block;
+  white-space: nowrap;
+  font: inherit;
+  letter-spacing: inherit;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+.title-motion-ink {
+  color: var(--ink);
+}
+
+.title-motion-shadow-ink {
+  color: rgb(23 23 22 / 0.28);
+}
+
+.title-motion-cast {
+  filter: blur(2.4px);
+  mix-blend-mode: multiply;
+  opacity: 0;
+}
+
+.title-motion-contact {
   position: absolute;
   height: 5px;
   border-radius: 50%;
-  background: rgb(23 23 22 / 0.25);
+  background: rgb(23 23 22 / 0.28);
   filter: blur(5px);
   mix-blend-mode: multiply;
   transform-origin: center;
@@ -73,75 +88,37 @@ html[data-assembly='playing'] [data-assemble='wievien'][data-letter-entrance='co
   will-change: transform, opacity;
 }
 
-html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame {
-  animation: assembly-image-frame 1050ms 7060ms var(--ease) both !important;
+.title-motion-studio .title-motion-contact {
+  height: 7px;
+  filter: blur(6px);
 }
 
+/* The quiet site waits until the name has completed its entrance. */
+html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame,
 html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame img {
-  animation: assembly-image-content 1250ms 7060ms var(--ease) both !important;
+  animation-delay: 7700ms !important;
 }
 
-html[data-assembly='playing'] [data-assemble='guides'] {
-  animation: assembly-guides 1300ms 6900ms var(--ease) both !important;
-}
-
-html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-top {
-  animation: assembly-guide-x 600ms 6960ms var(--ease) both !important;
-}
-
-html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-right {
-  animation: assembly-guide-y 620ms 7160ms var(--ease) both !important;
-}
-
-html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-cross {
-  animation: assembly-cross 420ms 7400ms var(--ease) both !important;
-}
-
-html[data-assembly='playing'] [data-assemble='fields'] {
-  animation: assembly-small-settle 560ms 7280ms var(--ease) both !important;
-}
-
-html[data-assembly='playing'] [data-assemble='cta'] {
-  animation: assembly-small-settle 560ms 7520ms var(--ease) both !important;
-}
-
-html[data-assembly='playing'] [data-assemble='caption'] {
-  animation: assembly-small-settle 520ms 7600ms var(--ease) both !important;
-}
-
-html[data-assembly='playing'] [data-assemble='index'] {
-  animation: assembly-index-line 580ms 7780ms ease-out both !important;
-}
-
-html[data-assembly='playing'] [data-assemble='door'] {
-  animation-name: assembly-door !important;
-  animation-duration: 620ms !important;
-  animation-timing-function: var(--ease) !important;
-  animation-fill-mode: both !important;
-}
-
-html[data-assembly='playing'] [data-assemble='door']:nth-child(1) { animation-delay: 7900ms !important; }
-html[data-assembly='playing'] [data-assemble='door']:nth-child(2) { animation-delay: 8010ms !important; }
-html[data-assembly='playing'] [data-assemble='door']:nth-child(3) { animation-delay: 8120ms !important; }
-html[data-assembly='playing'] [data-assemble='door']:nth-child(4) { animation-delay: 8230ms !important; }
-
-@media (max-width: 720px) {
-  .kinetic-studio-shadow,
-  .kinetic-glyph-shadow {
-    height: 4px;
-    filter: blur(4px);
-  }
-}
+html[data-assembly='playing'] [data-assemble='guides'] { animation-delay: 7500ms !important; }
+html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-top { animation-delay: 7540ms !important; }
+html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-right { animation-delay: 7720ms !important; }
+html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-cross { animation-delay: 7900ms !important; }
+html[data-assembly='playing'] [data-assemble='fields'] { animation-delay: 7880ms !important; }
+html[data-assembly='playing'] [data-assemble='cta'] { animation-delay: 8120ms !important; }
+html[data-assembly='playing'] [data-assemble='caption'] { animation-delay: 8160ms !important; }
+html[data-assembly='playing'] [data-assemble='index'] { animation-delay: 8300ms !important; }
+html[data-assembly='playing'] [data-assemble='door']:nth-child(1) { animation-delay: 8420ms !important; }
+html[data-assembly='playing'] [data-assemble='door']:nth-child(2) { animation-delay: 8550ms !important; }
+html[data-assembly='playing'] [data-assemble='door']:nth-child(3) { animation-delay: 8680ms !important; }
+html[data-assembly='playing'] [data-assemble='door']:nth-child(4) { animation-delay: 8810ms !important; }
 
 @media (prefers-reduced-motion: reduce) {
-  .kinetic-title-stage {
+  .title-motion-layer {
     display: none !important;
   }
 
   [data-assemble='studio'],
   [data-assemble='wievien'] {
     visibility: visible !important;
-    animation: none !important;
-    transform: none !important;
   }
 }

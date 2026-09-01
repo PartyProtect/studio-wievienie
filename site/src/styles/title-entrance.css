@@ -68,11 +68,11 @@ html[data-assembly='playing'] [data-assemble='wievien'][data-title-entrance='com
 
 /* A faint projected silhouette gives direction; the contact shadow carries weight. */
 .title-motion-shadow-ink {
-  color: rgb(23 23 22 / 0.11);
+  color: rgb(23 23 22 / 0.13);
 }
 
 .title-motion-cast {
-  filter: blur(4.6px);
+  filter: blur(5.3px);
   mix-blend-mode: multiply;
   opacity: 0;
 }
@@ -81,8 +81,8 @@ html[data-assembly='playing'] [data-assemble='wievien'][data-title-entrance='com
   position: absolute;
   height: 4px;
   border-radius: 50%;
-  background: rgb(23 23 22 / 0.34);
-  filter: blur(5.5px);
+  background: rgb(23 23 22 / 0.46);
+  filter: blur(4.4px);
   mix-blend-mode: multiply;
   transform-origin: center;
   opacity: 0;
@@ -108,7 +108,7 @@ html[data-assembly='playing'] .header-inner > * {
 }
 
 html[data-assembly='playing'] .header-inner > * {
-  animation: assembly-small-settle 500ms 7480ms var(--ease) both !important;
+  animation: assembly-small-settle 500ms 7750ms var(--ease) both !important;
 }
 
 /* No pale photograph fragment before the title has finished. */
@@ -119,11 +119,11 @@ html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame {
 }
 
 html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame {
-  animation: title-image-frame-in 1120ms 7700ms var(--ease) forwards !important;
+  animation: title-image-frame-in 1120ms 7650ms var(--ease) forwards !important;
 }
 
 html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame img {
-  animation: title-image-content-in 1280ms 7700ms var(--ease) forwards !important;
+  animation: title-image-content-in 1280ms 7650ms var(--ease) forwards !important;
 }
 
 @keyframes title-image-frame-in {
@@ -167,18 +167,18 @@ html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame img {
 }
 
 /* The quiet site waits until the name has completed its entrance. */
-html[data-assembly='playing'] [data-assemble='guides'] { animation-delay: 7500ms !important; }
-html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-top { animation-delay: 7540ms !important; }
-html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-right { animation-delay: 7720ms !important; }
-html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-cross { animation-delay: 7900ms !important; }
-html[data-assembly='playing'] [data-assemble='fields'] { animation-delay: 7880ms !important; }
-html[data-assembly='playing'] [data-assemble='cta'] { animation-delay: 8120ms !important; }
-html[data-assembly='playing'] [data-assemble='caption'] { animation-delay: 8160ms !important; }
-html[data-assembly='playing'] [data-assemble='index'] { animation-delay: 8300ms !important; }
-html[data-assembly='playing'] [data-assemble='door']:nth-child(1) { animation-delay: 8420ms !important; }
-html[data-assembly='playing'] [data-assemble='door']:nth-child(2) { animation-delay: 8550ms !important; }
-html[data-assembly='playing'] [data-assemble='door']:nth-child(3) { animation-delay: 8680ms !important; }
-html[data-assembly='playing'] [data-assemble='door']:nth-child(4) { animation-delay: 8810ms !important; }
+html[data-assembly='playing'] [data-assemble='guides'] { animation-delay: 7520ms !important; }
+html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-top { animation-delay: 7560ms !important; }
+html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-right { animation-delay: 7740ms !important; }
+html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-cross { animation-delay: 7920ms !important; }
+html[data-assembly='playing'] [data-assemble='fields'] { animation-delay: 7840ms !important; }
+html[data-assembly='playing'] [data-assemble='cta'] { animation-delay: 8060ms !important; }
+html[data-assembly='playing'] [data-assemble='caption'] { animation-delay: 8100ms !important; }
+html[data-assembly='playing'] [data-assemble='index'] { animation-delay: 8240ms !important; }
+html[data-assembly='playing'] [data-assemble='door']:nth-child(1) { animation-delay: 8360ms !important; }
+html[data-assembly='playing'] [data-assemble='door']:nth-child(2) { animation-delay: 8470ms !important; }
+html[data-assembly='playing'] [data-assemble='door']:nth-child(3) { animation-delay: 8580ms !important; }
+html[data-assembly='playing'] [data-assemble='door']:nth-child(4) { animation-delay: 8690ms !important; }
 
 @media (max-width: 720px) {
   .title-motion-contact {

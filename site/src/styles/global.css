@@ -159,8 +159,8 @@ select {
 }
 
 /* First-visit homepage assembly -------------------------------------------------
-   The final layout exists from first paint. The intro only reveals and settles
-   those already-positioned pieces, so it never causes layout shift. */
+   The final layout exists from first paint. The intro reveals pieces as if the
+   page is being physically composed: some parts glide, heavier parts resist. */
 
 html[data-assembly='pending'],
 html[data-assembly='playing'] {
@@ -183,12 +183,12 @@ html[data-assembly='pending'] [data-assemble='eyebrow'] {
 
 html[data-assembly='pending'] [data-assemble='studio'] {
   opacity: 0;
-  transform: translate(-0.32em, 0.08em) rotate(-4.5deg) scale(0.96);
+  transform: translate(-0.48em, 0.1em) rotate(-5.2deg) scale(0.955);
 }
 
 html[data-assembly='pending'] [data-assemble='wievien'] {
   opacity: 0;
-  transform: translate(0.27em, -0.07em) rotate(4.8deg) scale(1.025);
+  transform: translate(0.72em, 0.08em) rotate(6deg) scale(1.025);
 }
 
 html[data-assembly='pending'] [data-assemble='fields'],
@@ -199,13 +199,13 @@ html[data-assembly='pending'] [data-assemble='caption'] {
 }
 
 html[data-assembly='pending'] [data-assemble='image'] .hero-image-frame {
-  opacity: 0.12;
-  clip-path: inset(7% 76% 7% 0);
-  transform: translateX(1.25rem);
+  opacity: 0.1;
+  clip-path: inset(7% 83% 7% 0);
+  transform: translateX(1.5rem);
 }
 
 html[data-assembly='pending'] [data-assemble='image'] .hero-image-frame img {
-  transform: scale(1.055);
+  transform: scale(1.065);
 }
 
 html[data-assembly='pending'] [data-assemble='guides'] {
@@ -232,90 +232,90 @@ html[data-assembly='pending'] [data-assemble='index'] {
 html[data-assembly='pending'] [data-assemble='door'] {
   opacity: 0;
   clip-path: inset(0 100% 0 0);
-  transform: translateX(-0.55rem);
+  transform: translateX(-0.7rem);
 }
 
 html[data-assembly='playing'] .site-header {
-  animation: assembly-header 620ms 40ms var(--ease) both;
+  animation: assembly-header 900ms 100ms var(--ease) both;
 }
 
 html[data-assembly='playing'] .header-inner > * {
-  animation: assembly-small-settle 440ms 720ms var(--ease) both;
+  animation: assembly-small-settle 650ms 1500ms var(--ease) both;
 }
 
 html[data-assembly='playing'] [data-assemble='eyebrow'] {
-  animation: assembly-small-settle 430ms 260ms var(--ease) both;
+  animation: assembly-small-settle 650ms 420ms var(--ease) both;
 }
 
 html[data-assembly='playing'] [data-assemble='studio'] {
-  animation: assembly-studio 720ms 360ms var(--ease) both;
+  animation: assembly-studio 1400ms 650ms var(--ease) both;
 }
 
 html[data-assembly='playing'] [data-assemble='wievien'] {
-  animation: assembly-wievien 760ms 540ms var(--ease) both;
+  animation: assembly-wievien-haul 2550ms 850ms linear both;
 }
 
 html[data-assembly='playing'] [data-assemble='fields'] {
-  animation: assembly-small-settle 470ms 1080ms var(--ease) both;
+  animation: assembly-small-settle 700ms 2500ms var(--ease) both;
 }
 
 html[data-assembly='playing'] [data-assemble='cta'] {
-  animation: assembly-small-settle 470ms 1320ms var(--ease) both;
+  animation: assembly-small-settle 700ms 3000ms var(--ease) both;
 }
 
 html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame {
-  animation: assembly-image-frame 980ms 620ms var(--ease) both;
+  animation: assembly-image-frame 2300ms 1050ms var(--ease) both;
 }
 
 html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame img {
-  animation: assembly-image-content 1080ms 620ms var(--ease) both;
+  animation: assembly-image-content 2600ms 1050ms var(--ease) both;
 }
 
 html[data-assembly='playing'] [data-assemble='caption'] {
-  animation: assembly-small-settle 430ms 1560ms var(--ease) both;
+  animation: assembly-small-settle 650ms 3500ms var(--ease) both;
 }
 
 html[data-assembly='playing'] [data-assemble='guides'] {
-  animation: assembly-guides 1540ms 410ms var(--ease) both;
+  animation: assembly-guides 3000ms 800ms var(--ease) both;
 }
 
 html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-top {
-  animation: assembly-guide-x 610ms 440ms var(--ease) both;
+  animation: assembly-guide-x 1100ms 900ms var(--ease) both;
 }
 
 html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-right {
-  animation: assembly-guide-y 600ms 720ms var(--ease) both;
+  animation: assembly-guide-y 1200ms 1350ms var(--ease) both;
 }
 
 html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-cross {
-  animation: assembly-cross 420ms 940ms var(--ease) both;
+  animation: assembly-cross 600ms 1900ms var(--ease) both;
 }
 
 html[data-assembly='playing'] [data-assemble='index'] {
-  animation: assembly-index-line 500ms 1600ms ease-out both;
+  animation: assembly-index-line 700ms 3800ms ease-out both;
 }
 
 html[data-assembly='playing'] [data-assemble='door'] {
   animation-name: assembly-door;
-  animation-duration: 520ms;
+  animation-duration: 800ms;
   animation-timing-function: var(--ease);
   animation-fill-mode: both;
 }
 
 html[data-assembly='playing'] [data-assemble='door']:nth-child(1) {
-  animation-delay: 1680ms;
+  animation-delay: 4000ms;
 }
 
 html[data-assembly='playing'] [data-assemble='door']:nth-child(2) {
-  animation-delay: 1785ms;
+  animation-delay: 4220ms;
 }
 
 html[data-assembly='playing'] [data-assemble='door']:nth-child(3) {
-  animation-delay: 1890ms;
+  animation-delay: 4440ms;
 }
 
 html[data-assembly='playing'] [data-assemble='door']:nth-child(4) {
-  animation-delay: 1995ms;
+  animation-delay: 4660ms;
 }
 
 @keyframes assembly-header {
@@ -341,11 +341,17 @@ html[data-assembly='playing'] [data-assemble='door']:nth-child(4) {
 @keyframes assembly-studio {
   0% {
     opacity: 0;
-    transform: translate(-0.32em, 0.08em) rotate(-4.5deg) scale(0.96);
+    transform: translate(-0.48em, 0.1em) rotate(-5.2deg) scale(0.955);
   }
-  68% {
+  46% {
     opacity: 1;
-    transform: translate(0.022em, -0.012em) rotate(0.28deg) scale(1.006);
+    transform: translate(-0.14em, 0.035em) rotate(-1.8deg) scale(0.985);
+  }
+  66% {
+    transform: translate(-0.18em, 0.045em) rotate(-2.15deg) scale(0.983);
+  }
+  86% {
+    transform: translate(0.018em, -0.006em) rotate(0.18deg) scale(1.003);
   }
   100% {
     opacity: 1;
@@ -353,14 +359,36 @@ html[data-assembly='playing'] [data-assemble='door']:nth-child(4) {
   }
 }
 
-@keyframes assembly-wievien {
+@keyframes assembly-wievien-haul {
   0% {
     opacity: 0;
-    transform: translate(0.27em, -0.07em) rotate(4.8deg) scale(1.025);
+    transform: translate(0.72em, 0.08em) rotate(6deg) scale(1.025);
   }
-  70% {
+  10% {
+    opacity: 0.8;
+    transform: translate(0.58em, 0.065em) rotate(4.8deg) scale(1.018);
+  }
+  18% {
     opacity: 1;
-    transform: translate(-0.018em, 0.01em) rotate(-0.24deg) scale(0.997);
+    transform: translate(0.65em, 0.07em) rotate(5.1deg) scale(1.02);
+  }
+  37% {
+    transform: translate(0.38em, 0.042em) rotate(2.7deg) scale(1.012);
+  }
+  47% {
+    transform: translate(0.45em, 0.05em) rotate(3.1deg) scale(1.014);
+  }
+  66% {
+    transform: translate(0.17em, 0.018em) rotate(1.05deg) scale(1.005);
+  }
+  74% {
+    transform: translate(0.22em, 0.024em) rotate(1.25deg) scale(1.006);
+  }
+  88% {
+    transform: translate(0.045em, 0.004em) rotate(0.18deg) scale(1.001);
+  }
+  94% {
+    transform: translate(0.015em, 0.002em) rotate(0.06deg) scale(1);
   }
   100% {
     opacity: 1;
@@ -370,15 +398,26 @@ html[data-assembly='playing'] [data-assemble='door']:nth-child(4) {
 
 @keyframes assembly-image-frame {
   0% {
-    opacity: 0.12;
-    clip-path: inset(7% 76% 7% 0);
-    transform: translateX(1.25rem);
+    opacity: 0.1;
+    clip-path: inset(7% 83% 7% 0);
+    transform: translateX(1.5rem);
   }
-  24% {
+  18% {
+    opacity: 0.72;
+    clip-path: inset(7% 68% 7% 0);
+  }
+  37% {
     opacity: 1;
+    clip-path: inset(5% 47% 5% 0);
   }
-  68% {
-    clip-path: inset(2% 4% 2% 0);
+  48% {
+    clip-path: inset(5% 51% 5% 0);
+  }
+  72% {
+    clip-path: inset(2% 14% 2% 0);
+  }
+  82% {
+    clip-path: inset(2% 17% 2% 0);
   }
   100% {
     opacity: 1;
@@ -388,10 +427,13 @@ html[data-assembly='playing'] [data-assemble='door']:nth-child(4) {
 }
 
 @keyframes assembly-image-content {
-  from {
-    transform: scale(1.055);
+  0% {
+    transform: scale(1.065) translateX(0.8%);
   }
-  to {
+  72% {
+    transform: scale(1.014) translateX(0.15%);
+  }
+  100% {
     transform: scale(1);
   }
 }
@@ -400,9 +442,9 @@ html[data-assembly='playing'] [data-assemble='door']:nth-child(4) {
   0% {
     opacity: 0;
   }
-  18%,
-  67% {
-    opacity: 0.7;
+  12%,
+  72% {
+    opacity: 0.72;
   }
   100% {
     opacity: 0;
@@ -432,6 +474,10 @@ html[data-assembly='playing'] [data-assemble='door']:nth-child(4) {
     opacity: 0;
     transform: scale(0.4) rotate(-18deg);
   }
+  70% {
+    opacity: 1;
+    transform: scale(1.08) rotate(2deg);
+  }
   to {
     opacity: 1;
     transform: scale(1) rotate(0);
@@ -448,12 +494,17 @@ html[data-assembly='playing'] [data-assemble='door']:nth-child(4) {
 }
 
 @keyframes assembly-door {
-  from {
+  0% {
     opacity: 0;
     clip-path: inset(0 100% 0 0);
-    transform: translateX(-0.55rem);
+    transform: translateX(-0.7rem);
   }
-  to {
+  72% {
+    opacity: 1;
+    clip-path: inset(0 3% 0 0);
+    transform: translateX(0.05rem);
+  }
+  100% {
     opacity: 1;
     clip-path: inset(0);
     transform: none;

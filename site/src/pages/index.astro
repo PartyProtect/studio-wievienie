@@ -18,19 +18,26 @@ const [juunamWork, carnivalWork] = homepageWork;
   lang="nl"
   currentPath="/"
   ogImage={heroWork.image}
+  firstVisitAssembly
 >
   <section class="hero shell" aria-labelledby="hero-title">
     <div class="hero-copy">
-      <p class="eyebrow">Wievien Alberts · Maastricht</p>
+      <p class="eyebrow" data-assemble="eyebrow">Wievien Alberts · Maastricht</p>
       <h1 id="hero-title">
-        <span class="hero-word hero-word-studio">Studio</span>
-        <span class="hero-word hero-word-wievien">Wievien</span>
+        <span class="hero-word hero-word-studio" data-assemble="studio">Studio</span>
+        <span class="hero-word hero-word-wievien" data-assemble="wievien">Wievien</span>
       </h1>
-      <p class="hero-fields">Mode · textiel · objecten · workshops</p>
-      <a class="quiet-link" href="/werk/">Werk <span aria-hidden="true">→</span></a>
+      <p class="hero-fields" data-assemble="fields">Mode · textiel · objecten · workshops</p>
+      <a class="quiet-link" href="/werk/" data-assemble="cta">Werk <span aria-hidden="true">→</span></a>
     </div>
 
-    <figure class="hero-figure">
+    <figure class="hero-figure" data-assemble="image">
+      <div class="assembly-guides" data-assemble="guides" aria-hidden="true">
+        <span class="assembly-guide assembly-guide-top"></span>
+        <span class="assembly-guide assembly-guide-right"></span>
+        <span class="assembly-guide assembly-guide-cross"></span>
+      </div>
+
       <div class="hero-image-frame">
         <img
           src={heroWork.image}
@@ -40,16 +47,16 @@ const [juunamWork, carnivalWork] = homepageWork;
           decoding="async"
         />
       </div>
-      <figcaption>
+      <figcaption data-assemble="caption">
         <span>{heroWork.context}</span>
         <span>{heroWork.credit}</span>
       </figcaption>
     </figure>
   </section>
 
-  <nav class="section-index shell" aria-label="Onderdelen van Studio Wievien">
-    {sections.map(({ title, note, href }) => (
-      <a class="section-link" href={href}>
+  <nav class="section-index shell" aria-label="Onderdelen van Studio Wievien" data-assemble="index">
+    {sections.map(({ title, note, href }, index) => (
+      <a class="section-link" href={href} data-assemble="door" style={`--assembly-order: ${index};`}>
         <span class="section-name">{title}</span>
         <span class="section-note">{note}</span>
       </a>
@@ -231,8 +238,55 @@ const [juunamWork, carnivalWork] = homepageWork;
   }
 
   .hero-figure {
+    position: relative;
     justify-self: end;
     width: min(100%, 690px);
+  }
+
+  .assembly-guides {
+    position: absolute;
+    inset: -1rem;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  .assembly-guide {
+    position: absolute;
+    display: block;
+    background: color-mix(in srgb, var(--ink) 42%, transparent);
+    transform-origin: left top;
+  }
+
+  .assembly-guide-top {
+    top: 0;
+    left: -0.6rem;
+    width: calc(100% + 1.2rem);
+    height: 1px;
+  }
+
+  .assembly-guide-right {
+    top: -0.6rem;
+    right: 0;
+    width: 1px;
+    height: calc(100% + 1.2rem);
+  }
+
+  .assembly-guide-cross {
+    top: -0.25rem;
+    left: -0.25rem;
+    width: 0.5rem;
+    height: 1px;
+  }
+
+  .assembly-guide-cross::after {
+    position: absolute;
+    top: -0.25rem;
+    left: 0.25rem;
+    width: 1px;
+    height: 0.5rem;
+    background: inherit;
+    content: '';
   }
 
   .hero-image-frame {
@@ -632,6 +686,10 @@ const [juunamWork, carnivalWork] = homepageWork;
     .hero-figure {
       justify-self: stretch;
       width: 100%;
+    }
+
+    .assembly-guides {
+      inset: -0.65rem;
     }
 
     .hero-figure img {

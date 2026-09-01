@@ -5,12 +5,13 @@ const sections = [
   { title: 'Werk', note: 'Selectie & projecten', href: '#werk' },
   { title: 'Fancy Boogers', note: 'Kledinglijn', href: '#fancy-boogers' },
   { title: 'Borduurwerk', note: 'Textiel & opdrachten', href: '#borduurwerk' },
-  { title: 'Workshops', note: 'Borduren, textiel & upcycling', href: '#workshops' },
+  { title: 'Workshops', note: 'Borduren · textiel · upcycling', href: '#workshops' },
 ];
 
 const projects = [
+  { year: '2026', title: 'Fancy Boogers · cover ECOPOLITAN #7', place: 'ECOPOLITAN' },
   { year: '2026', title: 'Carnavalproject', place: 'FASHIONCLASH' },
-  { year: '2025', title: 'Studio Wievien bij Juunam', place: 'FASHIONCLASH Festival' },
+  { year: '2025', title: 'Presentatie bij Juunam', place: 'FASHIONCLASH Festival' },
   { year: '2024', title: 'New Fashion Narratives', place: 'Bureau Europa' },
 ];
 
@@ -24,14 +25,14 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
   description="Studio Wievien — mode, textiel, borduurwerk, objecten, projecten, workshops en Fancy Boogers."
   lang="nl"
   currentPath="/"
+  ogImage={heroImage}
 >
   <section class="hero shell" aria-labelledby="hero-title">
     <div class="hero-copy">
       <p class="eyebrow">Wievien Alberts · Maastricht</p>
       <h1 id="hero-title">Studio<br />Wievien</h1>
       <p class="hero-fields">Mode · textiel · objecten · workshops</p>
-      <p class="hero-lede">Eigen werk, Fancy Boogers, borduurwerk en projecten met anderen.</p>
-      <a class="quiet-link" href="#werk">Werk bekijken <span aria-hidden="true">↓</span></a>
+      <a class="quiet-link" href="#werk">Werk <span aria-hidden="true">↓</span></a>
     </div>
 
     <figure class="hero-figure">
@@ -95,7 +96,7 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
           </div>
           <figcaption>
             <span>Project</span>
-            <strong>Carnavalproject 2026 · FASHIONCLASH</strong>
+            <strong>Carnavalproject · FASHIONCLASH 2026</strong>
             <small>Foto: Jonathan Widdershoven</small>
           </figcaption>
         </figure>
@@ -106,11 +107,12 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
   <section class="fancy" id="fancy-boogers" aria-labelledby="fancy-title">
     <div class="shell fancy-grid">
       <div>
-        <p class="eyebrow">Kledinglijn</p>
+        <p class="eyebrow">Kledinglijn · Studio Wievien</p>
         <h2 id="fancy-title">Fancy Boogers</h2>
       </div>
       <div class="fancy-copy">
-        <p>De eigen kledinglijn van Studio Wievien.</p>
+        <p>Eigen kledinglijn van Wievien Alberts.</p>
+        <p class="fancy-meta">In 2026 verscheen werk uit de collectie op de cover van ECOPOLITAN #7.</p>
         <a
           class="dark-link"
           href="https://www.instagram.com/studio_wievien/"
@@ -140,7 +142,7 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
       </div>
       <div class="practice-copy">
         <p>Workshops rond borduren, textiel en upcycling.</p>
-        <small>Data en locaties zodra ze bekend zijn</small>
+        <small>Studio Wievien · Maastricht</small>
       </div>
     </article>
   </section>
@@ -169,8 +171,9 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
     </div>
     <div class="about-copy">
       <p>
-        Wievien Alberts werkt met kleding, textiel, maskers en objecten. Ze maakt eigen werk,
-        werkt aan projecten met anderen en geeft workshops. Maskers keren regelmatig terug in haar werk.
+        Wievien Alberts is ontwerper en werkt met kleding, textiel, maskers en objecten.
+        In haar werk keren identiteit, verandering en het masker als vorm regelmatig terug.
+        Daarnaast werkt ze aan gezamenlijke projecten en geeft ze workshops.
       </p>
       <a
         class="text-link"
@@ -186,10 +189,10 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
   .hero {
     min-height: calc(100svh - 64px);
     display: grid;
-    grid-template-columns: minmax(0, 0.88fr) minmax(380px, 1.12fr);
+    grid-template-columns: minmax(0, 0.84fr) minmax(390px, 1.16fr);
     gap: clamp(3rem, 7vw, 8rem);
     align-items: center;
-    padding-block: clamp(3rem, 6vw, 6rem);
+    padding-block: clamp(3.5rem, 6vw, 6.5rem);
   }
 
   .hero-copy {
@@ -198,29 +201,21 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
 
   .hero h1 {
     margin-top: 1rem;
-    font-size: clamp(4.2rem, 8.6vw, 8.8rem);
-    line-height: 0.78;
+    font-size: clamp(4.35rem, 8.5vw, 8.7rem);
+    line-height: 0.79;
     letter-spacing: -0.058em;
   }
 
   .hero-fields {
-    margin-top: 2rem;
-    color: var(--ink);
-    font-size: 0.76rem;
+    margin-top: 2.15rem;
+    color: var(--ink-soft);
+    font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.035em;
   }
 
-  .hero-lede {
-    margin-top: 0.8rem;
-    max-width: 31rem;
-    color: var(--ink-soft);
-    font-size: 0.92rem;
-    line-height: 1.65;
-  }
-
   .hero .quiet-link {
-    margin-top: 2.4rem;
+    margin-top: 2.25rem;
   }
 
   .hero-figure {
@@ -231,22 +226,22 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
   .hero-image-frame {
     overflow: hidden;
     background: var(--surface);
-    border: 1px solid color-mix(in srgb, var(--line) 72%, transparent);
+    border: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
   }
 
   .hero-figure img {
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 3 / 4;
     object-fit: cover;
-    object-position: 50% 39%;
+    object-position: 50% 42%;
   }
 
   .hero-figure figcaption {
     display: flex;
     justify-content: space-between;
     gap: 1rem;
-    padding-top: 0.6rem;
+    padding-top: 0.58rem;
     color: var(--ink-faint);
-    font-size: 0.64rem;
+    font-size: 0.61rem;
     letter-spacing: 0.01em;
   }
 
@@ -259,27 +254,28 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
   }
 
   .section-link {
-    min-height: 110px;
+    min-height: 106px;
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 0.6rem 1rem;
     align-content: center;
-    padding-block: 1.45rem;
+    padding-block: 1.4rem;
     border-bottom: 1px solid var(--line);
     text-decoration: none;
   }
 
   .section-name {
     font-family: var(--font-display);
-    font-size: clamp(1.65rem, 2.6vw, 2.55rem);
+    font-size: clamp(1.6rem, 2.5vw, 2.45rem);
     line-height: 1;
     letter-spacing: -0.035em;
+    transition: font-style 140ms var(--ease);
   }
 
   .section-note {
     align-self: center;
     color: var(--ink-faint);
-    font-size: 0.68rem;
+    font-size: 0.64rem;
     text-align: right;
   }
 
@@ -327,11 +323,11 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
   .image-frame img {
     height: 100%;
     object-fit: cover;
-    transition: transform 450ms var(--ease);
+    transition: transform 420ms var(--ease);
   }
 
   figure:hover .image-frame img {
-    transform: scale(1.006);
+    transform: scale(1.004);
   }
 
   .image-frame-landscape {
@@ -346,13 +342,13 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 0.18rem 1rem;
-    padding-top: 0.65rem;
+    padding-top: 0.63rem;
   }
 
   .selection figcaption span,
   .selection figcaption small {
     color: var(--ink-faint);
-    font-size: 0.62rem;
+    font-size: 0.59rem;
   }
 
   .selection figcaption span {
@@ -363,7 +359,7 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
   .selection figcaption strong {
     justify-self: end;
     text-align: right;
-    font-size: 0.7rem;
+    font-size: 0.67rem;
     font-weight: 600;
   }
 
@@ -404,17 +400,24 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
   .fancy-copy p {
     max-width: 23rem;
     color: var(--on-dark-soft);
-    font-size: 0.9rem;
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+
+  .fancy-copy .fancy-meta {
+    margin-top: 0.75rem;
+    color: #84817c;
+    font-size: 0.68rem;
   }
 
   .dark-link {
     display: inline-flex;
     gap: 0.45rem;
-    margin-top: 1.7rem;
+    margin-top: 1.65rem;
     padding-bottom: 0.18rem;
     border-bottom: 1px solid #67645f;
     color: var(--on-dark);
-    font-size: 0.74rem;
+    font-size: 0.72rem;
     font-weight: 600;
     text-decoration: none;
   }
@@ -455,7 +458,7 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
     display: block;
     margin-top: 0.9rem;
     color: var(--ink-faint);
-    font-size: 0.66rem;
+    font-size: 0.63rem;
   }
 
   .projects {
@@ -471,13 +474,13 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
     grid-template-columns: 90px minmax(0, 1.35fr) minmax(180px, 0.65fr);
     gap: 1rem;
     align-items: baseline;
-    padding-block: 1.15rem;
+    padding-block: 1.12rem;
     border-bottom: 1px solid var(--line);
   }
 
   .project-row strong {
     font-family: var(--font-display);
-    font-size: clamp(1.25rem, 1.9vw, 1.7rem);
+    font-size: clamp(1.2rem, 1.85vw, 1.62rem);
     font-weight: 400;
     letter-spacing: -0.025em;
   }
@@ -485,7 +488,7 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
   .project-year,
   .project-row > span:last-child {
     color: var(--ink-faint);
-    font-size: 0.68rem;
+    font-size: 0.65rem;
   }
 
   .project-year {
@@ -512,8 +515,8 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
   .about-copy p {
     max-width: 37rem;
     font-family: var(--font-display);
-    font-size: clamp(1.35rem, 2.2vw, 2rem);
-    line-height: 1.25;
+    font-size: clamp(1.28rem, 2vw, 1.9rem);
+    line-height: 1.28;
     letter-spacing: -0.02em;
   }
 
@@ -523,7 +526,7 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
 
   @media (max-width: 900px) {
     .hero {
-      grid-template-columns: 0.9fr 1.1fr;
+      grid-template-columns: 0.86fr 1.14fr;
       gap: 2.5rem;
     }
 
@@ -536,9 +539,9 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
     .hero {
       min-height: 0;
       grid-template-columns: 1fr;
-      gap: 2.2rem;
-      padding-top: 2.4rem;
-      padding-bottom: 4rem;
+      gap: 2.35rem;
+      padding-top: 2.5rem;
+      padding-bottom: 4.1rem;
     }
 
     .hero h1 {
@@ -548,19 +551,21 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
 
     .hero-fields {
       margin-top: 1.6rem;
-    }
-
-    .hero-lede {
-      margin-top: 0.7rem;
+      font-size: 0.68rem;
     }
 
     .hero .quiet-link {
-      margin-top: 1.8rem;
+      margin-top: 1.7rem;
     }
 
     .hero-figure {
       justify-self: stretch;
       width: 100%;
+    }
+
+    .hero-figure img {
+      aspect-ratio: 4 / 5;
+      object-position: 50% 40%;
     }
 
     .section-index {
@@ -569,12 +574,12 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
     }
 
     .section-link {
-      min-height: 88px;
-      padding-block: 1rem;
+      min-height: 86px;
+      padding-block: 0.95rem;
     }
 
     .section-name {
-      font-size: 1.8rem;
+      font-size: 1.75rem;
     }
 
     .section-header,

@@ -238,7 +238,7 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
       listenOnceToIntent();
       playStudio(studioScene);
       playName(nameScene);
-      setCompletionTimer(3950);
+      setCompletionTimer(4350);
     } catch {
       showFinalTitle();
       finish(true);

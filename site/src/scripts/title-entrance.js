@@ -53,9 +53,6 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
           ],
           { duration, delay, easing: 'cubic-bezier(.14,.8,.18,1)', fill: 'both' },
         ),
-      );
-
-      activeAnimations.push(
         scene.casts[index].animate(
           [
             { transform: 'none', opacity: 0.18 },
@@ -73,9 +70,6 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
           ],
           { duration, delay, easing: 'cubic-bezier(.14,.8,.18,1)', fill: 'both' },
         ),
-      );
-
-      activeAnimations.push(
         scene.contacts[index].animate(
           [
             { transform: 'none', opacity: 0.18 },
@@ -95,6 +89,41 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
         ),
       );
     });
+  };
+
+  const createDestinationShadow = (scene) => {
+    const plane = document.createElement('div');
+    plane.className = 'title-target-shadow-plane';
+
+    const word = document.createElement('div');
+    word.className = 'title-target-word';
+    const ink = document.createElement('span');
+    ink.className = 'title-target-word-ink';
+    ink.textContent = 'Wievien';
+    word.appendChild(ink);
+
+    const contact = document.createElement('div');
+    contact.className = 'title-target-contact';
+    Object.assign(contact.style, {
+      left: `${scene.sourceRect.width * 0.035}px`,
+      top: `${Math.max(0, scene.sourceRect.height - 3)}px`,
+      width: `${scene.sourceRect.width * 0.93}px`,
+    });
+
+    const pulses = scene.metrics.map((metric, index) => {
+      const pulse = document.createElement('div');
+      pulse.className = `title-target-pulse title-target-pulse-${index}`;
+      Object.assign(pulse.style, {
+        left: `${metric.left + metric.width * 0.08}px`,
+        top: `${Math.min(scene.sourceRect.height - 2, metric.top + metric.height - 3)}px`,
+        width: `${Math.max(8, metric.width * 0.86)}px`,
+      });
+      return pulse;
+    });
+
+    plane.append(word, contact, ...pulses);
+    scene.layer.insertBefore(plane, scene.shadowPlane);
+    return { plane, word, contact, pulses };
   };
 
   const playStudio = (scene, vw, vh) => {
@@ -129,6 +158,37 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
   };
 
   const playName = (scene, vw, vh) => {
+    const destination = createDestinationShadow(scene);
+    const destinationTransform = 'translate(4px, 7px) skewX(-28deg) scale(1.01, .235)';
+
+    activeAnimations.push(
+      destination.plane.animate(
+        [
+          { opacity: 0 },
+          { offset: 0.3, opacity: 0.22 },
+          { offset: 0.72, opacity: 0.78 },
+          { opacity: 1 },
+        ],
+        { duration: 520, delay: 1010, easing: 'cubic-bezier(.2,.75,.2,1)', fill: 'both' },
+      ),
+      destination.word.animate(
+        [
+          { transform: 'translate(7px, 9px) skewX(-31deg) scale(.96, .17)', filter: 'blur(5px)', opacity: 0.38 },
+          { offset: 0.68, transform: 'translate(5px, 7.5px) skewX(-29deg) scale(.995, .22)', filter: 'blur(3.6px)', opacity: 0.72 },
+          { transform: destinationTransform, filter: 'blur(3px)', opacity: 0.82 },
+        ],
+        { duration: 560, delay: 1000, easing: 'cubic-bezier(.18,.76,.22,1)', fill: 'both' },
+      ),
+      destination.contact.animate(
+        [
+          { opacity: 0, transform: 'translateX(7px) scale(.82, .45)' },
+          { offset: 0.65, opacity: 0.16, transform: 'translateX(5px) scale(.96, .58)' },
+          { opacity: 0.22, transform: 'translateX(4px) scale(1, .66)' },
+        ],
+        { duration: 560, delay: 1000, easing: 'ease-out', fill: 'both' },
+      ),
+    );
+
     const paths = [
       [
         point(0, -28 * vw, 0.25 * vh, 0, -12, 0.95, 1, 1.18, 0.22),
@@ -183,55 +243,140 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
     ];
 
     const sequences = [
-      { delay: 1160, duration: 1320, easing: 'linear', shadowLead: 0 },
-      { delay: 2600, duration: 680, easing: 'cubic-bezier(.16,.88,.22,1)', shadowLead: 150 },
-      { delay: 2890, duration: 880, easing: 'cubic-bezier(.2,.72,.18,1)', shadowLead: 90 },
-      { delay: 3890, duration: 1020, easing: 'cubic-bezier(.14,.84,.22,1)', shadowLead: 320 },
-      { delay: 4890, duration: 610, easing: 'cubic-bezier(.17,.86,.25,1)', shadowLead: 120 },
-      { delay: 5100, duration: 810, easing: 'cubic-bezier(.2,.78,.2,1)', shadowLead: 150 },
-      { delay: 5700, duration: 920, easing: 'cubic-bezier(.1,.76,.18,1)', shadowLead: 210 },
+      { delay: 1500, duration: 1320, easing: 'linear', shadowLead: 0 },
+      { delay: 2940, duration: 680, easing: 'cubic-bezier(.16,.88,.22,1)', shadowLead: 150 },
+      { delay: 3230, duration: 880, easing: 'cubic-bezier(.2,.72,.18,1)', shadowLead: 90 },
+      { delay: 4230, duration: 1020, easing: 'cubic-bezier(.14,.84,.22,1)', shadowLead: 320 },
+      { delay: 5230, duration: 610, easing: 'cubic-bezier(.17,.86,.25,1)', shadowLead: 120 },
+      { delay: 5440, duration: 810, easing: 'cubic-bezier(.2,.78,.2,1)', shadowLead: 150 },
+      { delay: 6040, duration: 920, easing: 'cubic-bezier(.1,.76,.18,1)', shadowLead: 210 },
     ];
 
     paths.forEach((path, index) => playPath(scene, index, path, sequences[index]));
 
+    const impactOffsets = [0.9, 0.78, 0.88, 0.62, 0.82, 0.88, 0.56];
+    const anticipationLeads = [90, 100, 110, 380, 120, 130, 300];
+    const pulseStretch = [1.25, 1.15, 1.2, 1.65, 1.2, 1.25, 2.25];
+
+    sequences.forEach((sequence, index) => {
+      const impactAt = sequence.delay + sequence.duration * impactOffsets[index];
+      const lead = anticipationLeads[index];
+      const pulse = destination.pulses[index];
+      activeAnimations.push(
+        pulse.animate(
+          [
+            { opacity: 0.025, transform: `translateX(${index === 6 ? 18 : 4}px) scale(.68, .68)` },
+            { offset: 0.42, opacity: index === 3 || index === 6 ? 0.16 : 0.09, transform: `translateX(${index === 6 ? 9 : 3}px) scale(${1 + pulseStretch[index] * 0.12}, .56)` },
+            { offset: 0.7, opacity: 0.42, transform: `translateX(2px) scale(${pulseStretch[index]}, .34)` },
+            { opacity: 0.07, transform: 'translateX(4px) scale(1, .7)' },
+          ],
+          {
+            duration: lead + 320,
+            delay: Math.max(0, impactAt - lead),
+            easing: 'cubic-bezier(.16,.78,.2,1)',
+            fill: 'both',
+          },
+        ),
+      );
+    });
+
     later(() => {
       reactToImpact(scene, [2, 1, 0], (index, order) => 17 - order * 3.2, 540, 48);
-    }, 4510);
+      activeAnimations.push(
+        destination.word.animate(
+          [
+            { transform: destinationTransform, filter: 'blur(3px)', opacity: 0.82 },
+            { offset: 0.28, transform: 'translate(1px, 7px) skewX(-30deg) scale(1.025, .205)', filter: 'blur(2.5px)', opacity: 0.94 },
+            { offset: 0.65, transform: 'translate(5px, 7px) skewX(-27deg) scale(.995, .245)', filter: 'blur(3.2px)', opacity: 0.78 },
+            { transform: destinationTransform, filter: 'blur(3px)', opacity: 0.82 },
+          ],
+          { duration: 520, easing: 'cubic-bezier(.16,.78,.2,1)', fill: 'both' },
+        ),
+      );
+    }, 4850);
 
     later(() => {
       reactToImpact(scene, [5, 4, 3, 2, 1, 0], (index, order) => Math.max(5, 21 - order * 3.1), 560, 46);
-    }, 6200);
+      activeAnimations.push(
+        destination.word.animate(
+          [
+            { transform: destinationTransform, filter: 'blur(3px)', opacity: 0.82 },
+            { offset: 0.24, transform: 'translate(-3px, 7px) skewX(-33deg) scale(1.045, .19)', filter: 'blur(2.25px)', opacity: 1 },
+            { offset: 0.58, transform: 'translate(5px, 7px) skewX(-25deg) scale(.985, .25)', filter: 'blur(3.4px)', opacity: 0.78 },
+            { transform: destinationTransform, filter: 'blur(3px)', opacity: 0.82 },
+          ],
+          { duration: 620, easing: 'cubic-bezier(.12,.76,.18,1)', fill: 'both' },
+        ),
+        destination.contact.animate(
+          [
+            { transform: 'translateX(4px) scale(1, .66)', opacity: 0.22 },
+            { offset: 0.24, transform: 'translateX(-2px) scale(1.18, .42)', opacity: 0.34 },
+            { offset: 0.6, transform: 'translateX(5px) scale(.96, .72)', opacity: 0.19 },
+            { transform: 'translateX(4px) scale(1, .66)', opacity: 0.22 },
+          ],
+          { duration: 620, easing: 'cubic-bezier(.12,.76,.18,1)', fill: 'both' },
+        ),
+      );
+    }, 6550);
 
     later(() => {
       activeAnimations.push(
-        scene.glyphPlane.animate([
-          { transform: 'translateY(0)' },
-          { offset: 0.5, transform: 'translateY(-1.5px)' },
-          { transform: 'translateY(0)' },
-        ], { duration: 210, easing: 'cubic-bezier(.2,.8,.2,1)' }),
-        scene.shadowPlane.animate([
-          { opacity: 1, transform: 'scaleX(1.015)' },
-          { opacity: 0.9, transform: 'scaleX(1)' },
-        ], { duration: 230, easing: 'ease-out', fill: 'forwards' }),
+        scene.glyphPlane.animate(
+          [
+            { transform: 'translateY(0)' },
+            { offset: 0.5, transform: 'translateY(-1.5px)' },
+            { transform: 'translateY(0)' },
+          ],
+          { duration: 210, easing: 'cubic-bezier(.2,.8,.2,1)' },
+        ),
+        scene.shadowPlane.animate(
+          [
+            { opacity: 1, transform: 'scaleX(1.015)' },
+            { opacity: 0.9, transform: 'scaleX(1)' },
+          ],
+          { duration: 230, easing: 'ease-out', fill: 'forwards' },
+        ),
+        destination.plane.animate(
+          [
+            { transform: 'scaleX(1.012)', opacity: 1 },
+            { transform: 'scaleX(1)', opacity: 0.94 },
+          ],
+          { duration: 260, easing: 'ease-out', fill: 'forwards' },
+        ),
       );
-    }, 7000);
+    }, 7380);
 
     later(() => {
       nameSource.dataset.titleEntrance = 'complete';
-      nameSource.animate([
-        { transform: 'translateY(-1.5px)', textShadow: '0.025em 0.08em 0.12em rgb(23 23 22 / 0.22)' },
-        { transform: 'translateY(0)', textShadow: '0.02em 0.055em 0.08em rgb(23 23 22 / 0.15)' },
-      ], { duration: 230, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'both' });
-      const glyphFade = scene.glyphPlane.animate(
+      nameSource.animate(
+        [
+          { transform: 'translateY(-1.5px)', textShadow: '0.025em 0.08em 0.12em rgb(23 23 22 / 0.22)' },
+          { transform: 'translateY(0)', textShadow: '0.02em 0.055em 0.08em rgb(23 23 22 / 0.15)' },
+        ],
+        { duration: 230, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'both' },
+      );
+
+      scene.glyphPlane.animate(
         [{ opacity: 1 }, { opacity: 0 }],
         { duration: 120, easing: 'ease-out', fill: 'forwards' },
       );
-      const shadowFade = scene.shadowPlane.animate(
-        [{ opacity: 0.9 }, { offset: 0.22, opacity: 0.78 }, { opacity: 0 }],
-        { duration: 520, easing: 'ease-out', fill: 'forwards' },
+      scene.shadowPlane.animate(
+        [{ opacity: 0.9 }, { offset: 0.22, opacity: 0.68 }, { opacity: 0 }],
+        { duration: 430, easing: 'ease-out', fill: 'forwards' },
       );
-      Promise.allSettled([glyphFade.finished, shadowFade.finished]).then(() => scene.layer.remove());
-    }, 7410);
+    }, 7790);
+
+    later(() => {
+      const fade = destination.plane.animate(
+        [
+          { opacity: 0.94, transform: 'translateY(0) scaleX(1)' },
+          { offset: 0.25, opacity: 0.72, transform: 'translateY(.5px) scaleX(.998)' },
+          { opacity: 0, transform: 'translateY(2px) scaleX(.97)' },
+        ],
+        { duration: 560, easing: 'ease-out', fill: 'forwards' },
+      );
+      fade.finished.then(() => scene.layer.remove()).catch(() => scene.layer.remove());
+    }, 8340);
   };
 
   const start = () => {
@@ -250,7 +395,7 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
       listenOnceToIntent();
       playStudio(studioScene, vw, vh);
       playName(nameScene, vw, vh);
-      setCompletionTimer(9300);
+      setCompletionTimer(10350);
     } catch {
       showFinalTitle();
       finish(true);

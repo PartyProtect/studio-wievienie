@@ -1,0 +1,188 @@
+name: Intro contract diagnostic
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'site/**'
+      - '.github/workflows/intro-contract-diagnostic.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    if: github.event.pull_request.head.ref == 'feature/first-visit-assembly'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Build site
+        working-directory: site
+        run: |
+          npm ci
+          npm run build
+          npm install --no-save --no-package-lock playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Record contract states
+        working-directory: site
+        run: |
+          npm run preview -- --host 127.0.0.1 --port 4321 > /tmp/wievien-preview.log 2>&1 &
+          PREVIEW_PID=$!
+          trap 'kill $PREVIEW_PID || true' EXIT
+
+          for attempt in {1..60}; do
+            curl --fail --silent http://127.0.0.1:4321/ > /dev/null && break
+            sleep 0.25
+          done
+
+          cat > .diagnose-intro.mjs <<'JS'
+          import { chromium } from 'playwright';
+          import { mkdir, writeFile } from 'node:fs/promises';
+
+          const output = '/tmp/intro-contract-diagnostic';
+          const origin = 'http://127.0.0.1:4321';
+          await mkdir(output, { recursive: true });
+          const browser = await chromium.launch({ headless: true });
+          const report = {};
+
+          const snapshot = async (page, label) => ({
+            label,
+            url: page.url(),
+            ...(await page.evaluate(() => {
+              const root = document.documentElement;
+              const studio = document.querySelector('[data-assemble="studio"]');
+              const wievien = document.querySelector('[data-assemble="wievien"]');
+              const heading = document.querySelector('#hero-title');
+              const layers = [...document.querySelectorAll('.title-motion-layer')];
+              return {
+                assembly: root.dataset.assembly ?? null,
+                headingText: heading?.textContent?.replace(/\s+/g, ' ').trim() ?? null,
+                studio: studio ? {
+                  visibility: getComputedStyle(studio).visibility,
+                  opacity: Number(getComputedStyle(studio).opacity),
+                  complete: studio.getAttribute('data-title-entrance'),
+                } : null,
+                wievien: wievien ? {
+                  visibility: getComputedStyle(wievien).visibility,
+                  opacity: Number(getComputedStyle(wievien).opacity),
+                  complete: wievien.getAttribute('data-title-entrance'),
+                } : null,
+                layers: layers.length,
+                decorativeLayers: layers.every((layer) => layer.getAttribute('aria-hidden') === 'true'),
+                overflow: root.scrollWidth - root.clientWidth,
+                sessionSeen: sessionStorage.getItem('studio-wievien-assembly-seen'),
+              };
+            })),
+          });
+
+          const withErrors = (page) => {
+            const errors = [];
+            page.on('pageerror', (error) => errors.push(`pageerror: ${error.message}`));
+            page.on('console', (message) => {
+              if (message.type() === 'error' || message.type() === 'warning') {
+                errors.push(`${message.type()}: ${message.text()}`);
+              }
+            });
+            return errors;
+          };
+
+          try {
+            {
+              const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+              const page = await context.newPage();
+              const errors = withErrors(page);
+              await page.goto(`${origin}/?intro=1&diagnostic=skip`, { waitUntil: 'domcontentloaded' });
+              await page.waitForFunction(() => document.documentElement.dataset.assembly === 'playing');
+              await page.waitForTimeout(700);
+              const before = await snapshot(page, 'before-wheel');
+              await page.mouse.wheel(0, 220);
+              await page.waitForTimeout(900);
+              const after = await snapshot(page, 'after-wheel');
+              report.skip = { before, after, errors };
+              await context.close();
+            }
+
+            {
+              const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+              const page = await context.newPage();
+              const errors = withErrors(page);
+              await page.goto(`${origin}/?intro=1&diagnostic=complete`, { waitUntil: 'domcontentloaded' });
+              await page.waitForFunction(() => document.documentElement.dataset.assembly === 'playing');
+              const during = await snapshot(page, 'during');
+              await page.waitForTimeout(10500);
+              const after = await snapshot(page, 'after-complete');
+              await page.goto(`${origin}/?diagnostic=repeat`, { waitUntil: 'domcontentloaded' });
+              await page.waitForTimeout(500);
+              const repeat = await snapshot(page, 'repeat');
+              report.complete = { during, after, repeat, errors };
+              await context.close();
+            }
+
+            {
+              const context = await browser.newContext({
+                viewport: { width: 390, height: 844 },
+                isMobile: true,
+                hasTouch: true,
+                reducedMotion: 'reduce',
+              });
+              const page = await context.newPage();
+              const errors = withErrors(page);
+              await page.goto(`${origin}/?intro=1&diagnostic=reduced`, { waitUntil: 'domcontentloaded' });
+              await page.waitForTimeout(700);
+              report.reduced = { state: await snapshot(page, 'reduced'), errors };
+              await context.close();
+            }
+
+            {
+              const context = await browser.newContext({ viewport: { width: 1200, height: 850 } });
+              const page = await context.newPage();
+              const errors = withErrors(page);
+              await page.goto(`${origin}/?intro=1&diagnostic=resize`, { waitUntil: 'domcontentloaded' });
+              await page.waitForFunction(() => document.documentElement.dataset.assembly === 'playing');
+              await page.waitForTimeout(900);
+              const before = await snapshot(page, 'before-resize');
+              await page.setViewportSize({ width: 980, height: 760 });
+              await page.waitForTimeout(600);
+              const after = await snapshot(page, 'after-resize');
+              report.resize = { before, after, errors };
+              await context.close();
+            }
+
+            {
+              const context = await browser.newContext({
+                viewport: { width: 390, height: 844 },
+                javaScriptEnabled: false,
+              });
+              const page = await context.newPage();
+              await page.goto(`${origin}/?diagnostic=no-js`, { waitUntil: 'domcontentloaded' });
+              report.noJs = await snapshot(page, 'no-js');
+              await context.close();
+            }
+          } finally {
+            await browser.close();
+          }
+
+          await writeFile(`${output}/report.json`, JSON.stringify(report, null, 2));
+          JS
+
+          node .diagnose-intro.mjs
+          rm .diagnose-intro.mjs
+
+      - name: Upload diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: intro-contract-diagnostic
+          path: /tmp/intro-contract-diagnostic
+          if-no-files-found: error
+          retention-days: 3

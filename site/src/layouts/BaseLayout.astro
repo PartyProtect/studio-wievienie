@@ -103,6 +103,14 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
       let fallbackTimer = 0;
       let finished = false;
 
+      const rememberIntro = () => {
+        try {
+          sessionStorage.setItem('studio-wievien-assembly-seen', '1');
+        } catch {
+          // The experience never depends on storage being available.
+        }
+      };
+
       const finish = () => {
         if (finished) return;
         finished = true;
@@ -111,29 +119,33 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
         window.setTimeout(() => root.removeAttribute('data-assembly'), 100);
       };
 
-      const play = async () => {
+      const prepareDisplayFace = async () => {
+        if (!document.fonts?.load) return true;
+
         try {
-          if (document.fonts?.ready) {
-            await Promise.race([
-              document.fonts.ready,
-              new Promise((resolve) => window.setTimeout(resolve, 900)),
-            ]);
-          }
+          return await Promise.race([
+            document.fonts.load('400 1em "Newsreader"').then((faces) => faces.length > 0),
+            new Promise((resolve) => window.setTimeout(() => resolve(false), 1100)),
+          ]);
         } catch {
-          // A fallback face is enough to run the intro if font loading fails.
+          return false;
+        }
+      };
+
+      const play = async () => {
+        const displayFaceReady = await prepareDisplayFace();
+
+        if (!displayFaceReady) {
+          rememberIntro();
+          finish();
+          return;
         }
 
         window.addEventListener('wievien:intro-complete', finish, { once: true });
 
         requestAnimationFrame(() => {
           root.dataset.assembly = 'playing';
-
-          try {
-            sessionStorage.setItem('studio-wievien-assembly-seen', '1');
-          } catch {
-            // The visual effect does not depend on storage being available.
-          }
-
+          rememberIntro();
           fallbackTimer = window.setTimeout(finish, 12000);
         });
       };

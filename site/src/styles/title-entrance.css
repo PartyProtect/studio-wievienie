@@ -1,5 +1,4 @@
-html[data-assembly='pending'],
-html[data-assembly='playing'] {
+html {
   overflow-x: clip;
 }
 

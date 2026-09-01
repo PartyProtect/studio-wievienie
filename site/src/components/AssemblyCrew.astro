@@ -1,51 +1,63 @@
 <div class="assembly-crew" data-assemble="crew" aria-hidden="true">
-  <svg class="crew-rope" viewBox="0 0 100 20" preserveAspectRatio="none" role="presentation" focusable="false">
+  <svg class="crew-rope" viewBox="0 0 100 40" preserveAspectRatio="none" role="presentation" focusable="false">
     <defs>
-      <filter id="rope-brush" x="-4%" y="-35%" width="108%" height="170%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.025 0.22" numOctaves="2" seed="11" result="noise" />
-        <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.55" xChannelSelector="R" yChannelSelector="G" />
+      <filter id="crew-rope-brush" x="-4%" y="-40%" width="108%" height="180%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.024 0.18" numOctaves="2" seed="11" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.6" xChannelSelector="R" yChannelSelector="G" />
       </filter>
     </defs>
-    <g filter="url(#rope-brush)">
-      <path class="crew-rope-slack" d="M0 17 C31 22 67 8 100 2" />
-      <path class="crew-rope-taut" d="M0 17 C34 15 69 8 100 2" />
+    <g class="crew-rope-ink" filter="url(#crew-rope-brush)">
+      <path class="crew-rope-cast" d="M0 31 C21 -2 58 5 100 3" />
+      <path class="crew-rope-taut" d="M0 31 C23 28 61 13 100 6" />
     </g>
   </svg>
 
-  <svg class="crew-figures" viewBox="0 0 150 130" role="presentation" focusable="false">
+  <svg class="crew-figures" viewBox="0 0 160 132" role="presentation" focusable="false">
     <defs>
       <filter id="crew-brush" x="-12%" y="-12%" width="124%" height="124%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.045 0.11" numOctaves="2" seed="7" result="noise" />
-        <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.9" xChannelSelector="R" yChannelSelector="G" />
+        <feTurbulence type="fractalNoise" baseFrequency="0.042 0.108" numOctaves="2" seed="7" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.95" xChannelSelector="R" yChannelSelector="G" />
       </filter>
     </defs>
 
     <g class="crew-ink" filter="url(#crew-brush)">
-      <path class="crew-ground" d="M3 117 C35 116 69 118 109 116" />
+      <path class="crew-ground" d="M3 118 C36 116 74 119 115 117" />
+
+      <g class="crew-question crew-question-supervisor">
+        <text x="20" y="25">?</text>
+      </g>
+      <g class="crew-question crew-question-worker">
+        <text x="62" y="18">?</text>
+      </g>
 
       <g class="crew-supervisor">
-        <path class="crew-hat" d="M18 49 C19 43 23 40 28 40 C33 40 37 44 38 49 M16 50 C23 51 32 50 40 51" />
-        <circle cx="28" cy="56" r="6.3" />
-        <path class="crew-heavy" d="M28 63 C28 72 28 82 29 92" />
-        <path d="M29 91 L19 115 M29 91 L41 115" />
+        <path class="crew-hat" d="M18 48 C20 42 24 39 29 39 C34 39 38 43 39 48 M16 49 C23 51 33 50 41 51" />
+        <circle cx="29" cy="56" r="6.2" />
+        <path class="crew-heavy" d="M29 63 C29 72 29 82 30 92" />
+        <path d="M30 91 L20 116 M30 91 L42 116" />
+        <path d="M29 69 L16 76" />
+        <path class="crew-clipboard" d="M8 73 L21 76 L18 97 L5 94 Z" />
+        <path class="crew-clipboard-mark" d="M10 79 L17 81 M9 84 L16 86 M8 89 L14 90" />
 
-        <path d="M27 69 L15 76" />
-        <path class="crew-clipboard" d="M7 74 L20 77 L17 96 L4 93 Z" />
-        <path class="crew-clipboard-mark" d="M9 79 L16 81 M8 84 L15 86 M7 89 L13 90" />
+        <g class="crew-supervisor-point-arm">
+          <path class="crew-heavy" d="M29 68 L44 61 L57 63" />
+          <path d="M54 61 L59 63 L54 65" />
+        </g>
 
-        <g class="crew-supervisor-arm">
-          <path d="M29 68 L42 74 L44 88" />
+        <g class="crew-supervisor-thumb-arm">
+          <path class="crew-heavy" d="M29 68 L42 74 L44 88" />
           <path class="crew-thumb" d="M44 88 L49 84 M44 88 L40 84" />
         </g>
       </g>
 
       <g class="crew-worker-stage">
         <g class="crew-worker">
-          <path class="crew-hat" d="M66 43 C67 36 72 33 78 33 C84 33 89 37 90 43 M64 44 C72 45 83 44 92 45" />
-          <circle cx="78" cy="51" r="6.6" />
-          <path class="crew-heavy" d="M75 58 C70 68 67 80 65 91" />
-          <path d="M66 90 L48 116 M66 90 L88 113" />
-          <path class="crew-heavy" d="M73 64 L92 69 M70 67 L91 72" />
+          <path class="crew-hat" d="M68 42 C70 35 75 32 81 32 C87 32 91 36 92 42 M66 43 C73 45 85 44 94 45" />
+          <circle cx="80" cy="50" r="6.6" />
+          <path class="crew-heavy" d="M77 58 C71 69 67 80 65 92" />
+          <path d="M66 91 L49 117 M66 91 L88 114" />
+          <path class="crew-heavy" d="M74 63 L93 69" />
+          <path class="crew-heavy" d="M71 67 L92 73" />
         </g>
       </g>
     </g>
@@ -55,93 +67,95 @@
 <style>
   .assembly-crew {
     position: absolute;
-    left: clamp(-3.2rem, -3vw, -2rem);
-    bottom: -0.45rem;
+    left: clamp(-3.25rem, -3vw, -1.75rem);
+    bottom: -0.55rem;
     z-index: 4;
     display: none;
-    width: clamp(9.5rem, 13vw, 12rem);
+    width: clamp(10rem, 14vw, 13rem);
     color: color-mix(in srgb, var(--ink) 82%, transparent);
     pointer-events: none;
+    overflow: visible;
+  }
+
+  .crew-rope {
+    position: absolute;
+    left: 4.6rem;
+    bottom: 2.35rem;
+    width: 105vw;
+    height: 3rem;
+    overflow: visible;
+    transform-origin: left 78%;
   }
 
   .crew-figures {
-    position: relative;
-    z-index: 2;
     display: block;
     width: 100%;
     height: auto;
     overflow: visible;
   }
 
-  .crew-rope {
-    position: absolute;
-    top: 1.15rem;
-    left: 4.8rem;
-    z-index: 1;
-    width: 105vw;
-    height: 4.5rem;
-    overflow: visible;
-    transform-origin: left 85%;
-  }
-
-  .crew-figures circle,
+  .crew-rope path,
   .crew-figures path,
-  .crew-rope path {
+  .crew-figures circle {
     fill: none;
     stroke: currentColor;
+    stroke-width: 1.55;
     stroke-linecap: round;
     stroke-linejoin: round;
     vector-effect: non-scaling-stroke;
   }
 
-  .crew-figures circle,
-  .crew-figures path {
-    stroke-width: 2.05;
+  .crew-question text {
+    fill: currentColor;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.04em;
   }
 
-  .crew-heavy,
+  .crew-heavy {
+    stroke-width: 1.92;
+  }
+
   .crew-hat {
-    stroke-width: 2.55 !important;
-  }
-
-  .crew-clipboard {
-    stroke-width: 2.35 !important;
+    stroke-width: 1.38;
   }
 
   .crew-clipboard-mark {
-    opacity: 0.52;
-    stroke-width: 1.25 !important;
+    stroke-width: 1.02;
   }
 
   .crew-ground {
-    opacity: 0;
-    stroke-width: 1.45 !important;
+    opacity: 0.42;
   }
 
-  .crew-rope path {
-    stroke-width: 1.55;
-  }
-
-  .crew-rope-slack,
+  .crew-rope-cast,
   .crew-rope-taut,
+  .crew-ground,
   .crew-supervisor,
-  .crew-worker-stage {
+  .crew-worker-stage,
+  .crew-supervisor-point-arm,
+  .crew-supervisor-thumb-arm,
+  .crew-question {
     opacity: 0;
   }
 
+  .crew-rope-cast,
   .crew-rope-taut {
-    stroke-dasharray: 106;
-    stroke-dashoffset: 106;
+    stroke-width: 1.18;
+    stroke-dasharray: 120;
+    stroke-dashoffset: 120;
   }
 
-  .crew-supervisor-arm {
-    transform: rotate(82deg);
-    transform-box: view-box;
+  .crew-supervisor-point-arm,
+  .crew-supervisor-thumb-arm {
     transform-origin: 29px 68px;
+    transform-box: fill-box;
   }
 
-  .crew-thumb {
-    opacity: 0;
+  .crew-worker {
+    transform-origin: 66px 92px;
+    transform-box: fill-box;
   }
 
   :global(html[data-assembly='pending']),
@@ -154,363 +168,199 @@
     display: block;
   }
 
-  /* The load genuinely starts outside the viewport. */
   :global(html[data-assembly='pending'] [data-assemble='wievien']) {
-    opacity: 1 !important;
-    transform: translateX(105vw) translateY(0.06em) rotate(4.5deg) scale(1.018) !important;
+    opacity: 0 !important;
+    transform: translateX(105vw) translateY(0.05em) rotate(2.8deg) scale(1.03) !important;
   }
 
   :global(html[data-assembly='playing'] [data-assemble='wievien']) {
-    animation: assembly-wievien-offscreen-haul 3700ms 1600ms linear both !important;
+    animation: assembly-wievien-story-haul 3600ms 4540ms linear both !important;
   }
 
-  /* The rope shortens with roughly the same setbacks as the word. */
-  :global(html[data-assembly='playing']) .crew-rope {
-    animation: rope-rig-haul 3700ms 1600ms linear both;
-  }
-
-  /* Supporting information waits until the heavy move is well underway. */
   :global(html[data-assembly='playing'] [data-assemble='fields']) {
-    animation-delay: 4100ms !important;
+    animation: assembly-small-settle 700ms 7700ms var(--ease) both !important;
   }
 
   :global(html[data-assembly='playing'] [data-assemble='cta']) {
-    animation-delay: 4580ms !important;
+    animation: assembly-small-settle 700ms 8020ms var(--ease) both !important;
   }
 
   :global(html[data-assembly='playing'] [data-assemble='caption']) {
-    animation-delay: 3900ms !important;
+    animation: assembly-small-settle 650ms 7840ms var(--ease) both !important;
   }
 
-  /* The supervisor approves the load before the lower site is released. */
   :global(html[data-assembly='playing'] [data-assemble='index']) {
-    animation-delay: 6040ms !important;
+    animation: assembly-index-line 700ms 8220ms ease-out both !important;
   }
 
-  :global(html[data-assembly='playing'] [data-assemble='door']:nth-child(1)) {
-    animation-delay: 6200ms !important;
+  :global(html[data-assembly='playing'] [data-assemble='door']) {
+    animation-name: assembly-door !important;
+    animation-duration: 800ms !important;
+    animation-timing-function: var(--ease) !important;
+    animation-fill-mode: both !important;
   }
 
-  :global(html[data-assembly='playing'] [data-assemble='door']:nth-child(2)) {
-    animation-delay: 6380ms !important;
-  }
-
-  :global(html[data-assembly='playing'] [data-assemble='door']:nth-child(3)) {
-    animation-delay: 6560ms !important;
-  }
-
-  :global(html[data-assembly='playing'] [data-assemble='door']:nth-child(4)) {
-    animation-delay: 6740ms !important;
-  }
+  :global(html[data-assembly='playing'] [data-assemble='door']:nth-child(1)) { animation-delay: 8400ms !important; }
+  :global(html[data-assembly='playing'] [data-assemble='door']:nth-child(2)) { animation-delay: 8570ms !important; }
+  :global(html[data-assembly='playing'] [data-assemble='door']:nth-child(3)) { animation-delay: 8740ms !important; }
+  :global(html[data-assembly='playing'] [data-assemble='door']:nth-child(4)) { animation-delay: 8910ms !important; }
 
   :global(html[data-assembly='playing']) .assembly-crew {
     animation:
-      crew-enter 720ms 1050ms var(--ease) both,
-      crew-exit 700ms 6460ms var(--ease) both;
+      crew-enter 520ms 1740ms var(--ease) both,
+      crew-exit 700ms 9060ms var(--ease) both;
   }
 
-  :global(html[data-assembly='playing']) .crew-ground {
-    animation: crew-ground-in 560ms 1120ms ease-out both;
-  }
-
-  :global(html[data-assembly='playing']) .crew-supervisor {
-    animation: supervisor-arrive 760ms 1260ms var(--ease) both;
-  }
-
-  :global(html[data-assembly='playing']) .crew-supervisor-arm {
-    animation: supervisor-thumb 480ms 5480ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-
-  :global(html[data-assembly='playing']) .crew-thumb {
-    animation: thumb-appear 220ms 5700ms ease-out both;
-  }
-
-  :global(html[data-assembly='playing']) .crew-worker-stage {
-    animation: worker-arrive 650ms 1160ms var(--ease) both;
-  }
-
-  :global(html[data-assembly='playing']) .crew-worker {
-    animation: worker-haul 3920ms 1460ms linear both;
-    transform-box: view-box;
-    transform-origin: 65px 116px;
-  }
-
-  :global(html[data-assembly='playing']) .crew-rope-slack {
-    animation: rope-slack 700ms 1190ms ease-out both;
-  }
-
+  :global(html[data-assembly='playing']) .crew-ground { animation: crew-ground-in 500ms 1810ms ease-out both; }
+  :global(html[data-assembly='playing']) .crew-supervisor { animation: supervisor-arrive 520ms 1910ms var(--ease) both; }
+  :global(html[data-assembly='playing']) .crew-worker-stage { animation: worker-arrive 520ms 2020ms var(--ease) both; }
+  :global(html[data-assembly='playing']) .crew-question-worker { animation: question-pop 1200ms 2660ms var(--ease) both; }
+  :global(html[data-assembly='playing']) .crew-question-supervisor { animation: question-pop 1080ms 2840ms var(--ease) both; }
+  :global(html[data-assembly='playing']) .crew-supervisor-point-arm { animation: supervisor-point 1180ms 3520ms var(--ease) both; }
+  :global(html[data-assembly='playing']) .crew-rope-cast { animation: rope-cast 860ms 3980ms ease-out both; }
   :global(html[data-assembly='playing']) .crew-rope-taut {
     animation:
-      rope-tighten 650ms 1360ms ease-out both,
-      rope-strain 3550ms 1740ms linear both;
+      rope-tighten 420ms 4510ms ease-out both,
+      rope-strain 2550ms 4900ms linear both,
+      rope-shorten 3600ms 4540ms linear both;
+  }
+  :global(html[data-assembly='playing']) .crew-worker {
+    animation:
+      worker-haul 3060ms 4680ms linear both,
+      worker-release 420ms 7640ms var(--ease) both;
+  }
+  :global(html[data-assembly='playing']) .crew-supervisor-thumb-arm {
+    animation: supervisor-thumb 500ms 7330ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
-  @keyframes assembly-wievien-offscreen-haul {
-    0% {
-      opacity: 1;
-      transform: translateX(105vw) translateY(0.06em) rotate(4.5deg) scale(1.018);
-    }
-    12% {
-      transform: translateX(88vw) translateY(0.052em) rotate(3.9deg) scale(1.016);
-    }
-    18% {
-      transform: translateX(92vw) translateY(0.055em) rotate(4.1deg) scale(1.017);
-    }
-    36% {
-      transform: translateX(63vw) translateY(0.038em) rotate(2.8deg) scale(1.012);
-    }
-    45% {
-      transform: translateX(68vw) translateY(0.042em) rotate(3deg) scale(1.013);
-    }
-    64% {
-      transform: translateX(35vw) translateY(0.021em) rotate(1.45deg) scale(1.006);
-    }
-    72% {
-      transform: translateX(39vw) translateY(0.025em) rotate(1.65deg) scale(1.007);
-    }
-    86% {
-      transform: translateX(11vw) translateY(0.006em) rotate(0.4deg) scale(1.002);
-    }
-    91% {
-      transform: translateX(14vw) translateY(0.008em) rotate(0.52deg) scale(1.0025);
-    }
-    97% {
-      transform: translateX(1.4vw) translateY(0.001em) rotate(0.06deg) scale(1);
-    }
-    100% {
-      opacity: 1;
-      transform: none;
-    }
+  @keyframes assembly-wievien-story-haul {
+    0%   { opacity: 0; transform: translateX(105vw) translateY(0.05em) rotate(2.8deg) scale(1.03); }
+    10%  { opacity: 1; transform: translateX(88vw) translateY(0.045em) rotate(2.45deg) scale(1.024); }
+    22%  { transform: translateX(61vw) translateY(0.038em) rotate(1.82deg) scale(1.018); }
+    31%  { transform: translateX(69vw) translateY(0.042em) rotate(2.06deg) scale(1.02); }
+    46%  { transform: translateX(33vw) translateY(0.024em) rotate(0.98deg) scale(1.011); }
+    56%  { transform: translateX(40vw) translateY(0.03em) rotate(1.22deg) scale(1.013); }
+    73%  { transform: translateX(11vw) translateY(0.012em) rotate(0.38deg) scale(1.004); }
+    81%  { transform: translateX(15vw) translateY(0.016em) rotate(0.52deg) scale(1.006); }
+    92%  { transform: translateX(0.8vw) translateY(0.002em) rotate(0.06deg) scale(1.001); }
+    100% { opacity: 1; transform: none; }
   }
 
-  @keyframes rope-rig-haul {
-    0% {
-      transform: scaleX(1);
-    }
-    12% {
-      transform: scaleX(0.86);
-    }
-    18% {
-      transform: scaleX(0.9);
-    }
-    36% {
-      transform: scaleX(0.62);
-    }
-    45% {
-      transform: scaleX(0.67);
-    }
-    64% {
-      transform: scaleX(0.35);
-    }
-    72% {
-      transform: scaleX(0.39);
-    }
-    86% {
-      transform: scaleX(0.18);
-    }
-    91% {
-      transform: scaleX(0.21);
-    }
-    97%,
-    100% {
-      transform: scaleX(0.14);
-    }
+  @keyframes rope-shorten {
+    0%   { transform: scaleX(1); }
+    10%  { transform: scaleX(0.86); }
+    22%  { transform: scaleX(0.61); }
+    31%  { transform: scaleX(0.68); }
+    46%  { transform: scaleX(0.34); }
+    56%  { transform: scaleX(0.4); }
+    73%  { transform: scaleX(0.19); }
+    81%  { transform: scaleX(0.22); }
+    92%  { transform: scaleX(0.12); }
+    100% { transform: scaleX(0.1); }
   }
 
   @keyframes crew-enter {
-    from {
-      opacity: 0;
-      transform: translate(-0.35rem, 0.25rem);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
+    from { opacity: 0; transform: translate(-0.35rem, 0.18rem); }
+    to { opacity: 1; transform: none; }
   }
 
   @keyframes crew-exit {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
-      transform: translateY(0.22rem);
-    }
+    from { opacity: 1; }
+    to { opacity: 0; transform: translateY(0.24rem); }
   }
 
   @keyframes crew-ground-in {
-    from {
-      opacity: 0;
-      stroke-dasharray: 118;
-      stroke-dashoffset: 118;
-    }
-    to {
-      opacity: 0.44;
-      stroke-dasharray: 118;
-      stroke-dashoffset: 0;
-    }
+    from { opacity: 0; stroke-dasharray: 120; stroke-dashoffset: 120; }
+    to { opacity: 0.42; stroke-dasharray: 120; stroke-dashoffset: 0; }
   }
 
   @keyframes supervisor-arrive {
-    from {
-      opacity: 0;
-      transform: translateY(0.35rem);
-    }
-    to {
-      opacity: 0.78;
-      transform: none;
-    }
-  }
-
-  @keyframes supervisor-thumb {
-    0% {
-      transform: rotate(82deg);
-    }
-    70% {
-      transform: rotate(-7deg);
-    }
-    100% {
-      transform: rotate(0deg);
-    }
-  }
-
-  @keyframes thumb-appear {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+    from { opacity: 0; transform: translateY(0.32rem); }
+    to { opacity: 0.76; transform: none; }
   }
 
   @keyframes worker-arrive {
-    from {
-      opacity: 0;
-      transform: translateX(-0.35rem);
-    }
-    to {
-      opacity: 0.92;
-      transform: none;
-    }
+    from { opacity: 0; transform: translateX(-0.28rem); }
+    to { opacity: 0.9; transform: none; }
   }
 
-  @keyframes worker-haul {
-    0% {
-      transform: rotate(-3deg) translateX(0);
-    }
-    10% {
-      transform: rotate(-11deg) translateX(-2px);
-    }
-    18% {
-      transform: rotate(-17deg) translateX(-5px);
-    }
-    24% {
-      transform: rotate(-9deg) translateX(-1px);
-    }
-    39% {
-      transform: rotate(-19deg) translateX(-6px);
-    }
-    47% {
-      transform: rotate(-11deg) translateX(-2px);
-    }
-    64% {
-      transform: rotate(-20deg) translateX(-7px);
-    }
-    72% {
-      transform: rotate(-12deg) translateX(-2px);
-    }
-    87% {
-      transform: rotate(-22deg) translateX(-7px);
-    }
-    94% {
-      transform: rotate(-11deg) translateX(-1px);
-    }
-    100% {
-      transform: rotate(-7deg) translateX(0);
-    }
+  @keyframes question-pop {
+    0% { opacity: 0; transform: translateY(5px) scale(0.55) rotate(-10deg); }
+    24% { opacity: 0.85; transform: translateY(0) scale(1.06) rotate(0deg); }
+    62% { opacity: 0.82; transform: scale(1) rotate(-2deg); }
+    100% { opacity: 0; transform: translateY(-3px) scale(0.96) rotate(2deg); }
   }
 
-  @keyframes rope-slack {
-    0% {
-      opacity: 0;
-      transform: translateY(4px);
-    }
-    38% {
-      opacity: 0.65;
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(0);
-    }
+  @keyframes supervisor-point {
+    0% { opacity: 0; transform: rotate(28deg); }
+    24% { opacity: 0.92; transform: rotate(-4deg); }
+    72% { opacity: 0.92; transform: rotate(0deg); }
+    100% { opacity: 0; transform: rotate(2deg); }
+  }
+
+  @keyframes rope-cast {
+    0% { opacity: 0; stroke-dashoffset: 120; transform: translateY(7px) rotate(-1.5deg); }
+    60% { opacity: 0.82; stroke-dashoffset: 0; transform: translateY(-2px) rotate(0.4deg); }
+    100% { opacity: 0.14; stroke-dashoffset: 0; transform: none; }
   }
 
   @keyframes rope-tighten {
-    from {
-      opacity: 0.12;
-      stroke-dashoffset: 106;
-    }
-    to {
-      opacity: 0.86;
-      stroke-dashoffset: 0;
-    }
+    from { opacity: 0; stroke-dashoffset: 120; }
+    to { opacity: 0.88; stroke-dashoffset: 0; }
   }
 
   @keyframes rope-strain {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    13% {
-      transform: translateY(0.7px);
-    }
-    21% {
-      transform: translateY(-0.45px);
-    }
-    41% {
-      transform: translateY(1px);
-    }
-    49% {
-      transform: translateY(-0.55px);
-    }
-    69% {
-      transform: translateY(0.85px);
-    }
-    78% {
-      transform: translateY(-0.4px);
-    }
+    0%,100% { translate: 0 0; }
+    12% { translate: 0 0.8px; }
+    22% { translate: 0 -0.42px; }
+    38% { translate: 0 1px; }
+    49% { translate: 0 -0.56px; }
+    67% { translate: 0 0.82px; }
+    79% { translate: 0 -0.38px; }
+  }
+
+  @keyframes worker-haul {
+    0% { transform: rotate(-4deg) translateX(0); }
+    12% { transform: rotate(-17deg) translateX(-4px) translateY(1px); }
+    21% { transform: rotate(-9deg) translateX(-1px); }
+    37% { transform: rotate(-20deg) translateX(-6px) translateY(1px); }
+    47% { transform: rotate(-12deg) translateX(-2px); }
+    64% { transform: rotate(-23deg) translateX(-7px) translateY(1px); }
+    74% { transform: rotate(-15deg) translateX(-3px); }
+    90% { transform: rotate(-26deg) translateX(-8px) translateY(1px); }
+    100% { transform: rotate(-17deg) translateX(-2px); }
+  }
+
+  @keyframes worker-release {
+    from { opacity: 0.9; transform: rotate(-17deg) translateX(-2px); }
+    to { opacity: 0.9; transform: rotate(-8deg) translateX(0); }
+  }
+
+  @keyframes supervisor-thumb {
+    0% { opacity: 0; transform: rotate(72deg); }
+    40% { opacity: 0.92; transform: rotate(-7deg); }
+    100% { opacity: 0.92; transform: rotate(0deg); }
   }
 
   @media (max-width: 720px) {
     .assembly-crew {
-      left: -0.7rem;
-      bottom: -1.2rem;
-      width: 8.8rem;
-      opacity: 0.92;
+      left: -0.8rem;
+      bottom: -1.3rem;
+      width: 8.9rem;
+      opacity: 0.9;
     }
 
     .crew-rope {
-      left: 3.9rem;
-      width: 110vw;
-      height: 3.8rem;
+      left: 3.95rem;
+      bottom: 2rem;
+      width: 108vw;
+      height: 2.4rem;
     }
 
-    @keyframes rope-rig-haul {
-      0% { transform: scaleX(1); }
-      12% { transform: scaleX(0.86); }
-      18% { transform: scaleX(0.9); }
-      36% { transform: scaleX(0.64); }
-      45% { transform: scaleX(0.69); }
-      64% { transform: scaleX(0.4); }
-      72% { transform: scaleX(0.44); }
-      86% { transform: scaleX(0.27); }
-      91% { transform: scaleX(0.3); }
-      97%, 100% { transform: scaleX(0.22); }
-    }
+    .crew-question text { font-size: 12px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .assembly-crew {
-      display: none !important;
-    }
+    .assembly-crew { display: none !important; }
   }
 </style>

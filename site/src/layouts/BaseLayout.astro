@@ -9,6 +9,7 @@ interface Props {
   lang?: 'nl' | 'en';
   currentPath?: string;
   ogImage?: string;
+  noindex?: boolean;
 }
 
 const {
@@ -17,10 +18,13 @@ const {
   lang = 'nl',
   currentPath = '',
   ogImage,
+  noindex = false,
 } = Astro.props;
 
 const fullTitle = title === 'Studio Wievien' ? title : `${title} — Studio Wievien`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://studiowievien.nl');
+const ogImageURL = ogImage ? new URL(ogImage, canonicalURL).href : undefined;
+const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
 ---
 
 <!DOCTYPE html>
@@ -29,6 +33,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://studiowi
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#f6f4ef" />
+  <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
   <title>{fullTitle}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonicalURL.href} />
@@ -36,8 +41,15 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://studiowi
   <meta property="og:title" content={fullTitle} />
   <meta property="og:description" content={description} />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonicalURL.href} />
+  <meta property="og:site_name" content="Studio Wievien" />
   <meta property="og:locale" content={lang === 'nl' ? 'nl_NL' : 'en_US'} />
-  {ogImage && <meta property="og:image" content={ogImage} />}
+  {ogImageURL && <meta property="og:image" content={ogImageURL} />}
+
+  <meta name="twitter:card" content={ogImageURL ? 'summary_large_image' : 'summary'} />
+  <meta name="twitter:title" content={fullTitle} />
+  <meta name="twitter:description" content={description} />
+  {ogImageURL && <meta name="twitter:image" content={ogImageURL} />}
 
   <!-- Prototype font delivery. Self-host before launch. -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -50,9 +62,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://studiowi
   <slot name="head" />
 </head>
 <body>
+  <a class="skip-link" href="#main-content">{skipLabel}</a>
   <Header lang={lang} currentPath={currentPath} />
 
-  <main>
+  <main id="main-content">
     <slot />
   </main>
 

@@ -1,23 +1,15 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { heroWork, homepageProjects, homepageWork } from '@/data/content';
 
 const sections = [
-  { title: 'Werk', note: 'Selectie & projecten', href: '#werk' },
+  { title: 'Werk', note: 'Selectie & projecten', href: '/werk/' },
   { title: 'Fancy Boogers', note: 'Kledinglijn', href: '#fancy-boogers' },
   { title: 'Borduurwerk', note: 'Textiel & opdrachten', href: '#borduurwerk' },
   { title: 'Workshops', note: 'Borduren · textiel · upcycling', href: '#workshops' },
 ];
 
-const projects = [
-  { year: '2026', title: 'Fancy Boogers · cover ECOPOLITAN #7', place: 'ECOPOLITAN' },
-  { year: '2026', title: 'Carnavalproject', place: 'FASHIONCLASH' },
-  { year: '2025', title: 'Presentatie bij Juunam', place: 'FASHIONCLASH Festival' },
-  { year: '2024', title: 'New Fashion Narratives', place: 'Bureau Europa' },
-];
-
-const heroImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8026f5a085d80/92c0dc63-a0bc-4686-81b0-d0bcc698c06b/Unknown.jpeg';
-const juunamImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8026f5a085d80/1767703456320-YMAS5DUHNMV0VR29ZRLF/MVS_20251120_0093_WEB.jpg';
-const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8026f5a085d80/1772014449994-RK7LCIFVZK23UJQJ4WWS/538A4606_JonathanWiddershoven.jpg';
+const [juunamWork, carnivalWork] = homepageWork;
 ---
 
 <BaseLayout
@@ -25,7 +17,7 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
   description="Studio Wievien — mode, textiel, borduurwerk, objecten, projecten, workshops en Fancy Boogers."
   lang="nl"
   currentPath="/"
-  ogImage={heroImage}
+  ogImage={heroWork.image}
 >
   <section class="hero shell" aria-labelledby="hero-title">
     <div class="hero-copy">
@@ -35,22 +27,22 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
         <span class="hero-word hero-word-wievien">Wievien</span>
       </h1>
       <p class="hero-fields">Mode · textiel · objecten · workshops</p>
-      <a class="quiet-link" href="#werk">Werk <span aria-hidden="true">↓</span></a>
+      <a class="quiet-link" href="/werk/">Werk <span aria-hidden="true">→</span></a>
     </div>
 
     <figure class="hero-figure">
       <div class="hero-image-frame">
         <img
-          src={heroImage}
-          alt="Lichtblauw en lila hoofdobject van Studio Wievien met kralen voor het gezicht"
+          src={heroWork.image}
+          alt={heroWork.alt}
           loading="eager"
           fetchpriority="high"
           decoding="async"
         />
       </div>
       <figcaption>
-        <span>Studio Wievien</span>
-        <span>via FASHIONCLASH</span>
+        <span>{heroWork.context}</span>
+        <span>{heroWork.credit}</span>
       </figcaption>
     </figure>
   </section>
@@ -75,32 +67,32 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
         <figure class="selection-main">
           <div class="image-frame image-frame-landscape">
             <img
-              src={juunamImage}
-              alt="Presentatie bij Juunam tijdens FASHIONCLASH Festival 2025"
+              src={juunamWork.image}
+              alt={juunamWork.alt}
               loading="lazy"
               decoding="async"
             />
           </div>
           <figcaption>
-            <span>Presentatie</span>
-            <strong>Juunam · FASHIONCLASH Festival 2025</strong>
-            <small>Foto: Mitch van Schijndel</small>
+            <span>{juunamWork.category}</span>
+            <strong>{juunamWork.title} · {juunamWork.context} {juunamWork.year}</strong>
+            <small>{juunamWork.credit}</small>
           </figcaption>
         </figure>
 
         <figure class="selection-side">
           <div class="image-frame image-frame-portrait">
             <img
-              src={projectImage}
-              alt="Beeld uit het FASHIONCLASH carnavalproject 2026"
+              src={carnivalWork.image}
+              alt={carnivalWork.alt}
               loading="lazy"
               decoding="async"
             />
           </div>
           <figcaption>
-            <span>Project</span>
-            <strong>Carnavalproject · FASHIONCLASH 2026</strong>
-            <small>Foto: Jonathan Widdershoven</small>
+            <span>{carnivalWork.category}</span>
+            <strong>{carnivalWork.title} · {carnivalWork.context} {carnivalWork.year}</strong>
+            <small>{carnivalWork.credit}</small>
           </figcaption>
         </figure>
       </div>
@@ -166,7 +158,7 @@ const projectImage = 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8
     </header>
 
     <div class="project-list">
-      {projects.map(({ year, title, place }) => (
+      {homepageProjects.map(({ year, title, place }) => (
         <div class="project-row">
           <span class="project-year">{year}</span>
           <strong>{title}</strong>

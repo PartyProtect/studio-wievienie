@@ -1,43 +1,7 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import WorkItem from '@/components/WorkItem.astro';
-
-const work = [
-  {
-    image: 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8026f5a085d80/92c0dc63-a0bc-4686-81b0-d0bcc698c06b/Unknown.jpeg',
-    alt: 'Lichtblauw en lila hoofdobject van Studio Wievien met kralen voor het gezicht',
-    category: 'Masker / object',
-    title: 'Masker',
-    context: 'Studio Wievien',
-    credit: 'Beeld via FASHIONCLASH',
-  },
-  {
-    image: 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8026f5a085d80/1767703456320-YMAS5DUHNMV0VR29ZRLF/MVS_20251120_0093_WEB.jpg',
-    alt: 'Presentatie bij Juunam tijdens FASHIONCLASH Festival 2025',
-    category: 'Presentatie',
-    title: 'Juunam',
-    year: '2025',
-    context: 'FASHIONCLASH Festival',
-    credit: 'Foto: Mitch van Schijndel',
-  },
-  {
-    image: 'https://images.squarespace-cdn.com/content/v1/5bf404ca70e8026f5a085d80/1772014449994-RK7LCIFVZK23UJQJ4WWS/538A4606_JonathanWiddershoven.jpg',
-    alt: 'Beeld uit het FASHIONCLASH carnavalproject 2026',
-    category: 'Project',
-    title: 'Carnavalproject',
-    year: '2026',
-    context: 'FASHIONCLASH',
-    credit: 'Foto: Jonathan Widdershoven',
-  },
-];
-
-const archive = [
-  { year: '2026', title: 'Fancy Boogers · cover ECOPOLITAN #7', kind: 'Kleding / publicatie' },
-  { year: '2026', title: 'Carnavalproject', kind: 'Project · FASHIONCLASH' },
-  { year: '2025', title: 'Presentatie bij Juunam', kind: 'Presentatie · FASHIONCLASH Festival' },
-  { year: '2025', title: 'Fashion Makes Sense', kind: 'Talk / participatie · FASHIONCLASH' },
-  { year: '2024', title: 'New Fashion Narratives', kind: 'Presentatie · Bureau Europa' },
-];
+import { projects, workItems } from '@/data/content';
 ---
 
 <BaseLayout
@@ -57,34 +21,26 @@ const archive = [
     </div>
   </header>
 
-  <main class="work-main">
-    <section class="work-gallery shell" aria-label="Selectie van werk">
-      {work.map((item) => <WorkItem {...item} />)}
-    </section>
+  <section class="work-gallery shell" aria-label="Selectie van werk">
+    {workItems.map((item) => <WorkItem {...item} />)}
+  </section>
 
-    <section class="archive shell" aria-labelledby="archive-title">
-      <header class="archive-heading">
-        <p class="eyebrow">Archief</p>
-        <h2 id="archive-title">Projecten & presentaties</h2>
-      </header>
+  <section class="archive shell" aria-labelledby="archive-title">
+    <header class="archive-heading">
+      <p class="eyebrow">Archief</p>
+      <h2 id="archive-title">Projecten & presentaties</h2>
+    </header>
 
-      <div class="archive-list">
-        {archive.map(({ year, title, kind }) => (
-          <div class="archive-row">
-            <span class="archive-year">{year}</span>
-            <strong>{title}</strong>
-            <span class="archive-kind">{kind}</span>
-          </div>
-        ))}
-      </div>
-    </section>
-
-    <section class="work-end shell">
-      <p class="eyebrow">Studio Wievien</p>
-      <p class="work-end-line">Meer beeldmateriaal en individuele werkpagina’s worden toegevoegd zodra het eigen archief is samengesteld.</p>
-      <a class="text-link" href="/">Terug naar home</a>
-    </section>
-  </main>
+    <div class="archive-list">
+      {projects.map(({ year, title, kind, place }) => (
+        <div class="archive-row">
+          <span class="archive-year">{year}</span>
+          <strong>{title}</strong>
+          <span class="archive-kind">{kind} · {place}</span>
+        </div>
+      ))}
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
@@ -127,10 +83,6 @@ const archive = [
     color: var(--ink-faint);
     font-size: 0.66rem;
     line-height: 1.7;
-  }
-
-  .work-main {
-    min-width: 0;
   }
 
   .work-gallery {
@@ -190,27 +142,6 @@ const archive = [
     font-variant-numeric: tabular-nums;
   }
 
-  .work-end {
-    display: grid;
-    grid-template-columns: minmax(120px, 0.65fr) minmax(0, 1.35fr);
-    gap: 1.25rem 2rem;
-    padding-block: var(--section);
-    border-top: 1px solid var(--line-strong);
-  }
-
-  .work-end-line {
-    max-width: 39rem;
-    font-family: var(--font-display);
-    font-size: clamp(1.35rem, 2.1vw, 1.9rem);
-    line-height: 1.25;
-    letter-spacing: -0.02em;
-  }
-
-  .work-end .text-link {
-    grid-column: 2;
-    margin-top: 0.5rem;
-  }
-
   @media (max-width: 900px) {
     .work-gallery {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -223,8 +154,7 @@ const archive = [
     }
 
     .work-hero-grid,
-    .archive-heading,
-    .work-end {
+    .archive-heading {
       grid-template-columns: 1fr;
       gap: 1.5rem;
     }
@@ -245,10 +175,6 @@ const archive = [
 
     .archive-kind {
       grid-column: 2;
-    }
-
-    .work-end .text-link {
-      grid-column: 1;
     }
   }
 </style>

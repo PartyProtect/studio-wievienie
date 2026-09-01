@@ -68,8 +68,7 @@ html[data-assembly='playing'] [data-assemble='wievien'][data-title-entrance='com
   will-change: transform, opacity;
 }
 
-/* The old projected silhouettes are intentionally disabled. One clean floor
-   shadow per glyph is enough to communicate height without muddying the type. */
+/* One clean floor shadow per glyph. No projected silhouettes or ghost word. */
 .title-motion-cast,
 .title-motion-shadow-ink,
 .title-target-shadow-plane {
@@ -92,9 +91,10 @@ html[data-assembly='playing'] [data-assemble='wievien'][data-title-entrance='com
   filter: blur(3.5px);
 }
 
-/* Studio owns the first beat; everything else waits for the piano run. */
+/* Studio owns the opening beat. The eyebrow can join during the piano run so
+   the eventual title hold is not cluttered by another tiny reveal. */
 html[data-assembly='playing'] [data-assemble='eyebrow'] {
-  animation: assembly-small-settle 430ms 860ms var(--ease) both !important;
+  animation: assembly-small-settle 480ms 890ms var(--ease) both !important;
 }
 
 html[data-assembly='pending'] .header-inner > *,
@@ -104,11 +104,12 @@ html[data-assembly='playing'] .header-inner > * {
   animation: none !important;
 }
 
+/* After Wievien lands, the title gets a genuine ta-da hold. Then the page opens
+   in families rather than serially: frame + header + construction marks first. */
 html[data-assembly='playing'] .header-inner > * {
-  animation: assembly-small-settle 430ms 2460ms var(--ease) both !important;
+  animation: assembly-small-settle 560ms 3070ms var(--ease) both !important;
 }
 
-/* Keep the photograph completely quiet until the word has finished playing. */
 html[data-assembly='pending'] [data-assemble='image'] .hero-image-frame,
 html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame {
   visibility: hidden;
@@ -116,11 +117,11 @@ html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame {
 }
 
 html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame {
-  animation: piano-image-frame-in 900ms 2400ms var(--ease) forwards !important;
+  animation: piano-image-frame-in 980ms 3040ms var(--ease) forwards !important;
 }
 
 html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame img {
-  animation: piano-image-content-in 1000ms 2400ms var(--ease) forwards !important;
+  animation: piano-image-content-in 1120ms 3040ms var(--ease) forwards !important;
 }
 
 @keyframes piano-image-frame-in {
@@ -154,18 +155,24 @@ html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame img {
   }
 }
 
-html[data-assembly='playing'] [data-assemble='guides'] { animation-delay: 2320ms !important; }
-html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-top { animation-delay: 2350ms !important; }
-html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-right { animation-delay: 2490ms !important; }
-html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-cross { animation-delay: 2620ms !important; }
-html[data-assembly='playing'] [data-assemble='fields'] { animation-delay: 2630ms !important; }
-html[data-assembly='playing'] [data-assemble='cta'] { animation-delay: 2800ms !important; }
-html[data-assembly='playing'] [data-assemble='caption'] { animation-delay: 2820ms !important; }
-html[data-assembly='playing'] [data-assemble='index'] { animation-delay: 2940ms !important; }
-html[data-assembly='playing'] [data-assemble='door']:nth-child(1) { animation-delay: 3040ms !important; }
-html[data-assembly='playing'] [data-assemble='door']:nth-child(2) { animation-delay: 3135ms !important; }
-html[data-assembly='playing'] [data-assemble='door']:nth-child(3) { animation-delay: 3230ms !important; }
-html[data-assembly='playing'] [data-assemble='door']:nth-child(4) { animation-delay: 3325ms !important; }
+/* Wave 1: image, construction marks and header all wake together. */
+html[data-assembly='playing'] [data-assemble='guides'] { animation-delay: 3010ms !important; }
+html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-top { animation-delay: 3050ms !important; }
+html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-right { animation-delay: 3140ms !important; }
+html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-cross { animation-delay: 3230ms !important; }
+
+/* Wave 2: supporting information arrives as one cluster while the photograph
+   is still finishing, so the composition feels alive rather than queued. */
+html[data-assembly='playing'] [data-assemble='fields'] { animation-delay: 3260ms !important; }
+html[data-assembly='playing'] [data-assemble='cta'] { animation-delay: 3300ms !important; }
+html[data-assembly='playing'] [data-assemble='caption'] { animation-delay: 3290ms !important; }
+
+/* Wave 3: navigation resolves in two paired chords instead of four footsteps. */
+html[data-assembly='playing'] [data-assemble='index'] { animation-delay: 3450ms !important; }
+html[data-assembly='playing'] [data-assemble='door']:nth-child(1),
+html[data-assembly='playing'] [data-assemble='door']:nth-child(2) { animation-delay: 3510ms !important; }
+html[data-assembly='playing'] [data-assemble='door']:nth-child(3),
+html[data-assembly='playing'] [data-assemble='door']:nth-child(4) { animation-delay: 3620ms !important; }
 
 @media (max-width: 720px) {
   .title-motion-contact {

@@ -10,6 +10,7 @@ interface Props {
   currentPath?: string;
   ogImage?: string;
   noindex?: boolean;
+  firstVisitAssembly?: boolean;
 }
 
 const {
@@ -19,6 +20,7 @@ const {
   currentPath = '',
   ogImage,
   noindex = false,
+  firstVisitAssembly = false,
 } = Astro.props;
 
 const fullTitle = title === 'Studio Wievien' ? title : `${title} — Studio Wievien`;
@@ -28,7 +30,7 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
 ---
 
 <!DOCTYPE html>
-<html lang={lang}>
+<html lang={lang} data-assembly-enabled={firstVisitAssembly ? 'true' : undefined}>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -51,6 +53,30 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
   <meta name="twitter:description" content={description} />
   {ogImageURL && <meta name="twitter:image" content={ogImageURL} />}
 
+  <!-- Decide before first paint whether the one-time homepage assembly should run. -->
+  <script is:inline>
+    (() => {
+      const root = document.documentElement;
+      if (root.dataset.assemblyEnabled !== 'true') return;
+
+      const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) return;
+
+      const forceReplay = new URLSearchParams(window.location.search).get('intro') === '1';
+      let hasSeenIntro = false;
+
+      try {
+        hasSeenIntro = sessionStorage.getItem('studio-wievien-assembly-seen') === '1';
+      } catch {
+        // Storage can be unavailable in strict privacy modes; the intro still works.
+      }
+
+      if (!hasSeenIntro || forceReplay) {
+        root.dataset.assembly = 'pending';
+      }
+    })();
+  </script>
+
   <!-- Prototype font delivery. Self-host before launch. -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -70,5 +96,35 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
   </main>
 
   <Footer lang={lang} />
+
+  <script is:inline>
+    (() => {
+      const root = document.documentElement;
+      if (root.dataset.assembly !== 'pending') return;
+
+      const play = () => {
+        requestAnimationFrame(() => {
+          root.dataset.assembly = 'playing';
+
+          try {
+            sessionStorage.setItem('studio-wievien-assembly-seen', '1');
+          } catch {
+            // The visual effect does not depend on storage being available.
+          }
+
+          window.setTimeout(() => {
+            root.dataset.assembly = 'done';
+            window.setTimeout(() => root.removeAttribute('data-assembly'), 80);
+          }, 2500);
+        });
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', play, { once: true });
+      } else {
+        play();
+      }
+    })();
+  </script>
 </body>
 </html>

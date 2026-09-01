@@ -38,7 +38,7 @@ export const createTitleEntranceRuntime = ({ root, studioSource, nameSource }) =
     showFinalTitle();
 
     layers.forEach((layer) => {
-      if (!(layer instanceof HTMLElement)) return;
+      if (!(layer instanceof HTMLElement) || !layer.isConnected) return;
       if (instant) {
         layer.remove();
         return;
@@ -70,6 +70,12 @@ export const createTitleEntranceRuntime = ({ root, studioSource, nameSource }) =
     const resize = () => finish(true);
     window.addEventListener('resize', resize, { once: true });
     cleanupListeners.push(() => window.removeEventListener('resize', resize));
+
+    const handleVisibility = () => {
+      if (document.hidden) finish(true);
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+    cleanupListeners.push(() => document.removeEventListener('visibilitychange', handleVisibility));
   };
 
   const applyTypography = (element, computed) => Object.assign(element.style, {
@@ -90,6 +96,8 @@ export const createTitleEntranceRuntime = ({ root, studioSource, nameSource }) =
     const rect = source.getBoundingClientRect();
     const layer = document.createElement('div');
     layer.className = `title-motion-layer ${extraClass}`.trim();
+    layer.setAttribute('aria-hidden', 'true');
+    layer.setAttribute('role', 'presentation');
     Object.assign(layer.style, {
       left: px(rect.left),
       top: px(rect.top),
@@ -168,11 +176,6 @@ export const createTitleEntranceRuntime = ({ root, studioSource, nameSource }) =
 
       const left = rect.left - sourceRect.left;
       const top = rect.top - sourceRect.top;
-      const right = sourceRect.right - rect.right;
-      const bottom = sourceRect.bottom - rect.bottom;
-      const bleedX = 1.25;
-      const bleedY = 3;
-      const clip = `inset(${Math.max(0, top - bleedY)}px ${Math.max(0, right - bleedX)}px ${Math.max(0, bottom - bleedY)}px ${Math.max(0, left - bleedX)}px)`;
       const origin = `${left + rect.width / 2}px ${top + rect.height}px`;
 
       const cast = document.createElement('div');
@@ -180,8 +183,9 @@ export const createTitleEntranceRuntime = ({ root, studioSource, nameSource }) =
       cast.style.transformOrigin = origin;
       const castInk = document.createElement('span');
       castInk.className = 'title-motion-shadow-ink';
-      castInk.textContent = word;
-      castInk.style.clipPath = clip;
+      castInk.textContent = word[index];
+      castInk.style.left = px(left);
+      castInk.style.right = 'auto';
       applyTypography(castInk, computed);
       cast.appendChild(castInk);
 
@@ -198,8 +202,9 @@ export const createTitleEntranceRuntime = ({ root, studioSource, nameSource }) =
       glyph.style.transformOrigin = origin;
       const ink = document.createElement('span');
       ink.className = 'title-motion-ink';
-      ink.textContent = word;
-      ink.style.clipPath = clip;
+      ink.textContent = word[index];
+      ink.style.left = px(left);
+      ink.style.right = 'auto';
       applyTypography(ink, computed);
       glyph.appendChild(ink);
 

@@ -18,58 +18,124 @@
   </div>
 
   <div class="shell fancy-gallery">
-    <figure class="fancy-look fancy-look-toile">
-      <div class="fancy-image">
-        <img
-          src="/images/fancy-boogers/toile-terror-editorial.webp"
-          alt="Drie looks met de Toile Terror Shirt uit Fancy Boogers tegen een rode achtergrond"
-          loading="lazy"
-          decoding="async"
-          width="1400"
-          height="622"
-        />
-      </div>
-      <figcaption>
+    <figure class="fancy-collection fancy-collection-toile">
+      <figcaption class="fancy-collection-caption">
         <span>01 · Tops</span>
         <strong>Toile Terror Shirt</strong>
         <span>Reworked designer fabric</span>
       </figcaption>
+      <div class="fancy-photo-grid">
+        <div class="fancy-photo fancy-photo-lead">
+          <img
+            src="/images/fancy-boogers/toile-terror-hero.webp"
+            alt="Studio Wievien model in de Toile Terror Shirt tegen een rode achtergrond"
+            loading="lazy"
+            decoding="async"
+            width="360"
+            height="480"
+          />
+        </div>
+        <div class="fancy-photo">
+          <img
+            src="/images/fancy-boogers/toile-terror-look-01.webp"
+            alt="Twee modellen in Fancy Boogers looks met de Toile Terror Shirt tegen rood"
+            loading="lazy"
+            decoding="async"
+            width="360"
+            height="480"
+          />
+        </div>
+        <div class="fancy-photo">
+          <img
+            src="/images/fancy-boogers/toile-terror-look-02.webp"
+            alt="Model gehurkt in de Toile Terror Shirt tegen een rode achtergrond"
+            loading="lazy"
+            decoding="async"
+            width="360"
+            height="480"
+          />
+        </div>
+      </div>
     </figure>
 
-    <figure class="fancy-look fancy-look-boogie">
-      <div class="fancy-image">
-        <img
-          src="/images/fancy-boogers/boogie-blazer-editorial.webp"
-          alt="Drie looks met The Boogie Blazer uit Fancy Boogers tegen een groene achtergrond"
-          loading="lazy"
-          decoding="async"
-          width="1400"
-          height="622"
-        />
-      </div>
-      <figcaption>
+    <figure class="fancy-collection fancy-collection-boogie">
+      <figcaption class="fancy-collection-caption">
         <span>02 · Outerwear</span>
         <strong>The Boogie Blazer</strong>
         <span>1 of 1</span>
       </figcaption>
+      <div class="fancy-photo-grid">
+        <div class="fancy-photo fancy-photo-lead">
+          <img
+            src="/images/fancy-boogers/boogie-blazer-hero.webp"
+            alt="Achterzijde van The Boogie Blazer tegen een groene achtergrond"
+            loading="lazy"
+            decoding="async"
+            width="360"
+            height="480"
+          />
+        </div>
+        <div class="fancy-photo">
+          <img
+            src="/images/fancy-boogers/boogie-blazer-look-01.webp"
+            alt="Model in The Boogie Blazer met uitgestrekte arm tegen groen"
+            loading="lazy"
+            decoding="async"
+            width="360"
+            height="480"
+          />
+        </div>
+        <div class="fancy-photo">
+          <img
+            src="/images/fancy-boogers/boogie-blazer-look-02.webp"
+            alt="Model voorovergebogen in The Boogie Blazer tegen groen"
+            loading="lazy"
+            decoding="async"
+            width="360"
+            height="480"
+          />
+        </div>
+      </div>
     </figure>
 
-    <figure class="fancy-look fancy-look-slime">
-      <div class="fancy-image">
-        <img
-          src="/images/fancy-boogers/slime-stripe-editorial.webp"
-          alt="Drie looks uit de Slime Stripe drop van Fancy Boogers tegen een paarse achtergrond"
-          loading="lazy"
-          decoding="async"
-          width="1400"
-          height="622"
-        />
-      </div>
-      <figcaption>
+    <figure class="fancy-collection fancy-collection-slime">
+      <figcaption class="fancy-collection-caption">
         <span>03 · Lookbook</span>
         <strong>The Slime Stripe drop</strong>
         <span>SS26</span>
       </figcaption>
+      <div class="fancy-photo-grid">
+        <div class="fancy-photo fancy-photo-lead">
+          <img
+            src="/images/fancy-boogers/slime-stripe-look-01.webp"
+            alt="Model in een groene Slime Stripe shirtlook tegen een paarse achtergrond"
+            loading="lazy"
+            decoding="async"
+            width="360"
+            height="480"
+          />
+        </div>
+        <div class="fancy-photo">
+          <img
+            src="/images/fancy-boogers/slime-stripe-look-02.webp"
+            alt="Twee modellen in de Slime Stripe drop tegen een paarse achtergrond"
+            loading="lazy"
+            decoding="async"
+            width="360"
+            height="480"
+          />
+        </div>
+        <div class="fancy-photo">
+          <img
+            src="/images/fancy-boogers/slime-stripe-look-03.webp"
+            alt="Volledige SS26 Slime Stripe look tegen een paarse achtergrond"
+            loading="lazy"
+            decoding="async"
+            width="360"
+            height="480"
+          />
+        </div>
+      </div>
     </figure>
   </div>
 
@@ -145,45 +211,33 @@
 
   .fancy-gallery {
     display: grid;
-    gap: clamp(3.8rem, 8vw, 7.8rem);
+    gap: clamp(4.2rem, 8vw, 8rem);
     margin-top: clamp(4.5rem, 8vw, 8rem);
   }
 
-  .fancy-look {
+  .fancy-collection {
     margin: 0;
   }
 
-  .fancy-look-boogie {
+  .fancy-collection-boogie {
     width: 88%;
     margin-left: auto;
   }
 
-  .fancy-look-slime {
+  .fancy-collection-slime {
     width: 94%;
   }
 
-  .fancy-image {
-    overflow: hidden;
-    background: #1b1a1c;
-  }
-
-  .fancy-image img {
-    display: block;
-    width: 100%;
-    height: auto;
-    transition: transform 700ms var(--ease);
-  }
-
-  .fancy-look figcaption {
+  .fancy-collection-caption {
     display: grid;
     grid-template-columns: minmax(110px, 0.7fr) minmax(0, 1.6fr) minmax(140px, 0.7fr);
     gap: 1rem;
     align-items: baseline;
-    padding-top: 0.72rem;
+    padding-block: 0.72rem;
     border-top: 1px solid #343331;
   }
 
-  .fancy-look figcaption span {
+  .fancy-collection-caption span {
     color: #8f8b85;
     font-size: 0.59rem;
     font-weight: 600;
@@ -191,17 +245,37 @@
     text-transform: uppercase;
   }
 
-  .fancy-look figcaption span:last-child {
+  .fancy-collection-caption span:last-child {
     text-align: right;
   }
 
-  .fancy-look figcaption strong {
+  .fancy-collection-caption strong {
     justify-self: center;
     color: var(--on-dark);
     font-family: var(--font-display);
     font-size: clamp(1.05rem, 1.7vw, 1.55rem);
     font-weight: 400;
     letter-spacing: -0.025em;
+  }
+
+  .fancy-photo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(0.45rem, 1vw, 0.9rem);
+  }
+
+  .fancy-photo {
+    overflow: hidden;
+    background: #1b1a1c;
+  }
+
+  .fancy-photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    transition: transform 700ms var(--ease);
   }
 
   .fancy-kinetic {
@@ -235,8 +309,8 @@
   }
 
   @media (hover: hover) and (pointer: fine) {
-    .fancy-look:hover .fancy-image img {
-      transform: scale(1.008);
+    .fancy-photo:hover img {
+      transform: scale(1.012);
     }
   }
 
@@ -251,36 +325,45 @@
     }
 
     .fancy-gallery {
-      gap: 3.8rem;
+      gap: 4.5rem;
       margin-top: 4.5rem;
     }
 
-    .fancy-look-boogie,
-    .fancy-look-slime {
+    .fancy-collection-boogie,
+    .fancy-collection-slime {
       width: 100%;
       margin-left: 0;
     }
 
-    .fancy-look figcaption {
+    .fancy-collection-caption {
       grid-template-columns: 1fr auto;
       gap: 0.22rem 1rem;
     }
 
-    .fancy-look figcaption strong {
+    .fancy-collection-caption strong {
       grid-column: 1 / -1;
       grid-row: 1;
       justify-self: start;
       font-size: 1.25rem;
     }
 
-    .fancy-look figcaption span:first-child {
+    .fancy-collection-caption span:first-child {
       grid-column: 1;
       grid-row: 2;
     }
 
-    .fancy-look figcaption span:last-child {
+    .fancy-collection-caption span:last-child {
       grid-column: 2;
       grid-row: 2;
+    }
+
+    .fancy-photo-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.55rem;
+    }
+
+    .fancy-photo-lead {
+      grid-column: 1 / -1;
     }
 
     .fancy-kinetic {
@@ -294,7 +377,7 @@
       animation: none;
     }
 
-    .fancy-image img {
+    .fancy-photo img {
       transition: none;
     }
   }

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import AssemblyCrew from '@/components/AssemblyCrew.astro';
+import FancyPortal from '@/components/FancyPortal.astro';
 import { heroWork, homepageProjects, homepageWork } from '@/data/content';
 import '@/styles/homepage.css';
 
@@ -95,33 +96,7 @@ const [juunamWork, carnivalWork] = homepageWork;
     </div>
   </section>
 
-  <section class="fancy" id="fancy-boogers" aria-labelledby="fancy-title">
-    <div class="shell fancy-grid">
-      <div>
-        <p class="eyebrow">Kledinglijn · Studio Wievien</p>
-        <h2 id="fancy-title">Fancy Boogers</h2>
-      </div>
-      <div class="fancy-copy">
-        <p>Eigen kledinglijn van Wievien Alberts.</p>
-        <p class="fancy-meta">In 2026 verscheen werk uit de collectie op de cover van ECOPOLITAN #7.</p>
-        <a
-          class="dark-link"
-          href="https://www.instagram.com/studio_wievien/"
-          rel="noopener noreferrer"
-          target="_blank"
-        >@studio_wievien <span aria-hidden="true">↗</span></a>
-      </div>
-    </div>
-
-    <div class="fancy-kinetic" aria-hidden="true">
-      <div class="fancy-track">
-        <span>Fancy Boogers · Studio Wievien · kleding · textiel · </span>
-        <span>Fancy Boogers · Studio Wievien · kleding · textiel · </span>
-        <span>Fancy Boogers · Studio Wievien · kleding · textiel · </span>
-        <span>Fancy Boogers · Studio Wievien · kleding · textiel · </span>
-      </div>
-    </div>
-  </section>
+  <FancyPortal />
 
   <section class="practice shell" aria-label="Borduurwerk en workshops">
     <article class="practice-row" id="borduurwerk">

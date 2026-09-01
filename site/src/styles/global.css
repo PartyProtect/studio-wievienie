@@ -51,7 +51,7 @@ main {
 }
 
 [data-page-shell] {
-  transform-origin: 50% 72vh;
+  transform-origin: 50% 74vh;
 }
 
 .fancy-transition-overlay {
@@ -74,14 +74,19 @@ html.is-fancy-transitioning .fancy-transition-overlay {
 }
 
 html.is-fancy-pulling [data-page-shell] {
-  transform: translate3d(0, -9vh, 0) scale3d(1.018, 1.065, 1);
-  transition: transform 380ms cubic-bezier(0.52, 0.03, 0.22, 1);
+  transform: translate3d(0, -11vh, 0) scale3d(1.022, 1.075, 1);
+  transition: transform 430ms cubic-bezier(0.52, 0.03, 0.22, 1);
   will-change: transform;
 }
 
 html.is-fancy-pulling .fancy-transition-overlay {
   transform: translate3d(0, 0, 0);
-  transition: transform 380ms cubic-bezier(0.52, 0.03, 0.22, 1);
+  transition: transform 430ms cubic-bezier(0.52, 0.03, 0.22, 1);
+}
+
+html.fancy-arrival-pending,
+html.fancy-arrival-pending body {
+  overflow: hidden;
 }
 
 html.fancy-arrival-pending .fancy-transition-overlay,
@@ -97,39 +102,39 @@ html.is-fancy-covered [data-page-shell] {
 
 html.is-fancy-revealing .fancy-transition-overlay {
   transform: translate3d(0, -102%, 0);
-  transition: transform 450ms var(--ease);
+  transition: transform 560ms var(--ease);
 }
 
-#fancy-boogers.is-fancy-arrival-target #fancy-title {
+html.is-fancy-revealing [data-fancy-store-intro] {
+  animation: fancyStoreIntro 650ms 80ms var(--ease) both;
+}
+
+html.is-fancy-revealing [data-fancy-store-title] {
   transform-origin: left top;
-  animation: fancyDestinationTitle 560ms var(--ease) both;
+  animation: fancyStoreTitle 720ms 70ms var(--ease) both;
 }
 
-#fancy-boogers.is-fancy-arrival-target .fancy-copy {
-  animation: fancyDestinationCopy 520ms 60ms var(--ease) both;
-}
-
-@keyframes fancyDestinationTitle {
+@keyframes fancyStoreIntro {
   from {
     opacity: 0;
-    transform: translate3d(0, 1.15rem, 0) scale3d(1.045, 1.075, 1);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
-  }
-}
-
-@keyframes fancyDestinationCopy {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 0.85rem, 0);
+    transform: translate3d(0, 1.1rem, 0);
   }
 
   to {
     opacity: 1;
     transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes fancyStoreTitle {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 1.4rem, 0) scale3d(1.035, 1.11, 1);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
   }
 }
 
@@ -187,7 +192,7 @@ select {
   position: fixed;
   top: 0.75rem;
   left: 0.75rem;
-  z-index: 1000;
+  z-index: 1500;
   transform: translateY(calc(-100% - 1.5rem));
   padding: 0.55rem 0.75rem;
   background: var(--ink);
@@ -253,7 +258,7 @@ select {
   }
 
   html.is-fancy-pulling [data-page-shell] {
-    transform: translate3d(0, -6vh, 0) scale3d(1.012, 1.045, 1);
+    transform: translate3d(0, -7vh, 0) scale3d(1.014, 1.05, 1);
   }
 }
 

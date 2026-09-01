@@ -12,7 +12,6 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
   const {
     activeAnimations,
     createLetterScene,
-    createWholeWordScene,
     finish,
     later,
     listenOnceToIntent,
@@ -26,54 +25,6 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
 
   const px = (value) => `${Math.round(value * 1000) / 1000}px`;
 
-  /* Studio is no longer the spectacle. It arrives while the monogram resolves,
-     giving Wievien the first beat and preserving Studio as quiet context. */
-  const playStudio = (scene) => {
-    const duration = 760;
-    const delay = 650;
-
-    track(
-      scene.glyph.animate([
-        { offset: 0, opacity: 0, transform: 'translate(-13px, 9px) rotate(-1.4deg) scale(.982)' },
-        { offset: .2, opacity: .32, transform: 'translate(-9px, 6px) rotate(-1deg) scale(.987)' },
-        { offset: .7, opacity: 1, transform: 'translate(1px, -1.2px) rotate(.16deg) scale(1.003)' },
-        { offset: .86, opacity: 1, transform: 'translate(-.4px, .35px) rotate(-.06deg)' },
-        { offset: 1, opacity: 1, transform: 'none' },
-      ], {
-        duration,
-        delay,
-        easing: 'cubic-bezier(.18,.82,.2,1)',
-        fill: 'both',
-      }),
-      scene.contact.animate([
-        { offset: 0, opacity: 0, transform: 'translateX(-10px) scale(.72,.78)' },
-        { offset: .5, opacity: .045, transform: 'translateX(-3px) scale(.9,.86)' },
-        { offset: .75, opacity: .09, transform: 'translateX(1px) scale(1.04,.78)' },
-        { offset: 1, opacity: .075, transform: 'none' },
-      ], {
-        duration,
-        delay,
-        easing: 'cubic-bezier(.18,.82,.2,1)',
-        fill: 'both',
-      }),
-    );
-
-    later(() => {
-      studioSource.dataset.titleEntrance = 'complete';
-
-      const inkFade = scene.glyphPlane.animate(
-        [{ opacity: 1 }, { opacity: 0 }],
-        { duration: 95, easing: 'ease-out', fill: 'forwards' },
-      );
-      const shadowFade = scene.shadowPlane.animate(
-        [{ opacity: 1 }, { opacity: 0 }],
-        { duration: 130, easing: 'ease-out', fill: 'forwards' },
-      );
-
-      Promise.allSettled([inkFade.finished, shadowFade.finished]).then(() => scene.layer.remove());
-    }, delay + duration + 45);
-  };
-
   const createMonogramScene = (scene) => {
     const metric = scene.metrics[0];
     const monogram = document.createElement('div');
@@ -82,7 +33,7 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
     Object.assign(monogram.style, {
       left: px(metric.left),
       top: px(metric.top),
-      width: px(metric.width * 1.7),
+      width: px(metric.width * 1.55),
       height: px(metric.height),
       perspective: px(Math.max(430, metric.height * 5.2)),
     });
@@ -94,14 +45,14 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
     const rear = document.createElement('span');
     rear.className = 'title-ww-letter title-ww-rear';
     rear.textContent = 'W';
-    rear.style.left = px(metric.width * .58);
+    rear.style.left = px(metric.width * .46);
 
     const contact = document.createElement('span');
     contact.className = 'title-ww-contact';
     Object.assign(contact.style, {
       left: px(metric.left + metric.width * .08),
       top: px(Math.min(scene.sourceRect.height - 3, metric.top + metric.height - 4)),
-      width: px(metric.width * 1.46),
+      width: px(metric.width * 1.3),
     });
 
     monogram.append(front, rear);
@@ -114,32 +65,24 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
     const firstGlyph = scene.glyphs[0];
     const firstContact = scene.contacts[0];
 
+    /* Start with a readable WW already present. The turn supplies motion, not
+       legibility: no edge-on sliver and no fade-from-nothing logo spawn. */
     track(
       monogram.animate([
         {
           offset: 0,
-          opacity: 0,
-          transform: 'perspective(520px) translateX(-13px) rotateY(-106deg) rotateZ(-8deg) scale(.91)',
+          opacity: .92,
+          transform: 'perspective(520px) translateX(-7px) rotateY(-58deg) rotateZ(-4deg) scale(.955)',
         },
         {
-          offset: .1,
+          offset: .48,
           opacity: 1,
-          transform: 'perspective(520px) translateX(-10px) rotateY(-88deg) rotateZ(-7deg) scale(.925)',
+          transform: 'perspective(520px) translateX(1.5px) rotateY(11deg) rotateZ(1.1deg) scale(1.008)',
         },
         {
-          offset: .56,
+          offset: .73,
           opacity: 1,
-          transform: 'perspective(520px) translateX(2px) rotateY(17deg) rotateZ(1.8deg) scale(1.012)',
-        },
-        {
-          offset: .76,
-          opacity: 1,
-          transform: 'perspective(520px) translateX(-.8px) rotateY(-5deg) rotateZ(-.55deg) scale(.997)',
-        },
-        {
-          offset: .9,
-          opacity: 1,
-          transform: 'perspective(520px) translateX(.25px) rotateY(1.2deg) rotateZ(.12deg) scale(1.001)',
+          transform: 'perspective(520px) translateX(-.55px) rotateY(-3.2deg) rotateZ(-.28deg) scale(.998)',
         },
         {
           offset: 1,
@@ -147,75 +90,74 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
           transform: 'perspective(520px) translateX(0) rotateY(0deg) rotateZ(0deg) scale(1)',
         },
       ], {
-        duration: 720,
-        delay: 140,
+        duration: 620,
+        delay: 80,
         easing: 'cubic-bezier(.17,.76,.18,1)',
         fill: 'both',
       }),
       contact.animate([
-        { offset: 0, opacity: 0, transform: 'scale(.42,.72)' },
-        { offset: .22, opacity: .035, transform: 'scale(.56,.76)' },
-        { offset: .58, opacity: .105, transform: 'scale(1.12,.66)' },
-        { offset: .78, opacity: .145, transform: 'scale(.96,.74)' },
-        { offset: 1, opacity: .11, transform: 'scale(1,.8)' },
+        { offset: 0, opacity: .035, transform: 'scale(.58,.76)' },
+        { offset: .46, opacity: .11, transform: 'scale(1.08,.68)' },
+        { offset: .74, opacity: .14, transform: 'scale(.96,.76)' },
+        { offset: 1, opacity: .105, transform: 'scale(1,.8)' },
       ], {
-        duration: 720,
-        delay: 115,
+        duration: 620,
+        delay: 70,
         easing: 'cubic-bezier(.17,.76,.18,1)',
         fill: 'both',
       }),
     );
 
-    /* The rear W gets a short readable beat, then peels away while the front W
-       hands directly into the authored first glyph. */
+    /* As soon as the monogram faces us, the rear W releases while the front W
+       crossfades into the exact measured first glyph. The next keys begin before
+       the handoff fully finishes, so there is no logo/pause/word sequence. */
     track(
       rear.animate([
-        { offset: 0, opacity: .72, transform: 'translate3d(0,0,-4px) rotateZ(0deg) scale(1)' },
-        { offset: .28, opacity: .7, transform: 'translate3d(3px,-2px,-2px) rotateZ(1.4deg) scale(.995)' },
-        { offset: 1, opacity: 0, transform: 'translate3d(22px,-25px,8px) rotateZ(10deg) scale(.93)' },
+        { offset: 0, opacity: .68, transform: 'translate3d(0,0,-3px) rotateZ(0deg) scale(1)' },
+        { offset: .32, opacity: .58, transform: 'translate3d(2px,-2px,-1px) rotateZ(1deg) scale(.997)' },
+        { offset: 1, opacity: 0, transform: 'translate3d(17px,-20px,7px) rotateZ(8deg) scale(.95)' },
       ], {
-        duration: 390,
-        delay: 770,
+        duration: 340,
+        delay: 625,
         easing: 'cubic-bezier(.2,.72,.22,1)',
         fill: 'forwards',
       }),
       front.animate([
         { offset: 0, opacity: 1, transform: 'translateZ(0) scale(1)' },
-        { offset: .38, opacity: .92, transform: 'translateZ(2px) scale(1.008)' },
+        { offset: .45, opacity: .86, transform: 'translateZ(1px) scale(1.004)' },
         { offset: 1, opacity: 0, transform: 'translateZ(0) scale(1)' },
       ], {
-        duration: 300,
-        delay: 790,
+        duration: 275,
+        delay: 650,
         easing: 'ease-out',
         fill: 'forwards',
       }),
       firstGlyph.animate([
-        { offset: 0, opacity: 0, transform: 'perspective(420px) rotateY(8deg) scale(.97)' },
-        { offset: .28, opacity: .55, transform: 'perspective(420px) rotateY(3deg) scale(1.012,.992)' },
-        { offset: .72, opacity: 1, transform: 'perspective(420px) rotateY(-.8deg) scale(1.004,1.01)' },
+        { offset: 0, opacity: 0, transform: 'perspective(420px) rotateY(4deg) scale(.986)' },
+        { offset: .42, opacity: .72, transform: 'perspective(420px) rotateY(1deg) scale(1.006,.997)' },
         { offset: 1, opacity: 1, transform: 'none' },
       ], {
-        duration: 320,
-        delay: 795,
+        duration: 285,
+        delay: 650,
         easing: 'cubic-bezier(.2,.76,.2,1)',
         fill: 'both',
       }),
       firstContact.animate([
-        { offset: 0, opacity: .04, transform: 'scale(.72,.8)' },
-        { offset: .62, opacity: .15, transform: 'scale(1.12,.7)' },
+        { offset: 0, opacity: .035, transform: 'scale(.76,.82)' },
+        { offset: .58, opacity: .14, transform: 'scale(1.08,.72)' },
         { offset: 1, opacity: .1, transform: 'none' },
       ], {
-        duration: 320,
-        delay: 785,
+        duration: 285,
+        delay: 640,
         easing: 'cubic-bezier(.2,.76,.2,1)',
         fill: 'both',
       }),
       contact.animate([
-        { opacity: .11, transform: 'scale(1,.8)' },
-        { opacity: 0, transform: 'scale(.78,.78)' },
+        { opacity: .105, transform: 'scale(1,.8)' },
+        { opacity: 0, transform: 'scale(.82,.8)' },
       ], {
-        duration: 310,
-        delay: 835,
+        duration: 285,
+        delay: 680,
         easing: 'ease-out',
         fill: 'forwards',
       }),
@@ -224,7 +166,7 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
     later(() => {
       monogram.remove();
       contact.remove();
-    }, 1220);
+    }, 1030);
   };
 
   const keyProfile = [
@@ -237,8 +179,6 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
     { height: 37, x: 10, rotation: 6.8, duration: 535, weight: 1.08 },
   ];
 
-  /* The first W now comes from the monogram. The remaining six keys begin while
-     that handoff is still visible, with deliberately uneven spacing. */
   const keyOffsets = [0, 104, 220, 332, 456, 586];
 
   const playKey = (scene, index, delay, viewportHeight) => {
@@ -306,7 +246,7 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
   const playName = (scene) => {
     playMonogram(scene);
 
-    const baseDelay = 940;
+    const baseDelay = 760;
     keyOffsets.forEach((offset, offsetIndex) => {
       const glyphIndex = offsetIndex + 1;
       playKey(scene, glyphIndex, baseDelay + offset, window.innerHeight);
@@ -388,13 +328,14 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
       if (!Element.prototype.animate) throw new Error('Web Animations API unavailable');
       if (root.dataset.assembly !== 'playing') return;
 
-      const studioScene = createWholeWordScene(studioSource);
+      /* Studio belongs to the composition from the first frame. Only Wievien
+         performs, so the eye has a stable anchor while the WW resolves. */
+      studioSource.dataset.titleEntrance = 'complete';
       const nameScene = createLetterScene(nameSource);
 
       listenOnceToIntent();
-      playStudio(studioScene);
       playName(nameScene);
-      setCompletionTimer(3900);
+      setCompletionTimer(3700);
     } catch {
       showFinalTitle();
       finish(true);

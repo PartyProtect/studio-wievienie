@@ -158,6 +158,289 @@ select {
   scroll-margin-top: 82px;
 }
 
+/* First-visit homepage assembly -------------------------------------------------
+   The final layout exists from first paint. The intro only reveals and settles
+   those already-positioned pieces, so it never causes layout shift. */
+
+html[data-assembly='pending'],
+html[data-assembly='playing'] {
+  scroll-behavior: auto;
+}
+
+html[data-assembly='pending'] .site-header {
+  clip-path: inset(0 100% 0 0);
+}
+
+html[data-assembly='pending'] .header-inner > * {
+  opacity: 0;
+  transform: translateY(-0.55rem);
+}
+
+html[data-assembly='pending'] [data-assemble='eyebrow'] {
+  opacity: 0;
+  transform: translateY(0.8rem);
+}
+
+html[data-assembly='pending'] [data-assemble='studio'] {
+  opacity: 0;
+  transform: translate(-0.32em, 0.08em) rotate(-4.5deg) scale(0.96);
+}
+
+html[data-assembly='pending'] [data-assemble='wievien'] {
+  opacity: 0;
+  transform: translate(0.27em, -0.07em) rotate(4.8deg) scale(1.025);
+}
+
+html[data-assembly='pending'] [data-assemble='fields'],
+html[data-assembly='pending'] [data-assemble='cta'],
+html[data-assembly='pending'] [data-assemble='caption'] {
+  opacity: 0;
+  transform: translateY(0.65rem);
+}
+
+html[data-assembly='pending'] [data-assemble='image'] .hero-image-frame {
+  opacity: 0.12;
+  clip-path: inset(7% 76% 7% 0);
+  transform: translateX(1.25rem);
+}
+
+html[data-assembly='pending'] [data-assemble='image'] .hero-image-frame img {
+  transform: scale(1.055);
+}
+
+html[data-assembly='pending'] [data-assemble='guides'] {
+  opacity: 0;
+}
+
+html[data-assembly='pending'] [data-assemble='guides'] .assembly-guide-top {
+  transform: scaleX(0);
+}
+
+html[data-assembly='pending'] [data-assemble='guides'] .assembly-guide-right {
+  transform: scaleY(0);
+}
+
+html[data-assembly='pending'] [data-assemble='guides'] .assembly-guide-cross {
+  opacity: 0;
+  transform: scale(0.4);
+}
+
+html[data-assembly='pending'] [data-assemble='index'] {
+  border-top-color: transparent;
+}
+
+html[data-assembly='pending'] [data-assemble='door'] {
+  opacity: 0;
+  clip-path: inset(0 100% 0 0);
+  transform: translateX(-0.55rem);
+}
+
+html[data-assembly='playing'] .site-header {
+  animation: assembly-header 620ms 40ms var(--ease) both;
+}
+
+html[data-assembly='playing'] .header-inner > * {
+  animation: assembly-small-settle 440ms 720ms var(--ease) both;
+}
+
+html[data-assembly='playing'] [data-assemble='eyebrow'] {
+  animation: assembly-small-settle 430ms 260ms var(--ease) both;
+}
+
+html[data-assembly='playing'] [data-assemble='studio'] {
+  animation: assembly-studio 720ms 360ms var(--ease) both;
+}
+
+html[data-assembly='playing'] [data-assemble='wievien'] {
+  animation: assembly-wievien 760ms 540ms var(--ease) both;
+}
+
+html[data-assembly='playing'] [data-assemble='fields'] {
+  animation: assembly-small-settle 470ms 1080ms var(--ease) both;
+}
+
+html[data-assembly='playing'] [data-assemble='cta'] {
+  animation: assembly-small-settle 470ms 1320ms var(--ease) both;
+}
+
+html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame {
+  animation: assembly-image-frame 980ms 620ms var(--ease) both;
+}
+
+html[data-assembly='playing'] [data-assemble='image'] .hero-image-frame img {
+  animation: assembly-image-content 1080ms 620ms var(--ease) both;
+}
+
+html[data-assembly='playing'] [data-assemble='caption'] {
+  animation: assembly-small-settle 430ms 1560ms var(--ease) both;
+}
+
+html[data-assembly='playing'] [data-assemble='guides'] {
+  animation: assembly-guides 1540ms 410ms var(--ease) both;
+}
+
+html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-top {
+  animation: assembly-guide-x 610ms 440ms var(--ease) both;
+}
+
+html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-right {
+  animation: assembly-guide-y 600ms 720ms var(--ease) both;
+}
+
+html[data-assembly='playing'] [data-assemble='guides'] .assembly-guide-cross {
+  animation: assembly-cross 420ms 940ms var(--ease) both;
+}
+
+html[data-assembly='playing'] [data-assemble='index'] {
+  animation: assembly-index-line 500ms 1600ms ease-out both;
+}
+
+html[data-assembly='playing'] [data-assemble='door'] {
+  animation: assembly-door 520ms calc(1680ms + (var(--assembly-order, 0) * 105ms)) var(--ease) both;
+}
+
+@keyframes assembly-header {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes assembly-small-settle {
+  from {
+    opacity: 0;
+    transform: translateY(0.65rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes assembly-studio {
+  0% {
+    opacity: 0;
+    transform: translate(-0.32em, 0.08em) rotate(-4.5deg) scale(0.96);
+  }
+  68% {
+    opacity: 1;
+    transform: translate(0.022em, -0.012em) rotate(0.28deg) scale(1.006);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes assembly-wievien {
+  0% {
+    opacity: 0;
+    transform: translate(0.27em, -0.07em) rotate(4.8deg) scale(1.025);
+  }
+  70% {
+    opacity: 1;
+    transform: translate(-0.018em, 0.01em) rotate(-0.24deg) scale(0.997);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes assembly-image-frame {
+  0% {
+    opacity: 0.12;
+    clip-path: inset(7% 76% 7% 0);
+    transform: translateX(1.25rem);
+  }
+  24% {
+    opacity: 1;
+  }
+  68% {
+    clip-path: inset(2% 4% 2% 0);
+  }
+  100% {
+    opacity: 1;
+    clip-path: inset(0);
+    transform: none;
+  }
+}
+
+@keyframes assembly-image-content {
+  from {
+    transform: scale(1.055);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes assembly-guides {
+  0% {
+    opacity: 0;
+  }
+  18%,
+  67% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes assembly-guide-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes assembly-guide-y {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes assembly-cross {
+  from {
+    opacity: 0;
+    transform: scale(0.4) rotate(-18deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+}
+
+@keyframes assembly-index-line {
+  from {
+    border-top-color: transparent;
+  }
+  to {
+    border-top-color: var(--line-strong);
+  }
+}
+
+@keyframes assembly-door {
+  from {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+    transform: translateX(-0.55rem);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0);
+    transform: none;
+  }
+}
+
 @media (max-width: 720px) {
   :root {
     --gutter: 1rem;
@@ -180,5 +463,19 @@ select {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  html[data-assembly] .site-header,
+  html[data-assembly] .header-inner > *,
+  html[data-assembly] [data-assemble],
+  html[data-assembly] [data-assemble='image'] .hero-image-frame,
+  html[data-assembly] [data-assemble='image'] .hero-image-frame img {
+    opacity: 1 !important;
+    clip-path: none !important;
+    transform: none !important;
+  }
+
+  html[data-assembly] [data-assemble='guides'] {
+    display: none !important;
   }
 }

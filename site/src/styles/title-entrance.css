@@ -10,14 +10,14 @@ html:not([data-assembly='pending']):not([data-assembly='playing']) .assembly-gui
   display: none;
 }
 
-/* The authored title stays semantic while its decorative motion counterparts
-   perform. Studio is fully transparent; Wievien leaves only a crisp destination. */
-html[data-assembly='pending'] [data-assemble='studio']:not([data-title-entrance='complete']),
-html[data-assembly='playing'] [data-assemble='studio']:not([data-title-entrance='complete']) {
+/* Studio is the fixed anchor from frame one. Wievien alone performs, while its
+   authored source remains semantic and leaves a crisp destination underneath. */
+html[data-assembly='pending'] [data-assemble='studio'],
+html[data-assembly='playing'] [data-assemble='studio'] {
   visibility: visible !important;
   opacity: 1 !important;
-  color: transparent !important;
-  text-shadow: none !important;
+  color: var(--ink) !important;
+  text-shadow: 0 .03em .022em rgb(23 23 22 / 0.095) !important;
   animation: none !important;
   transform: none !important;
 }
@@ -32,7 +32,6 @@ html[data-assembly='playing'] [data-assemble='wievien']:not([data-title-entrance
   transform: none !important;
 }
 
-html[data-assembly='playing'] [data-assemble='studio'][data-title-entrance='complete'],
 html[data-assembly='playing'] [data-assemble='wievien'][data-title-entrance='complete'] {
   visibility: visible !important;
   color: var(--ink) !important;
@@ -88,8 +87,7 @@ html[data-assembly='playing'] [data-assemble='wievien'][data-title-entrance='com
 }
 
 /* The opening emblem is deliberately typographic rather than a separate logo.
-   Two copies of the exact Wievien W turn as one small object, then the rear W
-   releases and the front copy hands into the real first glyph. */
+   It begins readable and partly turned, then resolves into the measured first W. */
 .title-ww-monogram {
   position: absolute;
   z-index: 4;
@@ -123,7 +121,7 @@ html[data-assembly='playing'] [data-assemble='wievien'][data-title-entrance='com
 
 .title-ww-rear {
   z-index: 1;
-  opacity: .72;
+  opacity: .68;
 }
 
 .title-ww-contact {
@@ -159,14 +157,9 @@ html[data-assembly='playing'] [data-assemble='wievien'][data-title-entrance='com
   will-change: transform, opacity;
 }
 
-.title-motion-studio .title-motion-contact {
-  height: 3px;
-  filter: blur(1.8px);
-}
-
-/* The small location line joins just as WW becomes readable. */
+/* The small location line joins once the WW is resolving into the word. */
 html[data-assembly='playing'] [data-assemble='eyebrow'] {
-  animation: assembly-small-settle 500ms 900ms var(--ease) both !important;
+  animation: assembly-small-settle 500ms 820ms var(--ease) both !important;
 }
 
 html[data-assembly='pending'] .header-inner > *,
@@ -250,7 +243,8 @@ html[data-assembly='playing'] [data-assemble='fields'] { animation-delay: 2380ms
 html[data-assembly='playing'] [data-assemble='caption'] { animation-delay: 2420ms !important; }
 html[data-assembly='playing'] [data-assemble='cta'] { animation-delay: 2530ms !important; }
 
-/* Section navigation closes the phrase in two paired arrivals. */
+/* The old section-index timing remains harmless while that redundant visual
+   index is suppressed by the resting homepage refinement stylesheet. */
 html[data-assembly='playing'] [data-assemble='index'] { animation-delay: 2850ms !important; }
 html[data-assembly='playing'] [data-assemble='door']:nth-child(1),
 html[data-assembly='playing'] [data-assemble='door']:nth-child(2) { animation-delay: 2930ms !important; }
@@ -262,11 +256,6 @@ html[data-assembly='playing'] [data-assemble='door']:nth-child(4) { animation-de
   .title-ww-contact {
     height: 2px;
     filter: blur(1.2px);
-  }
-
-  .title-motion-studio .title-motion-contact {
-    height: 2px;
-    filter: blur(1.5px);
   }
 
   .title-ww-monogram {

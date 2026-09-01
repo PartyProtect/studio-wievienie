@@ -119,12 +119,16 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
         window.setTimeout(() => root.removeAttribute('data-assembly'), 100);
       };
 
-      const prepareDisplayFace = async () => {
+      const prepareIntroFonts = async () => {
         if (!document.fonts?.load) return true;
 
         try {
           return await Promise.race([
-            document.fonts.load('400 1em "Newsreader"').then((faces) => faces.length > 0),
+            Promise.all([
+              document.fonts.load('400 1em "Newsreader"'),
+              document.fonts.load('400 1em "Manrope"'),
+              document.fonts.load('600 1em "Manrope"'),
+            ]).then((fontGroups) => fontGroups.every((faces) => faces.length > 0)),
             new Promise((resolve) => window.setTimeout(() => resolve(false), 1100)),
           ]);
         } catch {
@@ -133,9 +137,9 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
       };
 
       const play = async () => {
-        const displayFaceReady = await prepareDisplayFace();
+        const introFontsReady = await prepareIntroFonts();
 
-        if (!displayFaceReady) {
+        if (!introFontsReady) {
           rememberIntro();
           finish();
           return;

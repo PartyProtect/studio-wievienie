@@ -25,72 +25,65 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
 
   const px = (value) => `${Math.round(value * 1000) / 1000}px`;
 
-  const createMonogramScene = (scene) => {
+  const createLeadWScene = (scene) => {
     const metric = scene.metrics[0];
-    const monogram = document.createElement('div');
-    monogram.className = 'title-ww-monogram';
-    monogram.setAttribute('aria-hidden', 'true');
-    Object.assign(monogram.style, {
+    const lead = document.createElement('div');
+    lead.className = 'title-ww-monogram';
+    lead.setAttribute('aria-hidden', 'true');
+    Object.assign(lead.style, {
       left: px(metric.left),
       top: px(metric.top),
-      width: px(metric.width * 1.55),
+      width: px(metric.width),
       height: px(metric.height),
       perspective: px(Math.max(430, metric.height * 5.2)),
     });
 
-    const front = document.createElement('span');
-    front.className = 'title-ww-letter title-ww-front';
-    front.textContent = 'W';
-
-    const rear = document.createElement('span');
-    rear.className = 'title-ww-letter title-ww-rear';
-    rear.textContent = 'W';
-    rear.style.left = px(metric.width * .46);
+    const letter = document.createElement('span');
+    letter.className = 'title-ww-letter title-ww-front';
+    letter.textContent = 'W';
 
     const contact = document.createElement('span');
     contact.className = 'title-ww-contact';
     Object.assign(contact.style, {
       left: px(metric.left + metric.width * .08),
       top: px(Math.min(scene.sourceRect.height - 3, metric.top + metric.height - 4)),
-      width: px(metric.width * 1.3),
+      width: px(metric.width * .84),
     });
 
-    monogram.append(front, rear);
-    scene.layer.append(contact, monogram);
-    return { monogram, front, rear, contact, metric };
+    lead.appendChild(letter);
+    scene.layer.append(contact, lead);
+    return { lead, letter, contact, metric };
   };
 
-  const playMonogram = (scene, wLanding) => {
-    const { monogram, front, rear, contact, metric } = createMonogramScene(scene);
+  const playLeadW = (scene, wLanding) => {
+    const { lead, letter, contact, metric } = createLeadWScene(scene);
     const firstGlyph = scene.glyphs[0];
     const firstContact = scene.contacts[0];
     const lift = Math.max(24, metric.height * .34);
     const dropDuration = 330;
     const dropStart = wLanding - dropDuration;
 
-    /* The measured first-W clone must remain absent until the final impact.
-       Other letter animations hide themselves via backwards fill; this one is
-       scheduled later, so pin its pre-impact state explicitly. */
+    /* The measured first-W clone stays absent until the final impact. */
     firstGlyph.style.opacity = '0';
 
-    /* WW is readable immediately, but it lives above the empty first-letter slot.
-       It turns in place, then waits there while ievien plays below. */
+    /* One unmistakable W waits above its empty slot. It gets a restrained turn
+       so the opening has life without inventing a separate logo event. */
     track(
-      monogram.animate([
+      lead.animate([
         {
           offset: 0,
-          opacity: .92,
-          transform: `perspective(520px) translate(-7px, ${px(-lift)}) rotateY(-56deg) rotateZ(-4deg) scale(.955)`,
+          opacity: .94,
+          transform: `perspective(520px) translate(-5px, ${px(-lift)}) rotateY(-42deg) rotateZ(-3deg) scale(.97)`,
         },
         {
-          offset: .48,
+          offset: .5,
           opacity: 1,
-          transform: `perspective(520px) translate(1.5px, ${px(-lift - 1)}) rotateY(11deg) rotateZ(1.1deg) scale(1.008)`,
+          transform: `perspective(520px) translate(1px, ${px(-lift - 1)}) rotateY(8deg) rotateZ(.8deg) scale(1.006)`,
         },
         {
-          offset: .73,
+          offset: .76,
           opacity: 1,
-          transform: `perspective(520px) translate(-.55px, ${px(-lift)}) rotateY(-3.2deg) rotateZ(-.28deg) scale(.998)`,
+          transform: `perspective(520px) translate(-.35px, ${px(-lift)}) rotateY(-2.2deg) rotateZ(-.18deg) scale(.999)`,
         },
         {
           offset: 1,
@@ -98,33 +91,28 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
           transform: `perspective(520px) translate(0, ${px(-lift)}) rotateY(0deg) rotateZ(0deg) scale(1)`,
         },
       ], {
-        duration: 580,
-        delay: 80,
+        duration: 560,
+        delay: 70,
         easing: 'cubic-bezier(.17,.76,.18,1)',
+        fill: 'both',
+      }),
+      letter.animate([
+        { offset: 0, transform: 'translateY(0)' },
+        { offset: .58, transform: 'translateY(-1.2px)' },
+        { offset: 1, transform: 'translateY(0)' },
+      ], {
+        duration: 900,
+        delay: 560,
+        easing: 'cubic-bezier(.2,.72,.22,1)',
         fill: 'both',
       }),
     );
 
-    /* The spare W peels away as soon as the monogram faces us. The surviving W
-       remains suspended, deliberately withholding the first letter until last. */
-    track(
-      rear.animate([
-        { offset: 0, opacity: .68, transform: 'translate3d(0,0,-3px) rotateZ(0deg) scale(1)' },
-        { offset: .32, opacity: .58, transform: 'translate3d(2px,-2px,-1px) rotateZ(1deg) scale(.997)' },
-        { offset: 1, opacity: 0, transform: 'translate3d(18px,-22px,7px) rotateZ(8deg) scale(.95)' },
-      ], {
-        duration: 340,
-        delay: 555,
-        easing: 'cubic-bezier(.2,.72,.22,1)',
-        fill: 'forwards',
-      }),
-    );
-
-    /* Final note: after ievien has landed, the remaining W drops into its slot.
-       The decorative W and measured real W crossfade only during the impact. */
+    /* Final note: once ievien has landed, the waiting W drops into the first
+       slot and crossfades into the exact measured glyph on impact. */
     later(() => {
       track(
-        monogram.animate([
+        lead.animate([
           {
             offset: 0,
             opacity: 1,
@@ -184,7 +172,7 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
     }, dropStart);
 
     later(() => {
-      monogram.remove();
+      lead.remove();
       contact.remove();
     }, wLanding + 90);
   };
@@ -276,7 +264,7 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
     const ievienLanding = baseDelay + keyOffsets[keyOffsets.length - 1] + keyProfile[lastIevienIndex].duration;
     const wLanding = ievienLanding + 115;
 
-    playMonogram(scene, wLanding);
+    playLeadW(scene, wLanding);
 
     /* The complete word gets one crisp elastic punch on the W impact. This is
        intentionally short: POP, tiny recoil, settle. */
@@ -337,7 +325,7 @@ import { createTitleEntranceRuntime } from './title-entrance-core.js';
       if (root.dataset.assembly !== 'playing') return;
 
       /* Studio belongs to the composition from the first frame. Only Wievien
-         performs, so the eye has a stable anchor while the WW resolves. */
+         performs, so the eye has a stable anchor while the final W waits. */
       studioSource.dataset.titleEntrance = 'complete';
       const nameScene = createLetterScene(nameSource);
 

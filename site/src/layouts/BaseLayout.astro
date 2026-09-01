@@ -100,15 +100,30 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
       const root = document.documentElement;
       if (root.dataset.assembly !== 'pending') return;
 
-      const play = async () => {
-        const fontGate = document.fonts?.ready ?? Promise.resolve();
-        const patience = new Promise((resolve) => window.setTimeout(resolve, 850));
+      let fallbackTimer = 0;
+      let finished = false;
 
+      const finish = () => {
+        if (finished) return;
+        finished = true;
+        window.clearTimeout(fallbackTimer);
+        root.dataset.assembly = 'done';
+        window.setTimeout(() => root.removeAttribute('data-assembly'), 100);
+      };
+
+      const play = async () => {
         try {
-          await Promise.race([fontGate, patience]);
+          if (document.fonts?.ready) {
+            await Promise.race([
+              document.fonts.ready,
+              new Promise((resolve) => window.setTimeout(resolve, 900)),
+            ]);
+          }
         } catch {
-          // A failed webfont must never prevent the site from opening.
+          // A fallback face is enough to run the intro if font loading fails.
         }
+
+        window.addEventListener('wievien:intro-complete', finish, { once: true });
 
         requestAnimationFrame(() => {
           root.dataset.assembly = 'playing';
@@ -119,10 +134,7 @@ const skipLabel = lang === 'nl' ? 'Naar inhoud' : 'Skip to content';
             // The visual effect does not depend on storage being available.
           }
 
-          window.setTimeout(() => {
-            root.dataset.assembly = 'done';
-            window.setTimeout(() => root.removeAttribute('data-assembly'), 100);
-          }, 9100);
+          fallbackTimer = window.setTimeout(finish, 12000);
         });
       };
 

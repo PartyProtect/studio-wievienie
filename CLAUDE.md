@@ -1,36 +1,51 @@
 # Studio Wievien
 
-Read `AGENTS.md` first. It is the primary guide for the character, design philosophy, writing, interaction and working style of this project.
+Read `AGENTS.md` first. It is the primary creative and working guide for this repository.
 
-## Current state
+## Current model
 
-The live design work is in the Astro app under `site/`.
+The live implementation is the Astro app under `site/`.
 
-At the moment the homepage is the only real page. The deeper sections such as Werk, Fancy Boogers, Borduurwerk, Workshops and Over still need to be built as proper pages. Do not treat old route plans or documentation as implemented features.
+Studio Wievien is the parent practice and navigation layer. It is not a visual theme that every project must inherit. Substantial projects or labels may become distinct project worlds with their own local art direction and interaction model. Smaller works can remain focused detail pages.
 
-The current homepage direction is intentionally calm and precise: restrained layout, strong typography, real work as the visual focus, and motion used sparingly where it has character or meaning.
+Fancy Boogers is the first explicit project-world prototype under `/fancy-boogers/`: a clothing label/shop whose identity is intentionally allowed to diverge from the parent Studio Wievien experience.
+
+Do not use Fancy Boogers, the current homepage, or any historical design exploration as the automatic starting style for a new project. Inspect that project’s material and purpose first.
 
 ## Stack
 
 - Astro
 - static HTML/CSS by default
-- Tailwind is installed but the current visual system is mostly authored CSS
+- authored CSS is preferred where it keeps a project self-contained
+- client-side JavaScript only where interaction requires it
 - Netlify deployment
-- Dutch first; English infrastructure exists but English pages do not yet exist
+- Dutch first; English structure can be added when real translated content exists
+
+## Technical boundary
+
+Share infrastructure, not aesthetic assumptions.
+
+Common helpers may cover semantics, metadata, SEO, images, accessibility, analytics, data and simple navigation behavior. Project-specific fonts, CSS, motion and client code should remain local to the project so unrelated routes do not pay their cost.
+
+A project world should retain an understandable path back to Studio Wievien even if its internal navigation is entirely different.
 
 ## Source of truth
 
 Use this order when information conflicts:
 
-1. real information and material supplied by Wievien
-2. the current working implementation
-3. `AGENTS.md`
-4. current project requirements
-5. supporting docs
-6. historical experiments and notes
+1. direct current requirements and real material supplied by Wievien
+2. verified facts and source assets
+3. the current rendered implementation as evidence of what is working
+4. `AGENTS.md`
+5. current architecture documentation
+6. historical experiments and older planning documents
 
-Files in `docs/` contain useful research and earlier planning, but some of them describe older visual directions or features that were never built. Treat them as reference material, not instructions.
+Never invent missing biography, product facts, prices, claims, dates or artistic meaning to make a page feel complete.
 
 ## Working rule
 
-Inspect the rendered result before making broad design changes. Preserve what works. Prefer small, coherent improvements over speculative systems.
+Shape the canvas before choosing what goes on it.
+
+Understand the content, purpose, navigation and technical constraints first. Then prototype the visual answer. Inspect the rendered result on desktop and mobile before turning any local decision into a reusable pattern.
+
+A successful experiment is not automatically a global rule.
